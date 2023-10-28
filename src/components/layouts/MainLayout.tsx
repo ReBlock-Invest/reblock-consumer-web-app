@@ -1,5 +1,5 @@
-import React, { ReactNode, useCallback, useMemo } from 'react';
-import { App, Button, Col, ConfigProvider, Dropdown, Layout, Row, Space, message, theme } from 'antd';
+import React, { ReactNode, useMemo } from 'react';
+import { App, Button, Col, ConfigProvider, Dropdown, Layout, Row, Space, theme } from 'antd';
 import type { MenuProps } from 'antd';
 import AppThemeConfig from 'components/themes/AppThemeConfig';
 import useWalletAccount from 'hooks/useWalletAccount';
