@@ -10,17 +10,6 @@ type Props = {
   children: ReactNode
 }
 
-const menus: MenuProps['items'] = [
-  {
-    key: 'beri-pinjaman',
-    label: 'Beri Pinjaman',
-  },
-  {
-    key: 'ajukan-pinjaman',
-    label: 'Ajukan Pinjaman',
-  },
-];
-
 const MainLayout: React.FC<Props> = ({children}) => {
   const {
     token: { colorBgContainer },

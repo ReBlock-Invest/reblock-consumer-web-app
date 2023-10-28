@@ -1,13 +1,14 @@
 
-import { getAddress, formatEther, BigNumberish } from "ethers"
+import { getAddress, formatEther } from "ethers"
 import MetaMaskOnboarding from "@metamask/onboarding"
 
-import { useCallback, useEffect } from "react"
+import { useCallback } from "react"
 import { useWalletStore } from "stores/useWalletStore"
 
+const onboarding = new MetaMaskOnboarding({ forwarderOrigin: process.env.APP_PUBLIC_URL })
+
 const useWalletAccount = (onError: (error: Error) => void) => {
-  const walletStore = useWalletStore()
-  const onboarding = new MetaMaskOnboarding({ forwarderOrigin: process.env.APP_PUBLIC_URL })
+  const walletStore = useWalletStore()  
 
   const handleLogin = useCallback(async () => {
     //@ts-ignore
@@ -33,7 +34,7 @@ const useWalletAccount = (onError: (error: Error) => void) => {
     } else {
       onboarding.startOnboarding();
     }
-  }, [walletStore.setWalletAccount]);
+  }, [walletStore, onError]);
   
   const refetchBalance = useCallback(async () => {
     if (walletStore.walletAccount?.walletId) {
@@ -45,11 +46,11 @@ const useWalletAccount = (onError: (error: Error) => void) => {
         walletBalance: parseFloat(formatEther(walletBalance)),
       })
     }
-  }, [walletStore.walletAccount?.walletId, walletStore.setWalletAccount])
+  }, [walletStore])
 
   const handleLogout = useCallback(() => {
     walletStore.setWalletAccount(null)
-  }, [walletStore.setWalletAccount]);
+  }, [walletStore]);
 
   return {
     handleLogin,
