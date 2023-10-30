@@ -1,63 +1,50 @@
 
-import { getAddress, formatEther } from "ethers"
-import MetaMaskOnboarding from "@metamask/onboarding"
-
+import { useWeb3Modal } from '@web3modal/wagmi/react'
+import { useAccount, useBalance, useDisconnect } from 'wagmi'
 import { useCallback } from "react"
-import { useWalletStore } from "stores/useWalletStore"
 
-const onboarding = new MetaMaskOnboarding({ forwarderOrigin: process.env.APP_PUBLIC_URL })
 
 const useWalletAccount = (onError: (error: Error) => void) => {
-  const walletStore = useWalletStore()  
+  const { address, isConnecting, isDisconnected } = useAccount()
+  const { open } = useWeb3Modal()
+  const {data, refetch} = useBalance({address})
+  const {disconnect} = useDisconnect()
 
   const handleLogin = useCallback(async () => {
-    //@ts-ignore
-    if (window.ethereum && window.ethereum.isMetaMask) {
-      try {
-        walletStore.setIsLoading(true)
-        //@ts-ignore
-        const result = await window.ethereum
-          .request({ method: "eth_requestAccounts" })
-        const walletId = getAddress(result[0])
-        //@ts-ignore
-        const walletBalance = await window.ethereum
-          .request({ method: "eth_getBalance", params: [walletId, "latest"] })
-        walletStore.setWalletAccount({
-          walletId,
-          walletBalance: parseFloat(formatEther(walletBalance)),
-        })
-      } catch(error: any) {
-        onError(error)
-      } finally {
-        walletStore.setIsLoading(false)
-      }
-    } else {
-      onboarding.startOnboarding();
+    try {
+      await open({
+        view: "Connect",
+      })
+    } catch (err: any) {
+      onError(err)
     }
-  }, [walletStore, onError]);
+  }, [open, onError]);
   
   const refetchBalance = useCallback(async () => {
-    if (walletStore.walletAccount?.walletId) {
-      //@ts-ignore
-      const walletBalance = await window.ethereum
-        .request({ method: "eth_getBalance", params: [walletStore.walletAccount.walletId, "latest"] })
-      walletStore.setWalletAccount({
-        ...walletStore.walletAccount,
-        walletBalance: parseFloat(formatEther(walletBalance)),
-      })
+    try {
+      await refetch()
+    } catch (err: any) {
+      onError(err)
     }
-  }, [walletStore])
+  }, [refetch, onError])
 
-  const handleLogout = useCallback(() => {
-    walletStore.setWalletAccount(null)
-  }, [walletStore]);
+  const handleLogout = useCallback(async () => {
+    try {
+      await disconnect()
+    } catch (err: any) {
+      onError(err)
+    }
+  }, [disconnect, onError]);
 
   return {
     handleLogin,
     handleLogout,
     refetchBalance,
-    walletAccountLoading: walletStore.isLoading,
-    walletAccount: walletStore.walletAccount,
+    walletAccountLoading: isConnecting,
+    walletAccount: !isDisconnected ? {
+      address,
+      balance: data?.formatted,
+    } : null,
   }
 }
 

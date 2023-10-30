@@ -5,6 +5,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import HomePage from './pages/home';
+import WagmiContextProvider from 'components/contexts/WagmiContextProvider';
 
 const router = createBrowserRouter([
   {
@@ -16,7 +17,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div className="App">
-      <RouterProvider router={router} />
+      <WagmiContextProvider>
+        <RouterProvider router={router} />
+      </WagmiContextProvider>
     </div>
   );
 }

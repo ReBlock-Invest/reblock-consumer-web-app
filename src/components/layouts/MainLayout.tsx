@@ -47,7 +47,7 @@ const MainLayout: React.FC<Props> = ({children}) => {
                   <Dropdown menu={{ items, onClick: handleLogout }}>
                     <a onClick={(e) => e.preventDefault()}>
                       <Space>
-                        Balance {walletAccount.walletBalance}
+                        Balance {walletAccount.balance}
                       </Space>
                     </a>
                   </Dropdown>
