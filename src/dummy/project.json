@@ -1,0 +1,16 @@
+{
+  "id": "xxx",
+  "smart_contract_url": "https://etherscan.io/address/0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+  "title": "Goldfinch Senior Pool",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu pretium velit. In et porttitor nunc. Quisque faucibus eros ut libero rutrum, mollis dictum velit sodales. Nullam magna felis, ultrices nec rutrum ac, tincidunt sed magna. Praesent id nunc ac felis tincidunt consectetur id vitae orci. Proin a efficitur sem. Ut sollicitudin lacus et convallis venenatis. In facilisis nec tellus a tempus.",
+  "APR": "-",
+  "secured_by": "TREASURY_BILL",
+  "loan_term": "1 MONTH",
+  "origination_date": "10/31/2023, 11:55:08 PM",
+  "fundrise_end_time": "10/31/2023, 11:55:08 PM",
+  "maturity_date": "10/31/2023, 11:55:08 PM",
+  "credit_rating": "A",
+  "status": "UPCOMING",
+  "issuer_picture": "https://picsum.photos/720/480",
+  "issuer_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu pretium velit. In et porttitor nunc. Quisque faucibus eros ut libero rutrum, mollis dictum velit sodales. Nullam magna felis, ultrices nec rutrum ac, tincidunt sed magna. Praesent id nunc ac felis tincidunt consectetur id vitae orci. Proin a efficitur sem. Ut sollicitudin lacus et convallis venenatis. In facilisis nec tellus a tempus."
+}
