@@ -1,4 +1,3 @@
-import AxiosHTTPClient from "lib/httpClient/libraries/AxiosHTTPClient"
 import ProjectRepository from "repositories/ProjectRepository"
 import React, { ReactNode, useMemo } from "react"
 
@@ -15,9 +14,8 @@ export const RepositoriesContext = React.createContext<Context>({})
 const RepositoriesContextProvider: React.FC<Props> = ({children}) => {
 
   const repositories = useMemo(() => {
-    const httpClient = new AxiosHTTPClient()
     return {
-      projectRepository: new ProjectRepository(httpClient),
+      projectRepository: new ProjectRepository(),
     }
   }, [])
 
