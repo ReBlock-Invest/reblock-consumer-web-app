@@ -39,7 +39,7 @@ const MainLayout: React.FC<Props> = ({children}) => {
           <Header className="main-header">
             <Row justify="space-between">
               <Col>
-                <span>Logo</span>
+                <span>Reblock</span>
               </Col>
 
               <Col>

@@ -1,4 +1,5 @@
-import React from 'react';
+import { initJuno } from "@junobuild/core";
+import { useEffect } from "react";
 
 import {
   createBrowserRouter,
@@ -15,6 +16,14 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  // TODO (galih): consider moving this to somewhere better
+  useEffect(() => {
+    (async () =>
+      await initJuno({
+        satelliteId: "fr33d-ayaaa-aaaal-adbpa-cai",
+      }))();
+  }, []);
+
   return (
     <div className="App">
       <WagmiContextProvider>
