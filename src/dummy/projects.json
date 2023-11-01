@@ -1,0 +1,47 @@
+[
+  {
+  "smart_contract_url": "https://etherscan.io/address/0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+  "title": "Savings Bond Ritel (SBR)",
+  "description": "SBR is a retail investment instrument in the form of Indonesian government bonds that has characteristics similar to savings or bank deposits",
+  "APR": "6.5%",
+  "secured_by": "INDONESIA_TREASURY_BILL",
+  "loan_term": "12 MONTHS",
+  "origination_date": "10/31/2023, 11:55:08 PM",
+  "fundrise_end_time": "10/31/2023, 11:55:08 PM",
+  "maturity_date": "10/31/2024, 11:55:08 PM",
+  "credit_rating": "A",
+  "status": "UPCOMING",
+  "issuer_picture": "https://picsum.photos/720/480",
+  "issuer_description": "Indonesia Ministry of Finance"
+  },
+  {
+    "smart_contract_url": "https://etherscan.io/address/0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+    "title": "Retail Government Bonds (ORI)",
+    "description": "ORI is a retail investment instrument in the form of government bonds that can be traded on the secondary market. ORI also has a fixed coupon in the form of monthly yields paid to the investor who purchases it",
+    "APR": "6.5%",
+    "secured_by": "INDONESIA_TREASURY_BILL",
+    "loan_term": "12 MONTHS",
+    "origination_date": "10/31/2023, 11:55:08 PM",
+    "fundrise_end_time": "10/31/2023, 11:55:08 PM",
+    "maturity_date": "10/31/2024, 11:55:08 PM",
+    "credit_rating": "A",
+    "status": "UPCOMING",
+    "issuer_picture": "https://picsum.photos/720/480",
+    "issuer_description": "Indonesia Ministry of Finance"
+    },
+    {
+      "smart_contract_url": "https://etherscan.io/address/0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+      "title": "Savings Sukuk (ST)",
+      "description": "The ST product is similar to the SBR in that it is not tradeable on the secondary market but is redeemable early. However, because this product is managed according to Sharia law, there are differences in contracts (agreements and settlements) in the issuance of state asset ownership as underlying assets or ST base assets",
+      "APR": "6.5%",
+      "secured_by": "INDONESIA_TREASURY_BILL",
+      "loan_term": "12 MONTHS",
+      "origination_date": "10/31/2023, 11:55:08 PM",
+      "fundrise_end_time": "10/31/2023, 11:55:08 PM",
+      "maturity_date": "10/31/2024, 11:55:08 PM",
+      "credit_rating": "A",
+      "status": "UPCOMING",
+      "issuer_picture": "https://picsum.photos/720/480",
+      "issuer_description": "Indonesia Ministry of Finance"
+      }
+]
