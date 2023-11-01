@@ -42,7 +42,7 @@ const HomePage: React.FC = () => {
           <Row gutter={16}>
             {data?.map((d, index) => (              
               <Col key={index} span={8}>
-                <Link to={`/project/${d.id}`}>
+                <Link to={`/project/${d.key}`}>
                   <Card
                     cover={
                       <Image
