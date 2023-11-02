@@ -4,10 +4,20 @@ import MainLayout from "components/layouts/MainLayout"
 import React from "react"
 import { useQuery } from "react-query"
 import { useParams } from "react-router-dom"
+import useResponsiveValue from "hooks/useResponsiveValue"
 
 const { Title, Text } = Typography
 
 const ProjectPage: React.FC = () => {
+  const contentHorizontalPadding = useResponsiveValue({
+    xs: 16,
+    sm: 16,
+    md: 16,
+    lg: 50,
+    xl: 50,
+    xxl: 50,
+  })
+
   const repositories = useRepositories()
   const {projectId} = useParams()
   const { data, isLoading } = useQuery({
@@ -22,7 +32,7 @@ const ProjectPage: React.FC = () => {
       {isLoading ? (
         <Skeleton />
       ) : (
-        <Space direction="vertical" size={16} style={{padding: '0px 50px 50px 50px'}}>
+        <Space direction="vertical" size={16} style={{padding: `0px ${contentHorizontalPadding}px`}}>
           <Row>
             <Col>
               <Title level={1}>
