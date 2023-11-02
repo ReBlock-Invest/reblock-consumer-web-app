@@ -27,6 +27,19 @@ createWeb3Modal({
     'fd20dc426fb37566d803205b19bbc1d4096b248ac04548e3cfb6b3a38bd033aa', //coinbase wallet
     'c03dfee351b6fcc421b4494ea33b9d4b92a984f87aa76d1663bb28705e95034a', //uniswap wallet
   ],
+  customWallets: [
+    {
+      id: 'internet-computer',
+      name: 'Internet Computer',
+      homepage: 'identity.ic0.app/', // Optional
+      image_url: 'https://cryptologos.cc/logos/internet-computer-icp-logo.png', // Optional
+      mobile_link: 'https://identity.ic0.app/', // Optional - Deeplink or universal
+      desktop_link: 'https://identity.ic0.app/', // Optional - Deeplink
+      webapp_link: 'https://identity.ic0.app/', // Optional
+      app_store: 'https://identity.ic0.app/', // Optional
+      play_store: 'https://identity.ic0.app/' // Optional
+    }
+  ]
 })
 
 type Props = {
