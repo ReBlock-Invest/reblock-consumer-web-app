@@ -28,7 +28,7 @@ const ProjectPage: React.FC = () => {
               <Title level={1}>
                 {data?.data?.title}
               </Title>
-              <Text>{data?.description}</Text>
+              <Text>{data?.data.description}</Text>
             </Col>
           </Row>
 

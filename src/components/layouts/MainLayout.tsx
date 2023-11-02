@@ -4,6 +4,7 @@ import type { MenuProps } from 'antd'
 import AppThemeConfig from 'components/themes/AppThemeConfig'
 import useWagmiAuthentication from 'hooks/useWagmiAuthentication'
 import useWalletStore from 'stores/useWalletStore'
+import useResponsiveValue from 'hooks/useResponsiveValue'
 
 const { Header, Content, Footer } = Layout
 
@@ -16,6 +17,15 @@ const MainLayout: React.FC<Props> = ({children}) => {
     token: { colorBgContainer },
   } = theme.useToken()
   const { notification } = App.useApp()
+
+  const contentHorizontalPadding = useResponsiveValue({
+    xs: 16,
+    sm: 16,
+    md: 16,
+    lg: 50,
+    xl: 50,
+    xxl: 50,
+  })
 
   const walletStore = useWalletStore()
 
@@ -42,7 +52,7 @@ const MainLayout: React.FC<Props> = ({children}) => {
     <ConfigProvider theme={AppThemeConfig}>
       <App>
         <Layout className="layout">
-          <Header className="main-header">
+          <Header className="main-header" style={{padding: `0px ${contentHorizontalPadding}px`}}>
             <Row justify="space-between">
               <Col>
                 <span>Reblock</span>

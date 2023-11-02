@@ -4,11 +4,21 @@ import { Card, Carousel, Col, Image, Row, Skeleton, Space, Typography } from "an
 import useRepositories from "hooks/useRepositories"
 import { useQuery } from "react-query"
 import { Link } from "react-router-dom"
+import useResponsiveValue from "hooks/useResponsiveValue"
 
 const { Title, Text } = Typography
 
 const HomePage: React.FC = () => {
   const repositories = useRepositories()
+
+  const contentHorizontalPadding = useResponsiveValue({
+    xs: 16,
+    sm: 16,
+    md: 16,
+    lg: 50,
+    xl: 50,
+    xxl: 50,
+  })
 
   const { data, isLoading } = useQuery({
     queryKey: ['projects'],
@@ -37,11 +47,11 @@ const HomePage: React.FC = () => {
       {isLoading ? (
         <Skeleton />
       ) : (
-        <div style={{padding: '0px 50px 50px 50px'}}>
+        <div style={{padding: `0px ${contentHorizontalPadding}px`}}>
           <Title level={2}>Active Open Investments</Title>
-          <Row gutter={16}>
+          <Row gutter={[16, 16]}>
             {data?.map((d, index) => (              
-              <Col key={index} span={8}>
+              <Col key={index} sm={24} lg={8} md={12}>
                 <Link to={`/project/${d.key}`}>
                   <Card
                     cover={
