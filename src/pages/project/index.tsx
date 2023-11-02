@@ -1,7 +1,7 @@
 import useRepositories from "hooks/useRepositories"
 import { Button, Col, Row, Skeleton, Space, Typography } from "antd"
 import MainLayout from "components/layouts/MainLayout"
-import React, { useEffect } from "react"
+import React from "react"
 import { useQuery } from "react-query"
 import { useParams } from "react-router-dom"
 
@@ -26,7 +26,7 @@ const ProjectPage: React.FC = () => {
           <Row>
             <Col>
               <Title level={1}>
-                {data?.title}
+                {data?.data?.title}
               </Title>
               <Text>{data?.description}</Text>
             </Col>

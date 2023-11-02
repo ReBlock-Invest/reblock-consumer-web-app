@@ -1,21 +1,23 @@
-import { listDocs, setDoc } from "@junobuild/core";
+import { listDocs, setDoc, Doc } from "@junobuild/core";
 import BaseRepository from "./BaseRepository";
 import projects from 'dummy/projects.json'
 import { nanoid } from 'nanoid'
+import Project from "entities/project/Project";
+import idx from "idx";
 
-// TODO (galih): tolong dibersihin wuekek
+
 class ProjectRepository extends BaseRepository {
-  async getProjects() {
-    const { items } = await listDocs({
+  async getProjects(): Promise<Doc<Project>[]> {
+    const { items } = await listDocs<Project>({
       collection: "Project",
     });
-    return items;
+    return items || [];
   }
 
   async getProject(
     projectId: string
-  ) {
-    const { items } = await listDocs({
+  ): Promise<Doc<Project> | null> {
+    const { items } = await listDocs<Project>({
       collection: "Project",
       filter: {
         matcher: {
@@ -24,10 +26,10 @@ class ProjectRepository extends BaseRepository {
       }
     });
 
-    return items.length == 0 ? null : items[0];
+    return idx(items, (_) => _[0]) || null;
   }
 
-  async addDummyProject() {
+  async addDummyProject(): Promise<void> {
     const key: string = nanoid();
     setDoc({
       collection: "Project",
