@@ -1,7 +1,7 @@
 import useRepositories from "hooks/useRepositories"
 import { Button, Col, Row, Skeleton, Space, Typography } from "antd"
 import MainLayout from "components/layouts/MainLayout"
-import React from "react"
+import React, { useEffect } from "react"
 import { useQuery } from "react-query"
 import { useParams } from "react-router-dom"
 
