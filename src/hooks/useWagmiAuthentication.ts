@@ -1,4 +1,3 @@
-
 import { useWeb3Modal } from '@web3modal/wagmi/react'
 import { useAccount, useBalance, useDisconnect } from 'wagmi'
 import { useCallback, useEffect } from "react"
@@ -21,20 +20,24 @@ const useWagmiAuthentication = (onError: (error: Error) => void) => {
     if (address) {
       identityStore.setAddress(address)
     }
+    // eslint-disable-next-line
   },[address, identityStore.setAddress])
 
   useEffect(() => {
     identityStore.setIsLoading(isConnecting)
+    // eslint-disable-next-line
   }, [isConnecting, identityStore.setIsLoading])
 
   useEffect(() => {
     walletStore.setIsLoading(isLoading)
+    // eslint-disable-next-line
   }, [isLoading, walletStore.setIsLoading])
 
   useEffect(() => {
     if (data) {
       walletStore.setBalance(data.decimals)
     }
+    // eslint-disable-next-line
   }, [data, walletStore.setBalance])
 
   const handleLogin = useCallback(async () => {
@@ -63,6 +66,7 @@ const useWagmiAuthentication = (onError: (error: Error) => void) => {
     } catch (err: any) {
       onError(err)
     }
+    // eslint-disable-next-line
   }, [disconnect, onError, identityStore.setAddress, walletStore.setBalance]);
 
   return {
