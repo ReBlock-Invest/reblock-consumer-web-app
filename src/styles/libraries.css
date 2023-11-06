@@ -1,0 +1,7 @@
+/**
+Persona Library
+**/
+.persona-wrapper iframe {
+  width: 100%;
+  min-height: 90vh;
+}

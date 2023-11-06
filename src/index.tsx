@@ -4,6 +4,7 @@ import App from './App';
 
 import 'styles/reset.css'
 import 'styles/layout.css'
+import 'styles/libraries.css'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

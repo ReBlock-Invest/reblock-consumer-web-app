@@ -1,15 +1,18 @@
-import React from "react"
+import React, { useState } from "react"
 import MainLayout from "components/layouts/MainLayout"
-import { Card, Carousel, Col, Image, Row, Skeleton, Space, Typography } from "antd"
+import { App, Card, Carousel, Col, Image, Row, Skeleton, Space, Typography } from "antd"
 import useRepositories from "hooks/useRepositories"
 import { useQuery } from "react-query"
 import { Link } from "react-router-dom"
 import useResponsiveValue from "hooks/useResponsiveValue"
+import PersonalInquiryModal from "components/modules/kyc/modals/PersonaInquiryModal"
 
 const { Title, Text } = Typography
 
 const HomePage: React.FC = () => {
+  const { message } = App.useApp()
   const repositories = useRepositories()
+  const [isShowPersonaInquiryModal, setIsShowPersonaInquiryModal] = useState(true)
 
   const contentHorizontalPadding = useResponsiveValue({
     xs: 16,
@@ -27,6 +30,16 @@ const HomePage: React.FC = () => {
 
   return (
     <MainLayout>
+      <PersonalInquiryModal
+        open={isShowPersonaInquiryModal}
+        onComplete={(params) => {
+          setIsShowPersonaInquiryModal(false)
+          message.success("Thank you! Now you can continue!")
+        }}
+        onError={() => {
+          setIsShowPersonaInquiryModal(false)
+        }}
+      />
       <Carousel>
         <Image
           width="100vw"
