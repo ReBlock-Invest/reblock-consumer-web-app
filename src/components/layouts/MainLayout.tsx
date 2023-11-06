@@ -62,11 +62,11 @@ const MainLayout: React.FC<Props> = ({ children }) => {
               <Col>
                 {walletStore.balance ? (
                   <Dropdown menu={{ items, onClick: handleLogoutWagmi }}>
-                    <a onClick={(e) => e.preventDefault()} href='#'>
+                    <button onClick={(e) => e.preventDefault()}>
                       <Space>
                         Balance {walletStore.balance}
                       </Space>
-                    </a>
+                    </button>
                   </Dropdown>
                 ) : (
                   <Button type="primary" onClick={handleLoginWagmi} loading={walletStore.isLoading}>Connect Wallet</Button>
