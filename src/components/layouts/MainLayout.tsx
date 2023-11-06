@@ -62,7 +62,7 @@ const MainLayout: React.FC<Props> = ({ children }) => {
               <Col>
                 {walletStore.balance ? (
                   <Dropdown menu={{ items, onClick: handleLogoutWagmi }}>
-                    <a onClick={(e) => e.preventDefault()}>
+                    <a onClick={(e) => e.preventDefault()} href='#'>
                       <Space>
                         Balance {walletStore.balance}
                       </Space>
