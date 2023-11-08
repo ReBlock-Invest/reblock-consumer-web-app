@@ -1,11 +1,12 @@
 import React, { ReactNode, useMemo } from 'react'
-import { App, Button, Col, ConfigProvider, Dropdown, Image, Layout, Row, Space, theme } from 'antd'
+import { App, Button, Col, ConfigProvider, Dropdown, Flex, Image, Layout, Row, Space, theme } from 'antd'
 import type { MenuProps } from 'antd'
 import { Link } from "react-router-dom"
 import AppThemeConfig from 'components/themes/AppThemeConfig'
 import useWagmiAuthentication from 'hooks/useWagmiAuthentication'
 import useWalletStore from 'stores/useWalletStore'
 import useResponsiveValue from 'hooks/useResponsiveValue'
+import logoDark from '../../../public/logo-dark.svg'
 
 const { Header, Content, Footer } = Layout
 
@@ -54,21 +55,19 @@ const MainLayout: React.FC<Props> = ({ children }) => {
       <App>
         <Layout className="layout">
           <Header className="main-header" style={{ padding: `0px ${contentHorizontalPadding}px` }}>
-            <Row justify="space-between">
+            <Row justify="space-between" align="middle" className="h-100">
               <Col>
-                <span>Reblock</span>
+                <img
+                  src="/images/logo-dark.svg"
+                  style={{width: '128px'}}
+                />
               </Col>
 
               <Col>
-                {walletStore.balance ? (
-                  <Dropdown menu={{ items, onClick: handleLogoutWagmi }}>
-                    <Space>
-                      Balance {walletStore.balance}
-                    </Space>
-                  </Dropdown>
-                ) : (
-                  <Button type="primary" onClick={handleLoginWagmi} loading={walletStore.isLoading}>Connect Wallet</Button>
-                )}
+                <img
+                  src="/images/icons/ic-burger.svg"
+                  style={{width: '32px'}}
+                />
               </Col>
             </Row>
           </Header>

@@ -5,6 +5,8 @@ import App from './App';
 import 'styles/reset.css'
 import 'styles/layout.css'
 import 'styles/libraries.css'
+import 'styles/utils.css'
+import 'styles/antd-overrides.css'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
