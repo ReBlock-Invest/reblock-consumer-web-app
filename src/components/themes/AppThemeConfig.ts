@@ -6,10 +6,12 @@ const AppThemeConfig: ThemeConfig = {
     colorPrimary: Colors.primary,
     colorTextLightSolid: Colors.surface,
     colorBgLayout: Colors.cloud,
+    colorWarning: Colors.warning,
+    colorText: Colors.content,
+    fontFamily: "Plus Jakarta Sans",
   },
   components: {
-    Typography: {
-      fontFamily: "Plus Jakarta Sans",
+    Typography: {      
       fontSizeHeading2: 42,
     },
     Button: {

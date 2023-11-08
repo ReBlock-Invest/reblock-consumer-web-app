@@ -56,12 +56,15 @@ const HomeJumbotron: React.FC<Props> = () => {
         />
       </div>
 
-      <Card className="mx-lg" bordered={false}>
+      <Card className="mx-md" bordered={false} bodyStyle={{padding: '16px'}}>
         <Statistic
           title="Active loans amount"
           value={143654323}
           decimalSeparator=","
           prefix="$"
+          valueStyle={{
+            fontFamily: "Red Rose",
+          }}
         />
       </Card>    
     </Flex>

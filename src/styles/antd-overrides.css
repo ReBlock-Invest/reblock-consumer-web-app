@@ -3,6 +3,10 @@ h2.ant-typography, h3.ant-typography {
   line-height: 50px;
 }
 
+h4.ant-typography {
+  font-weight: 400;
+}
+
 span.ant-typography {
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
