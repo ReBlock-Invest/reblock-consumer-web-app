@@ -1,9 +1,6 @@
 import React, { ReactNode } from 'react'
 import { App, Col, Flex, Image, Layout, Row, theme } from 'antd'
-// import type { MenuProps } from 'antd'
 import { Link, useLocation } from "react-router-dom"
-// import useWagmiAuthentication from 'hooks/useWagmiAuthentication'
-// import useWalletStore from 'stores/useWalletStore'
 import useResponsiveValue from 'hooks/useResponsiveValue'
 import ReblockIcon from 'components/common/ReblockIcon'
 
@@ -28,29 +25,6 @@ const MainLayout: React.FC<Props> = ({ children }) => {
     xl: 50,
     xxl: 50,
   })
-
-  // const walletStore = useWalletStore()
-
-  // const {
-  //   handleLogin: handleLoginWagmi,
-  //   handleLogout: handleLogoutWagmi,
-  // } = useWagmiAuthentication((_) => {
-  //   notification.error({
-  //     message: `Ooops!`,
-  //     description: 'Failed to connect to your wallet',
-  //     placement: 'bottomRight',
-  //   })
-  // })
-
-  // const items: MenuProps['items'] = useMemo(() => [
-  //   {
-  //     label: 'Logout',
-  //     key: '1',
-  //     danger: true,
-  //   },
-  // ], [])
-
-  console.log('debug1', location)
 
   return (    
     <App>
