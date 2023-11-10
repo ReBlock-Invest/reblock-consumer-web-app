@@ -1,7 +1,8 @@
-import { Button, Card, Flex, Statistic, theme } from "antd"
-import React from "react"
+import { App, Button, Card, Flex, Statistic, theme } from "antd"
+import React, { useState } from "react"
 import { Typography } from 'antd'
 import TrustedOverXUsers from "components/modules/users/TrustedOverXUsers"
+import PersonalInquiryModal from "components/modules/kyc/modals/PersonaInquiryModal"
 
 const { Title, Text } = Typography
 
@@ -10,6 +11,8 @@ type Props = {
 }
 
 const HomeJumbotron: React.FC<Props> = () => {
+  const {message} = App.useApp()
+  const [showPersonaInquiryModal, setShowPersonaInquiryModal] = useState(false)
   const {
     token: {
       colorPrimary,
@@ -20,6 +23,16 @@ const HomeJumbotron: React.FC<Props> = () => {
 
   return (
     <Flex vertical align="stretch" style={{backgroundColor: colorBgLayout}}>
+      <PersonalInquiryModal
+        open={showPersonaInquiryModal}
+        onComplete={() => {
+          message.success("Congratulations! KYC Step is completed!")
+        }}
+        onError={() => {
+          message.error("Ooops! KYC Step is failed!")
+        }}
+        onCancel={() => setShowPersonaInquiryModal(false)}
+      />
       <Flex
         className="p-lg"
         align="center"
@@ -38,7 +51,12 @@ const HomeJumbotron: React.FC<Props> = () => {
         <Text className="text-center w-100 d-block" style={{color: colorTextLightSolid}}>
           Wafer tiramisu chocolate cake apple pie tootsie roll I love jelly beans wafer halvah.
         </Text>
-        <Button size="large">Connect Wallet</Button>
+        <Button
+          size="large"
+          onClick={() => setShowPersonaInquiryModal(true)}
+        >
+          Connect Wallet
+        </Button>
         <TrustedOverXUsers />        
       </Flex>
 

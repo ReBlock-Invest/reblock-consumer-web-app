@@ -1,4 +1,4 @@
-import { Avatar, Col, Flex, List, Row, Space, Statistic, Typography } from "antd"
+import { Avatar, Flex, List, Space, Statistic, Typography } from "antd"
 import ReblockIcon from "components/common/ReblockIcon"
 import FontFamilies from "components/themes/FontFamilies"
 import React from "react"

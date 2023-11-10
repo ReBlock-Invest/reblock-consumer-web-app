@@ -1,6 +1,5 @@
 import { PlusOutlined } from "@ant-design/icons"
 import { Affix, Anchor, Avatar, Button, Card, Checkbox, Col, Divider, Flex, List, Row, Space, Statistic, Tabs, Tag, Typography, theme } from "antd"
-import ReblockIcon from "components/common/ReblockIcon"
 import MainLayout from "components/layouts/MainLayout"
 import TransactionActivityItem from "components/modules/transaction/TransactionActivityItem"
 import Colors from "components/themes/Colors"

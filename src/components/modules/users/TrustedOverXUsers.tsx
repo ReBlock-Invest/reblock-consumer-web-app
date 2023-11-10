@@ -1,4 +1,4 @@
-import { Avatar, Card, Space, Statistic, Typography, theme } from "antd"
+import { Avatar, Space, Typography, theme } from "antd"
 import React from "react"
 
 const {Text} = Typography
