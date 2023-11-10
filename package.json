@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
+    "@ethersproject/units": "^5.7.0",
     "@junobuild/core": "^0.0.33",
     "@metamask/onboarding": "^1.0.1",
     "@testing-library/jest-dom": "^5.17.0",
@@ -63,6 +64,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@web3-react/types": "^8.2.3",
     "xml2js": "^0.6.2"
   }
 }

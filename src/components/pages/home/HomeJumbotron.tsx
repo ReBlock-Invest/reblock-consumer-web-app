@@ -25,7 +25,7 @@ const HomeJumbotron: React.FC<Props> = () => {
     }
   } = theme.useToken()
   const kycStore = useKYCStore()
-  const { account, disconnect } = useWalletConnect()
+  const { accounts, disconnect } = useWalletConnect()
 
   return (
     <Flex vertical align="stretch" style={{backgroundColor: colorBgLayout}}>      
@@ -68,7 +68,7 @@ const HomeJumbotron: React.FC<Props> = () => {
           onClick={() => {
             if (!kycStore.isKYCCompleted) {
               setShowPersonaInquiryModal(true)
-            } else if (!account) {
+            } else if (!accounts) {
               setShowConnectWalletModal(true)
             } else {
               disconnect().then(() => {
@@ -79,7 +79,7 @@ const HomeJumbotron: React.FC<Props> = () => {
             }
           }}
         >
-          {account ? "Disconnect" : "Connect Wallet"}
+          {accounts ? "Disconnect" : "Connect Wallet"}
         </Button>
         <TrustedOverXUsers />        
       </Flex>
