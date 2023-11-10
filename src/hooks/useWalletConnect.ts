@@ -1,5 +1,7 @@
 import { useWeb3React } from "@web3-react/core"
+import useCoinbaseWalletConnect from "lib/web3/hooks/useCoinbaseWalletConnect"
 import useMetamaskWalletConnect from "lib/web3/hooks/useMetamaskWalletConnect"
+import useWalletConnectWalletConnect from "lib/web3/hooks/useWalletConnectWalletConnect"
 import { useCallback } from "react"
 
 const useWalletConnect = () => {
@@ -8,13 +10,25 @@ const useWalletConnect = () => {
     error: metamaskError,
   } = useMetamaskWalletConnect()
 
-  const { connector, isActivating, isActive, account } = useWeb3React()
+  const {
+    connect: connectCoinbase,
+    error: coinbaseError,
+  } = useCoinbaseWalletConnect()
+
+  const {
+    connect: connectWalletConnect,
+    error: walletConnectError,
+  } = useWalletConnectWalletConnect()
+
+  const { connector, isActivating, isActive, account, accounts } = useWeb3React()
+
+  console.log('debug1', accounts)
 
   const disconnect = useCallback(async () => {
     if (connector.deactivate) {
-      await connector.deactivate()
+      void connector.deactivate()
     } else {
-      await connector.resetState()
+      void connector.resetState()
     }
   }, [connector])
 
@@ -23,9 +37,11 @@ const useWalletConnect = () => {
     disconnect,
     isActive,
     isLoading: isActivating,
-    error: metamaskError,
+    error: metamaskError || coinbaseError || walletConnectError,
 
     connectMetaMask,
+    connectCoinbase,
+    connectWalletConnect,
   }
 }
 

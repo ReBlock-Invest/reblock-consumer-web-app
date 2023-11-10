@@ -25,7 +25,8 @@ function isExtendedChainInformation(
 }
 
 export function getAddChainParameters(chainId: number): any {
-  //@ts-ignore
+  debugger
+  //@ts-ignore  
   const chainInformation = CHAINS[chainId]
   if (isExtendedChainInformation(chainInformation)) {
     return {
