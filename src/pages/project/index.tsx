@@ -135,11 +135,11 @@ const ProjectPage: React.FC = () => {
                   </Flex>
 
                   <Paragraph>
-                    By clicking “Invest” below, I hereby agree to the 
+                    By clicking “Invest” below, I hereby agree to the
                     <Link href="https://ant.design" target="_blank">
-                     {" Senior Pool Aggrement "}
+                     {" Pool Aggrement"}
                     </Link>
-                     Please note the protocol deducts a 0.50% fee upon withdrawal for protocol reserves.
+                     . Please note the protocol deducts a 0.50% fee upon withdrawal for protocol reserves.
                   </Paragraph>
                   <Button
                     type="primary"
