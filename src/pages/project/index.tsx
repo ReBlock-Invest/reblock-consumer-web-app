@@ -132,11 +132,7 @@ const ProjectPage: React.FC = () => {
                     <Button>
                       MAX
                     </Button>
-                  </Flex>   
-                  <Space>
-                    <Checkbox />               
-                    <Text>Stake to earn GFI (0.18%)</Text>
-                  </Space>
+                  </Flex>
 
                   <Paragraph>
                     By clicking “Invest” below, I hereby agree to the 
