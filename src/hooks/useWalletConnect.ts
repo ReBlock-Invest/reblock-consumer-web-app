@@ -20,9 +20,7 @@ const useWalletConnect = () => {
     error: walletConnectError,
   } = useWalletConnectWalletConnect()
 
-  const { connector, isActivating, isActive, account, accounts } = useWeb3React()
-
-  console.log('debug1', accounts)
+  const { connector, isActivating, isActive, account } = useWeb3React()
 
   const disconnect = useCallback(async () => {
     if (connector.deactivate) {

@@ -22,9 +22,8 @@ export default function useWalletConnectWalletConnect(): IWalletConnectHook {
   const connect = useCallback(async () => {
     try {
       setError(undefined)
-      await walletConnect.activate(chainId)      
+      await walletConnect.activate(chainId)   
     } catch (err: any) {
-      debugger
       setError(err)
     }
   }, [chainId])
