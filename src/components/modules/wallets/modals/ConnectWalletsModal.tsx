@@ -1,4 +1,4 @@
-import { Divider, Flex, Modal, Space, Spin, Typography } from "antd"
+import { App, Divider, Flex, Modal, Space, Spin, Typography } from "antd"
 import useWalletConnect from "hooks/useWalletConnect"
 import React from "react"
 
@@ -10,6 +10,7 @@ type Props = {
 }
 
 const ConnectWalletModal: React.FC<Props> = ({open, onCancel}) => {
+  const { message } = App.useApp()
   const {
     isLoading,
     connectMetaMask,
@@ -23,7 +24,14 @@ const ConnectWalletModal: React.FC<Props> = ({open, onCancel}) => {
         </Flex>
       ) : (
         <Flex vertical style={{paddingTop: '16px'}}>
-          <Space className="cursor-pointer" onClick={() => connectMetaMask()}>
+          <Space className="cursor-pointer" onClick={() => {
+            connectMetaMask().then(() => {
+              onCancel()
+              message.success("Connected to MetaMask!")
+            }).catch(() => {
+              message.error("Failed to connect to MetaMask!")
+            })
+          }}>
             <img
               src="/images/logo-metamask.png"
               alt="logo-metamask"

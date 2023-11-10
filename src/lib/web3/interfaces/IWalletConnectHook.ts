@@ -1,5 +1,5 @@
 interface IWalletConnectHook {
-  connect: () => void
+  connect: () => Promise<void>
   error?: Error
 }
 

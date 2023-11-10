@@ -71,7 +71,11 @@ const HomeJumbotron: React.FC<Props> = () => {
             } else if (!account) {
               setShowConnectWalletModal(true)
             } else {
-              disconnect()
+              disconnect().then(() => {
+                message.success("Disconnected from Wallet!")
+              }).catch(() => {
+                message.error("Failed to disconnect from Wallet!")
+              })
             }
           }}
         >
