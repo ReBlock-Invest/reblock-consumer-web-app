@@ -11,7 +11,8 @@ import ProjectPage from './pages/project'
 import WagmiContextProvider from 'components/contexts/WagmiContextProvider'
 import RepositoriesContextProvider from './components/contexts/RepositoriesContextProvider'
 import QueryClientContextProvider from './components/contexts/QueryClientContextProvider'
-import {App as AntdApp} from 'antd'
+import {App as AntdApp, ConfigProvider} from 'antd'
+import AppThemeConfig from "components/themes/AppThemeConfig";
 
 const router = createBrowserRouter([
   {
@@ -38,9 +39,11 @@ function App() {
       <WagmiContextProvider>
         <RepositoriesContextProvider>
           <QueryClientContextProvider>
-            <AntdApp>
-              <RouterProvider router={router} />
-            </AntdApp>
+            <ConfigProvider theme={AppThemeConfig}>
+              <AntdApp>
+                <RouterProvider router={router} />
+              </AntdApp>
+            </ConfigProvider>
           </QueryClientContextProvider>
         </RepositoriesContextProvider>
       </WagmiContextProvider>

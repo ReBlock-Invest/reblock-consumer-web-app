@@ -1,4 +1,4 @@
-import { Button, Card, Flex, Space, Statistic, theme } from "antd"
+import { Button, Card, Flex, Statistic, theme } from "antd"
 import React from "react"
 import { Typography } from 'antd'
 import TrustedOverXUsers from "components/modules/users/TrustedOverXUsers"

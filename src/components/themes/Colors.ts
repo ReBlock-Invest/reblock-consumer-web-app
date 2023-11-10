@@ -1,5 +1,7 @@
 const Colors = {
   primary: '#3235C5',
+  primaryLight: '#EEF4FF',
+  border: '#A4BCFD',
   secondary: '#FFAD05',
   tertiary: '#C6D7FF',
   surface: 'white',
