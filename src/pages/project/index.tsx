@@ -17,7 +17,7 @@ const ProjectPage: React.FC = () => {
       colorPrimary,
       colorTextLightSolid,
       colorWarning,
-      colorText
+      colorText,
     }
   } = theme.useToken()
 
