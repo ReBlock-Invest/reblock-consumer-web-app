@@ -1,10 +1,13 @@
+import { Affix, Anchor, Avatar, Button, Card, Col, Divider, Flex, Layout, List, Row, Space, Statistic, Skeleton, Tabs, Tag, Typography, theme } from "antd"
 import { PlusOutlined } from "@ant-design/icons"
-import { Affix, Anchor, Avatar, Button, Card, Col, Divider, Flex, List, Row, Space, Statistic, Tabs, Tag, Typography, theme } from "antd"
-import MainLayout from "components/layouts/MainLayout"
-import TransactionActivityItem from "components/modules/transaction/TransactionActivityItem"
+import { useParams } from "react-router-dom"
+import { useQuery } from "react-query"
 import Colors from "components/themes/Colors"
 import FontFamilies from "components/themes/FontFamilies"
+import MainLayout from "components/layouts/MainLayout"
 import React from "react"
+import TransactionActivityItem from "components/modules/transaction/TransactionActivityItem"
+import useRepositories from "hooks/useRepositories"
 
 const { Title, Paragraph, Text, Link } = Typography
 
@@ -19,286 +22,308 @@ const ProjectPage: React.FC = () => {
     }
   } = theme.useToken()
 
+  const repositories = useRepositories()
+  const { projectId } = useParams()
+  const { data, isLoading } = useQuery({
+    queryKey: ['project', projectId],
+    queryFn: () => repositories.projectRepository?.getProject(
+      projectId as string
+    )
+  })
+
+  const project = data?.data!;
+
   return (
     <MainLayout>
-     <Flex
-      style={{
-        backgroundColor: colorPrimary,
-        backgroundImage: "url('/images/title-wrapper-bg.svg')",
-        backgroundPosition: "center",
-        backgroundSize: "cover",
-        width: 'calc(100vw + 200px)',
-        borderBottomLeftRadius: '50%',
-        borderBottomRightRadius: '50%',
-        marginLeft: '-100px',
-        height: '300px',
-        paddingLeft: '150px',
-        paddingRight: '150px',
-      }}
-    >
-      <Title level={2} className="text-center"  style={{color: colorTextLightSolid}}>
-        Saving Bond Ritel (SBR)
-      </Title>
-     </Flex>
-     <Card
-        className="mx-md"
-        bordered={false}
-        bodyStyle={{
-          padding: '16px',
-          marginTop: '-130px',
-        }}
-      >
-      <Paragraph>
-        SBR is a retail investment instrument in the form of Indonesia goverment bonds that has characteristics similar to saving or bank deposits.
-      </Paragraph>
-      <Flex vertical gap={16}>
-        <Row justify="space-between">
-          <Col>
-            <Space direction="vertical">
-              <Space>
-                <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=1" />
-                <Tag color="white" style={{backgroundColor: colorWarning, color: colorText}} bordered={false}>Rating A</Tag>
-              </Space>
-              <Text type="secondary">Indonesia Ministry of Finance</Text>
-            </Space>
-          </Col>
-          <Col>
-            <Space direction="vertical" align="end">
-              <Text type="secondary">APR</Text>
-              <Text strong>5.2%</Text>
-            </Space>
-          </Col>
-        </Row>
+      {isLoading || data == null ? (
+        <Skeleton />
+      ) : (
+        <Layout>
+          <Layout.Content>
+            <Flex
+              style={{
+                backgroundColor: colorPrimary,
+                backgroundImage: "url('/images/title-wrapper-bg.svg')",
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+                width: 'calc(100vw + 200px)',
+                borderBottomLeftRadius: '50%',
+                borderBottomRightRadius: '50%',
+                marginLeft: '-100px',
+                height: '300px',
+                paddingLeft: '150px',
+                paddingRight: '150px',
+              }}
+            >
+              <Title level={2} className="text-center" style={{ color: colorTextLightSolid }}>
+                {project.title}
+              </Title>
+            </Flex>
+            <Card
+              className="mx-md"
+              bordered={false}
+              bodyStyle={{
+                padding: '16px',
+                marginTop: '-130px',
+              }}
+            >
+              <Paragraph>
+                {project.description}
+              </Paragraph>
+              <Flex vertical gap={16}>
+                <Row justify="space-between">
+                  <Col>
+                    <Space direction="vertical">
+                      <Space>
+                        <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=1" />
+                        <Tag color="white" style={{ backgroundColor: colorWarning, color: colorText }} bordered={false}>{project.credit_rating}</Tag>
+                      </Space>
+                      <Text type="secondary">{project.issuer_description}</Text>
+                    </Space>
+                  </Col>
+                  <Col>
+                    <Space direction="vertical" align="end">
+                      <Text type="secondary">APR</Text>
+                      <Text strong>{project.APR}</Text>
+                    </Space>
+                  </Col>
+                </Row>
 
-        <Space direction="vertical" size={0}>
-          <Text type="secondary">Loan term</Text>
-          <Text strong>12 Months</Text>
-        </Space>
+                <Space direction="vertical" size={0}>
+                  <Text type="secondary">Loan term</Text>
+                  <Text strong>{project.loan_term}</Text>
+                </Space>
 
-        <Row>
-          <Col>
-            <Space direction="vertical" size={0}>
-              <Text type="secondary">Liquidity</Text>
-              <Text strong>Quarterly</Text>
-            </Space>
-          </Col>
-          <Col>
-            <Space direction="vertical" size={0}>
-              <Text type="secondary">Status</Text>
-              <Text strong>Open</Text>
-            </Space>
-          </Col>
-        </Row>
+                <Space direction="vertical" size={0}>
+                  <Text type="secondary">Liquidity</Text>
+                  <Text strong>Quarterly</Text>
+                </Space>
+                
+                <Space direction="vertical" size={0}>
+                  <Text type="secondary">Status</Text>
+                  <Text strong>{project.status}</Text>
+                </Space>
 
-        <Statistic
-          title="Your current position"
-          value={20}
-          precision={2}
-          decimalSeparator="."
-          prefix="$"
-        />
+                <Statistic
+                  title="Your current position"
+                  value={20}
+                  precision={2}
+                  decimalSeparator="."
+                  prefix="$"
+                />
 
-        <Divider style={{margin: 0}}/>
-        
-        <Tabs
-          defaultActiveKey="invest"
-          items={[
-            {
-              key: 'invest',
-              label: 'Invest',
-              children: (
-                <Flex vertical gap={8}>
-                  <Row justify="space-between">
-                    <Col>
-                      <Text type="secondary">Amount</Text>
-                    </Col>
-                    <Col>
-                      <Text type="secondary">Balance: $999 USDC</Text>
-                    </Col>
-                  </Row>
-                  <Flex
-                    style={{
-                      backgroundColor: Colors.primaryLight,
-                      borderRadius: 4,
-                      padding: '8px',
+                <Divider style={{ margin: 0 }} />
+
+                <Tabs
+                  defaultActiveKey="invest"
+                  items={[
+                    {
+                      key: 'invest',
+                      label: 'Invest',
+                      children: (
+                        <Flex vertical gap={8}>
+                          <Row justify="space-between">
+                            <Col>
+                              <Text type="secondary">Amount</Text>
+                            </Col>
+                            <Col>
+                              <Text type="secondary">Balance: $999 USDC</Text>
+                            </Col>
+                          </Row>
+                          <Flex
+                            style={{
+                              backgroundColor: Colors.primaryLight,
+                              borderRadius: 4,
+                              padding: '8px',
+                            }}
+                            justify="space-between"
+                          >
+                            <Statistic
+                              value={33.78}
+                              precision={2}
+                              prefix="$"
+                            />
+
+                            <Button>
+                              MAX
+                            </Button>
+                          </Flex>
+
+                          <Paragraph>
+                            By clicking “Invest” below, I hereby agree to the
+                            <Link href="https://ant.design" target="_blank">
+                              {" Pool Aggrement"}
+                            </Link>
+                            . Please note the protocol deducts a 0.50% fee upon withdrawal for protocol reserves.
+                          </Paragraph>
+                          <Button
+                            type="primary"
+                            size='large'
+                            icon={<PlusOutlined />}
+                          >
+                            Invest
+                          </Button>
+                        </Flex>
+                      )
+                    },
+                    {
+                      key: 'withdraw',
+                      label: 'Withdraw',
+                      children: (
+                        <Text>Withdraw Component</Text>
+                      )
+                    }
+                  ]}
+                />
+              </Flex>
+            </Card>
+
+            <Flex
+              vertical
+              gap={16}
+              style={{
+                padding: '16px',
+              }}>
+              <Affix offsetTop={0}>
+                <Anchor
+                  affix={false}
+                  direction="horizontal"
+                  items={[
+                    {
+                      key: 'asset-overview',
+                      href: '#asset-overview',
+                      title: 'Asset Overview',
+                    },
+                    {
+                      key: 'recent-activity',
+                      href: '#recent-activity',
+                      title: 'Recent Activity',
+                    },
+                  ]}
+                />
+              </Affix>
+
+              <Flex vertical id="asset-overview">
+                <Paragraph>
+                  Phasellus tellus nisl, lacinia ut ex id, auctor vestibulum quam. Morbi blandit gravida nisl et tincidunt. Aliquam in condimentum augue. Vivamus ac diam ultricies nibh tristique pulvinar. Nullam ut ligula id augue ullamcorper viverra nec vel tortor. Nullam at nisl augue. Mauris suscipit metus ac nulla euismod, sit amet tincidunt turpis fermentum.
+                </Paragraph>
+
+                <Paragraph>
+                  Phasellus purus purus, vulputate non lacus vehicula, tincidunt facilisis eros. Suspendisse sagittis sodales elit, vitae dapibus felis facilisis vitae. Vivamus sed fringilla augue. Maecenas ac porttitor sapien.
+                </Paragraph>
+
+                <Divider />
+
+                <Space direction="vertical" size={0}>
+                  <Text type="secondary">Outstanding loan value</Text>
+                  <Statistic
+                    value={1341345.55}
+                    precision={2}
+                    prefix="$"
+                    suffix={
+                      <Text type="secondary" style={{ fontWeight: 400 }}>USDC</Text>
+                    }
+                    valueStyle={{
+                      fontFamily: FontFamilies.primary,
+                      fontSize: 16,
+                      fontWeight: 600,
                     }}
-                    justify="space-between"
-                  >
-                    <Statistic
-                      value={33.78}
-                      precision={2}
-                      prefix="$"                                   
-                    />
+                  />
+                </Space>
 
-                    <Button>
-                      MAX
-                    </Button>
-                  </Flex>
+                <Divider />
 
-                  <Paragraph>
-                    By clicking “Invest” below, I hereby agree to the
-                    <Link href="https://ant.design" target="_blank">
-                     {" Pool Aggrement"}
-                    </Link>
-                     . Please note the protocol deducts a 0.50% fee upon withdrawal for protocol reserves.
-                  </Paragraph>
-                  <Button
-                    type="primary"
-                    size='large'
-                    icon={<PlusOutlined />}
-                  >
-                    Invest
-                  </Button>
-                </Flex>
-              )
-            },
-            {
-              key: 'withdraw',
-              label: 'Withdraw',
-              children: (
-                <Text>Withdraw Component</Text>
-              )
-            }
-          ]}
-        />
-      <Affix offsetTop={0}>
-        <Anchor
-          affix={false}
-          style={{backgroundColor: colorBgContainer}}
-          direction="horizontal"
-          items={[
-            {
-              key: 'asset-overview',
-              href: '#asset-overview',
-              title: 'Asset Overview',
-            },
-            {
-              key: 'recent-activity',
-              href: '#recent-activity',
-              title: 'Recent Activity',
-            },
-          ]}
-        />
-      </Affix>
+                <Space direction="vertical" size={0}>
+                  <Text type="secondary">Loan originated</Text>
+                  <Statistic
+                    value={4587221.04}
+                    precision={2}
+                    prefix="$"
+                    suffix={
+                      <Text type="secondary" style={{ fontWeight: 400 }}>USDC</Text>
+                    }
+                    valueStyle={{
+                      fontFamily: FontFamilies.primary,
+                      fontSize: 16,
+                      fontWeight: 600,
+                    }}
+                  />
+                </Space>
 
-      <Flex vertical id="asset-overview">
-        <Paragraph>
-          Phasellus tellus nisl, lacinia ut ex id, auctor vestibulum quam. Morbi blandit gravida nisl et tincidunt. Aliquam in condimentum augue. Vivamus ac diam ultricies nibh tristique pulvinar. Nullam ut ligula id augue ullamcorper viverra nec vel tortor. Nullam at nisl augue. Mauris suscipit metus ac nulla euismod, sit amet tincidunt turpis fermentum.
-        </Paragraph>
+                <Divider />
 
-        <Paragraph>
-          Phasellus purus purus, vulputate non lacus vehicula, tincidunt facilisis eros. Suspendisse sagittis sodales elit, vitae dapibus felis facilisis vitae. Vivamus sed fringilla augue. Maecenas ac porttitor sapien.
-        </Paragraph>
+                <Space direction="vertical" size={0}>
+                  <Text type="secondary">30-Day APY</Text>
+                  <Statistic
+                    value={6.54}
+                    precision={2}
+                    prefix="$"
+                    suffix={
+                      <Text type="secondary" style={{ fontWeight: 400 }}>%</Text>
+                    }
+                    valueStyle={{
+                      fontFamily: FontFamilies.primary,
+                      fontSize: 16,
+                      fontWeight: 600,
+                    }}
+                  />
+                </Space>
 
-        <Divider />
-        
-        <Space direction="vertical" size={0}>
-          <Text type="secondary">Outstanding loan value</Text>
-          <Statistic
-            value={1341345.55}
-            precision={2}
-            prefix="$"
-            suffix={
-              <Text type="secondary" style={{fontWeight: 400}}>USDC</Text>
-            }
-            valueStyle={{
-              fontFamily: FontFamilies.primary,
-              fontSize: 16,
-              fontWeight: 600,
-            }}
-          />
-        </Space>
+                <Divider />
 
-        <Divider />
+                <Space direction="vertical" size={0}>
+                  <Text type="secondary">Active loans</Text>
+                  <Statistic
+                    value={3}
+                    suffix={
+                      <Text type="secondary" style={{ fontWeight: 400 }}>Loans</Text>
+                    }
+                    valueStyle={{
+                      fontFamily: FontFamilies.primary,
+                      fontSize: 16,
+                      fontWeight: 600,
+                    }}
+                  />
+                </Space>
 
-        <Space direction="vertical" size={0}>
-          <Text type="secondary">Loan originated</Text>
-          <Statistic
-            value={4587221.04}
-            precision={2}
-            prefix="$"
-            suffix={
-              <Text type="secondary" style={{fontWeight: 400}}>USDC</Text>
-            }
-            valueStyle={{
-              fontFamily: FontFamilies.primary,
-              fontSize: 16,
-              fontWeight: 600,
-            }}
-          />
-        </Space>
+                <Divider />
 
-        <Divider />
+                <Space direction="vertical" size={0}>
+                  <Text type="secondary">Idle pool liquidity</Text>
+                  <Statistic
+                    value={96}
+                    precision={2}
+                    prefix="$"
+                    suffix={
+                      <Text type="secondary" style={{ fontWeight: 400 }}>USDC</Text>
+                    }
+                    valueStyle={{
+                      fontFamily: FontFamilies.primary,
+                      fontSize: 16,
+                      fontWeight: 600,
+                    }}
+                  />
+                </Space>
 
-        <Space direction="vertical" size={0}>
-          <Text type="secondary">30-Day APY</Text>
-          <Statistic
-            value={6.54}
-            precision={2}
-            prefix="$"
-            suffix={
-              <Text type="secondary" style={{fontWeight: 400}}>%</Text>
-            }
-            valueStyle={{
-              fontFamily: FontFamilies.primary,
-              fontSize: 16,
-              fontWeight: 600,
-            }}
-          />
-        </Space>
+                <Divider />
 
-        <Divider />
-
-        <Space direction="vertical" size={0}>
-          <Text type="secondary">Active loans</Text>
-          <Statistic
-            value={3}
-            suffix={
-              <Text type="secondary" style={{fontWeight: 400}}>Loans</Text>
-            }
-            valueStyle={{
-              fontFamily: FontFamilies.primary,
-              fontSize: 16,
-              fontWeight: 600,
-            }}
-          />
-        </Space>
-
-        <Divider />
-
-        <Space direction="vertical" size={0}>
-          <Text type="secondary">Idle pool liquidity</Text>
-          <Statistic
-            value={96}
-            precision={2}
-            prefix="$"
-            suffix={
-              <Text type="secondary" style={{fontWeight: 400}}>USDC</Text>
-            }
-            valueStyle={{
-              fontFamily: FontFamilies.primary,
-              fontSize: 16,
-              fontWeight: 600,
-            }}
-          />
-        </Space>
-
-        <Divider />
-        
-        <List
-          id="recent-activity"
-          itemLayout="horizontal"
-          dataSource={Array(10).fill(0)}
-          renderItem={(item, index) => (
-           <TransactionActivityItem />
-          )}
-        />
-      </Flex>      
+                <List
+                  id="recent-activity"
+                  itemLayout="horizontal"
+                  dataSource={Array(10).fill(0)}
+                  renderItem={(item, index) => (
+                    <TransactionActivityItem />
+                  )}
+                />
+              </Flex>
 
 
-      </Flex>
-     </Card>
-    </MainLayout>
+            </Flex>
+          </Layout.Content>
+        </Layout>
+      )
+      }
+    </MainLayout >
   )
 }
 
