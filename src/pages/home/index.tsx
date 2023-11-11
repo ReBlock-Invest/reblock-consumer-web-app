@@ -31,7 +31,7 @@ const HomePage: React.FC = () => {
               {data?.map((d, index) => (       
                 <Col lg={8} md={24} sm={24} xs={24} key={d.key}>
                   <Link to={`/project/${d.key}`}>
-                    <ProjectCard />
+                    <ProjectCard project={d.data} />
                   </Link>
                 </Col>
               ))}

@@ -75,7 +75,7 @@ const ProjectPage: React.FC = () => {
                     <Space direction="vertical">
                       <Space>
                         <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=1" />
-                        <Tag color="white" style={{ backgroundColor: colorWarning, color: colorText }} bordered={false}>{project.credit_rating}</Tag>
+                        <Tag color="white" style={{ backgroundColor: colorWarning, color: colorText }} bordered={false}>Rating {project.credit_rating}</Tag>
                       </Space>
                       <Text type="secondary">{project.issuer_description}</Text>
                     </Space>
