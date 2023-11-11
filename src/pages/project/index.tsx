@@ -98,7 +98,7 @@ const ProjectPage: React.FC = () => {
                   <Text type="secondary">Liquidity</Text>
                   <Text strong>Quarterly</Text>
                 </Space>
-                
+
                 <Space direction="vertical" size={0}>
                   <Text type="secondary">Status</Text>
                   <Text strong>{project.status}</Text>
@@ -204,16 +204,6 @@ const ProjectPage: React.FC = () => {
               </Affix>
 
               <Flex vertical id="asset-overview">
-                <Paragraph>
-                  Phasellus tellus nisl, lacinia ut ex id, auctor vestibulum quam. Morbi blandit gravida nisl et tincidunt. Aliquam in condimentum augue. Vivamus ac diam ultricies nibh tristique pulvinar. Nullam ut ligula id augue ullamcorper viverra nec vel tortor. Nullam at nisl augue. Mauris suscipit metus ac nulla euismod, sit amet tincidunt turpis fermentum.
-                </Paragraph>
-
-                <Paragraph>
-                  Phasellus purus purus, vulputate non lacus vehicula, tincidunt facilisis eros. Suspendisse sagittis sodales elit, vitae dapibus felis facilisis vitae. Vivamus sed fringilla augue. Maecenas ac porttitor sapien.
-                </Paragraph>
-
-                <Divider />
-
                 <Space direction="vertical" size={0}>
                   <Text type="secondary">Outstanding loan value</Text>
                   <Statistic
