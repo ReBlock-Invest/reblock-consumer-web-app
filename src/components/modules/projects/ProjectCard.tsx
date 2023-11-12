@@ -23,7 +23,7 @@ const ProjectCard: React.FC<Props> = ({project}) => {
           <Col>
             <Space direction="vertical">
               <Space>
-                <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=1" />
+                <Avatar src={project.issuer_picture} />
                 <Tag color="white" style={{backgroundColor: colorWarning, color: colorText}} bordered={false}>Rating {project.credit_rating}</Tag>
               </Space>
               <Text type="secondary">{project.issuer_description}</Text>
@@ -41,7 +41,7 @@ const ProjectCard: React.FC<Props> = ({project}) => {
 
         <div>
           <Statistic
-            value={1341345}
+            value={project.total_loan_amount}
             title="Total loan amount"
             prefix="$"
             valueStyle={{

@@ -4,7 +4,7 @@ import { useQuery } from "react-query"
 import HomeJumbotron from "components/pages/home/HomeJumbotron"
 import MainLayout from "components/layouts/MainLayout"
 import ProjectCard from "components/modules/projects/ProjectCard"
-import React from "react"
+import React, { useEffect } from "react"
 import useRepositories from "hooks/useRepositories"
 
 const {Title} = Typography

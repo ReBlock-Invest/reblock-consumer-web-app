@@ -45,7 +45,7 @@ const HomeJumbotron: React.FC<Props> = () => {
           Real-world assets on your hand
         </Title>
         <Text className="text-center w-100 d-block" style={{color: colorTextLightSolid}}>
-          Wafer tiramisu chocolate cake apple pie tootsie roll I love jelly beans wafer halvah.
+          Generate passive income secured by real-world assets around the globe
         </Text>
         <PersonalInquiryModal
           open={showPersonaInquiryModal}

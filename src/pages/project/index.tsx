@@ -74,7 +74,7 @@ const ProjectPage: React.FC = () => {
                   <Col>
                     <Space direction="vertical">
                       <Space>
-                        <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=1" />
+                        <Avatar src={project.issuer_picture} />
                         <Tag color="white" style={{ backgroundColor: colorWarning, color: colorText }} bordered={false}>Rating {project.credit_rating}</Tag>
                       </Space>
                       <Text type="secondary">{project.issuer_description}</Text>
@@ -89,13 +89,13 @@ const ProjectPage: React.FC = () => {
                 </Row>
 
                 <Space direction="vertical" size={0}>
-                  <Text type="secondary">Loan term</Text>
+                  <Text type="secondary">Loan Term</Text>
                   <Text strong>{project.loan_term}</Text>
                 </Space>
 
                 <Space direction="vertical" size={0}>
-                  <Text type="secondary">Liquidity</Text>
-                  <Text strong>Quarterly</Text>
+                  <Text type="secondary">Payment Frequency</Text>
+                  <Text strong>{project.payment_frequency}</Text>
                 </Space>
 
                 <Space direction="vertical" size={0}>
