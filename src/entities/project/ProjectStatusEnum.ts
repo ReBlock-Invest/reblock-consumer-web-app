@@ -3,7 +3,7 @@ enum ProjectStatusEnum {
   MAKER_POOL = 'MAKER POOL',
   OPEN = 'OPEN',
   CLOSED = 'CLOSED',
-  FAILED = 'FAILED'
+  DEFAULT = 'DEFAULT'
 }
 
 export default ProjectStatusEnum
