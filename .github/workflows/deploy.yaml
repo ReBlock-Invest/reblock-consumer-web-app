@@ -14,6 +14,9 @@ jobs:
       REACT_APP_KYC_PERSONA_TEMPLATE_ID: ${{ secrets.REACT_APP_KYC_PERSONA_TEMPLATE_ID }}
       REACT_APP_WALLET_CONNECT_PROJECT_ID: ${{ secrets.REACT_APP_WALLET_CONNECT_PROJECT_ID }}
       REACT_APP_SATELLITE_ID: ${{ secrets.REACT_APP_SATELLITE_ID }}
+      REACT_APP_INFURA_KEY: ${{ secrets.REACT_APP_INFURA_KEY }}
+      REACT_APP_ALCHEMY_KEY: ${{ secrets.REACT_APP_ALCHEMY_KEY }}
+      REACT_APP_RBSVC_HOST: ${{ secrets.REACT_APP_RBSVC_HOST }}
       
     steps:
       - name: Check out the repo
