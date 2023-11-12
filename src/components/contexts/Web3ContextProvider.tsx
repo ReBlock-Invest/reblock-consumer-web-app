@@ -7,11 +7,13 @@ import useCoinbaseWalletConnect from "lib/web3/hooks/useCoinbaseWalletConnect"
 import useMetamaskWalletConnect from "lib/web3/hooks/useMetamaskWalletConnect"
 import useWalletConnectWalletConnect from "lib/web3/hooks/useWalletConnectWalletConnect"
 import { useCallback, useEffect, useState } from "react"
+import type { Web3Provider } from '@ethersproject/providers'
 
 import { coinbaseWallet, hooks as coinbaseWalletHooks } from 'lib/web3/connectors/coinbaseWallet'
 import { hooks as metaMaskHooks, metaMask } from 'lib/web3/connectors/metaMask'
 import { hooks as walletConnectHooks, walletConnect } from 'lib/web3/connectors/walletConnect'
 import React, { ReactNode } from 'react'
+import useAuthenticationStore from 'stores/useAuthenticationStore'
 
 const connectors: [MetaMask | WalletConnect | WalletConnect | CoinbaseWallet, Web3ReactHooks][] = [
   [metaMask, metaMaskHooks],
@@ -29,6 +31,7 @@ type Context = {
   connectMetaMask: () => Promise<void>
   connectCoinbase: () => Promise<void>
   connectWalletConnect: () => Promise<void>
+  provider?: Web3Provider
 }
 
 export const Web3Context = React.createContext<Context>({
@@ -41,11 +44,13 @@ export const Web3Context = React.createContext<Context>({
   connectMetaMask: async () => {},
   connectCoinbase: async () => {},
   connectWalletConnect: async () => {},
+  provider: undefined
 })
 
 const Web3ContextProviderWrapper: React.FC<{
   children: ReactNode
 }> = ({children}) => {
+  const authenticationStore = useAuthenticationStore()
   const {
     connect: connectMetaMask,
     error: metamaskError,
@@ -84,11 +89,14 @@ const Web3ContextProviderWrapper: React.FC<{
 
   const disconnect = useCallback(async () => {
     if (connector.deactivate) {
-      void connector.deactivate()
+      await connector.deactivate()
     } else {
-      void connector.resetState()
+      await connector.resetState()
     }
-  }, [connector])
+
+    authenticationStore.reset()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [connector, authenticationStore.reset])
 
   return (
     <Web3Context.Provider value={{
@@ -100,7 +108,8 @@ const Web3ContextProviderWrapper: React.FC<{
       disconnect,
       connectCoinbase,
       connectMetaMask,
-      connectWalletConnect
+      connectWalletConnect,
+      provider,
     }}>
       {children}
     </Web3Context.Provider>

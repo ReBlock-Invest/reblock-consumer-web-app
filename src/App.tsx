@@ -12,6 +12,7 @@ import QueryClientContextProvider from './components/contexts/QueryClientContext
 import {App as AntdApp, ConfigProvider} from 'antd'
 import AppThemeConfig from "components/themes/AppThemeConfig";
 import Web3ContextProvider from "components/contexts/Web3ContextProvider";
+import Authentication from "components/modules/authentication/Authentication";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,7 @@ function App() {
           <ConfigProvider theme={AppThemeConfig}>
             <AntdApp>
               <Web3ContextProvider>
+                <Authentication />
                 <RouterProvider router={router} />
               </Web3ContextProvider>
             </AntdApp>

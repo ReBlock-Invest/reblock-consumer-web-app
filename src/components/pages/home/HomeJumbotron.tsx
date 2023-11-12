@@ -4,8 +4,9 @@ import { Typography } from 'antd'
 import TrustedOverXUsers from "components/modules/users/TrustedOverXUsers"
 import PersonalInquiryModal from "components/modules/kyc/modals/PersonaInquiryModal"
 import useKYCStore from "stores/useKYCStore"
-import useWalletConnect from "hooks/useWalletConnect"
+import useWeb3 from "hooks/useWeb3"
 import ConnectWalletModal from "components/modules/wallets/modals/ConnectWalletsModal"
+import useAuthenticationStore from "stores/useAuthenticationStore"
 
 const { Title, Text } = Typography
 
@@ -25,7 +26,8 @@ const HomeJumbotron: React.FC<Props> = () => {
     }
   } = theme.useToken()
   const kycStore = useKYCStore()
-  const { accounts, disconnect } = useWalletConnect()
+  const { accounts, isLoading, disconnect } = useWeb3()
+  const authenticationStore = useAuthenticationStore()
 
   return (
     <Flex vertical align="stretch" style={{backgroundColor: colorBgLayout}}>      
@@ -65,10 +67,9 @@ const HomeJumbotron: React.FC<Props> = () => {
         />
         <Button
           size="large"
+          loading={authenticationStore.isLoading || isLoading}
           onClick={() => {
-            if (!kycStore.isKYCCompleted) {
-              setShowPersonaInquiryModal(true)
-            } else if (!accounts) {
+            if (!accounts) {
               setShowConnectWalletModal(true)
             } else {
               disconnect().then(() => {

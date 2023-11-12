@@ -12,14 +12,14 @@ class AuthenticationRepository extends BaseRepository {
     this.host = host
   }
 
-  async getNonce(address: string): Promise<GetNonceResponse> {
+  async getNonce(address: string): Promise<number> {
     const res = await this.httpClient.post<GetNonceResponse>(`${this.host}/nonce`, { address })
-    return res.data
+    return res.data.nonce
   }
 
-  async walletLogin(address: string, signature: string): Promise<WalletLoginResponse> {
+  async getAccessToken(address: string, signature: string): Promise<string> {
     const res = await this.httpClient.post<WalletLoginResponse>(`${this.host}/wallet/login`, { address, signature })
-    return res.data
+    return res.data.access_token
   }
 
   async issueUID(recipient: string): Promise<IssueUIDResponse> {

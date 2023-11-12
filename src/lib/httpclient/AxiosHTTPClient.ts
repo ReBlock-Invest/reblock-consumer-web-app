@@ -11,9 +11,7 @@ export default class AxiosHTTPClient implements IHttpClient {
           },
         })
         this.api.defaults.headers.common["Accept"] = "application/json"
-        this.api.defaults.headers.common["Access-Control-Allow-Origin"] = "*"
         this.api.defaults.headers.common["Content-Type"] = "application/json"
-        this.api.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest"
         this.api.interceptors.request.use(
           (config: any) => {
             if (!config) {
@@ -23,9 +21,8 @@ export default class AxiosHTTPClient implements IHttpClient {
               config.headers = {}
             }
             if (token) {
-              config.headers["x-api-key"] = `${token}`
               if (token) {
-                config.headers["Authorization"] = `Bearer ${token}`
+                config.headers["Authorization"] = `${token}`
               }
             }
       
@@ -58,7 +55,7 @@ export default class AxiosHTTPClient implements IHttpClient {
     }
 
     async post<T>(url: string, data?: any, headers?: Record<string, string>): Promise<HttpResponse<T>> {
-      const res = await this.api.post(url, data, {headers})
+      const res = await this.api.post(url, data, {headers, withCredentials: true})
       return {
           status: res.status,
           data: res.data,

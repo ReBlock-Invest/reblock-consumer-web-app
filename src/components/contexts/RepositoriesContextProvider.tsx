@@ -22,7 +22,7 @@ const RepositoriesContextProvider: React.FC<Props> = ({children}) => {
     const authenticationHttpClient = new AxiosHTTPClient(authenticationStore.token)
     return {
       projectRepository: new ProjectRepository(),
-      authenticationStore: new AuthenticationRepository(
+      authenticationRepository: new AuthenticationRepository(
         process.env.REACT_APP_RBSVC_HOST as string,
         authenticationHttpClient
       )

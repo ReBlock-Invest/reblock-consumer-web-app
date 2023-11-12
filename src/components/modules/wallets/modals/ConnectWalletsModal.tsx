@@ -1,5 +1,5 @@
 import { Divider, Flex, Modal, Space, Spin, Typography } from "antd"
-import useWalletConnect from "hooks/useWalletConnect"
+import useWalletConnect from "hooks/useWeb3"
 import React from "react"
 
 const { Text } = Typography
