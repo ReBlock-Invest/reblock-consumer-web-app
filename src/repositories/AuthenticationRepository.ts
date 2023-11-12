@@ -5,11 +5,13 @@ import { GetNonceResponse, GetUserInfoResponse, IssueUIDResponse, WalletLoginRes
 class AuthenticationRepository extends BaseRepository {
   private httpClient: IHttpClient
   private host: string
+  private isAuthenticated: boolean
 
-  constructor(host: string, httpClient: IHttpClient) {
+  constructor(host: string, httpClient: IHttpClient, isAuthenticated: boolean) {
     super()
     this.httpClient = httpClient
     this.host = host
+    this.isAuthenticated = isAuthenticated
   }
 
   async getNonce(address: string): Promise<number> {
@@ -32,6 +34,9 @@ class AuthenticationRepository extends BaseRepository {
     return res.data
   }
 
+  getIsAuthenticated(): boolean {
+    return this.isAuthenticated
+  }
 }
 
 export default AuthenticationRepository

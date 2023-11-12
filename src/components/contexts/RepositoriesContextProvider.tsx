@@ -24,7 +24,8 @@ const RepositoriesContextProvider: React.FC<Props> = ({children}) => {
       projectRepository: new ProjectRepository(),
       authenticationRepository: new AuthenticationRepository(
         process.env.REACT_APP_RBSVC_HOST as string,
-        authenticationHttpClient
+        authenticationHttpClient,
+        !!authenticationStore.token
       )
     }
   }, [authenticationStore.token])

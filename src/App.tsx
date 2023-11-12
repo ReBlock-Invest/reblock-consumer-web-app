@@ -13,6 +13,7 @@ import {App as AntdApp, ConfigProvider} from 'antd'
 import AppThemeConfig from "components/themes/AppThemeConfig";
 import Web3ContextProvider from "components/contexts/Web3ContextProvider";
 import Authentication from "components/modules/authentication/Authentication";
+import PersonalInquiryModal from "components/modules/kyc/modals/PersonaInquiryModal";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
 ])
 
 function App() {
+
   useEffect(() => {
     (async () =>
       await initJuno({
@@ -40,6 +42,7 @@ function App() {
           <ConfigProvider theme={AppThemeConfig}>
             <AntdApp>
               <Web3ContextProvider>
+                <PersonalInquiryModal />
                 <Authentication />
                 <RouterProvider router={router} />
               </Web3ContextProvider>
