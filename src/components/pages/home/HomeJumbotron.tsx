@@ -26,7 +26,7 @@ const HomeJumbotron: React.FC<Props> = () => {
     }
   } = theme.useToken()
   const kycStore = useKYCStore()
-  const { accounts, isLoading, disconnect } = useWeb3()
+  const { isLoading, disconnect } = useWeb3()
   const authenticationStore = useAuthenticationStore()
 
   return (
@@ -69,7 +69,7 @@ const HomeJumbotron: React.FC<Props> = () => {
           size="large"
           loading={authenticationStore.isLoading || isLoading}
           onClick={() => {
-            if (!accounts) {
+            if (!authenticationStore.token) {
               setShowConnectWalletModal(true)
             } else {
               disconnect().then(() => {
