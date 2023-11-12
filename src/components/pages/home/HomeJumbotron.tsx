@@ -80,7 +80,7 @@ const HomeJumbotron: React.FC<Props> = () => {
             }
           }}
         >
-          {accounts ? "Disconnect" : "Connect Wallet"}
+          {!!authenticationStore.token ? "Disconnect" : "Connect Wallet"}
         </Button>
         <TrustedOverXUsers />        
       </Flex>
