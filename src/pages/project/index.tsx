@@ -38,7 +38,7 @@ const ProjectPage: React.FC = () => {
         <Skeleton />
       ) : (
         <Layout>
-          <Layout.Content>
+          <Layout.Content style={{overflowX: 'hidden'}}>
             <Flex
               style={{
                 backgroundColor: colorPrimary,
