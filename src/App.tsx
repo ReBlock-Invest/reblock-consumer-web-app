@@ -14,6 +14,7 @@ import AppThemeConfig from "components/themes/AppThemeConfig";
 import Web3ContextProvider from "components/contexts/Web3ContextProvider";
 import Authentication from "components/modules/authentication/Authentication";
 import PersonalInquiryModal from "components/modules/kyc/modals/PersonaInquiryModal";
+import ConnectWalletModal from "components/modules/wallets/modals/ConnectWalletsModal";
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,8 @@ function App() {
             <AntdApp>
               <Web3ContextProvider>
                 <PersonalInquiryModal />
+                <ConnectWalletModal />
+
                 <Authentication />
                 <RouterProvider router={router} />
               </Web3ContextProvider>

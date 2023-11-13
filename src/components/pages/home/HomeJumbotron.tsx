@@ -1,9 +1,8 @@
 import { App, Button, Card, Flex, Statistic, theme } from "antd"
-import React, { useState } from "react"
+import React from "react"
 import { Typography } from 'antd'
 import TrustedOverXUsers from "components/modules/users/TrustedOverXUsers"
 import useWeb3 from "hooks/useWeb3"
-import ConnectWalletModal from "components/modules/wallets/modals/ConnectWalletsModal"
 import useAuthenticationStore from "stores/useAuthenticationStore"
 
 const { Title, Text } = Typography
@@ -13,8 +12,7 @@ type Props = {
 }
 
 const HomeJumbotron: React.FC<Props> = () => {
-  const {message} = App.useApp()
-  const [showConnectWalletModal, setShowConnectWalletModal] = useState(false)
+  const {message} = App.useApp()  
   const {
     token: {
       colorPrimary,
@@ -45,16 +43,12 @@ const HomeJumbotron: React.FC<Props> = () => {
         <Text className="text-center w-100 d-block" style={{color: colorTextLightSolid}}>
           Generate passive income secured by real-world assets around the globe
         </Text>
-        <ConnectWalletModal
-          open={showConnectWalletModal}
-          onCancel={() => setShowConnectWalletModal(false)}
-        />
         <Button
           size="large"
           loading={authenticationStore.isLoading || isLoading}
           onClick={() => {
             if (!authenticationStore.token) {
-              setShowConnectWalletModal(true)
+              authenticationStore.setIsShowConnectWalletModal(true)
             } else {
               disconnect().then(() => {
                 message.success("Disconnected from Wallet!")

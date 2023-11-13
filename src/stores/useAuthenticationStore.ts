@@ -3,10 +3,12 @@ import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 
 interface AuthenticationStoreState {
+  isShowConnectWalletModal: boolean
   isLoading: boolean
   userInfo?: UserInfo
   token?: string
 
+  setIsShowConnectWalletModal: (isShowConnectWalletModal: boolean) => void
   setToken: (token?: string) => void
   setUserInfo: (userInfo?: UserInfo) => void
   setIsLoading: (isLoading: boolean) => void
@@ -17,14 +19,20 @@ interface AuthenticationStoreState {
 const useAuthenticationStore = create<AuthenticationStoreState>()(
   persist(
     (set) => ({
+      isShowConnectWalletModal: false,
       isLoading: false,
       userInfo: undefined,
       token: undefined,
 
+      setIsShowConnectWalletModal: (isShowConnectWalletModal: boolean) => set({ isShowConnectWalletModal }),
       setToken: (token?: string) => set({ token }),
       setUserInfo: (userInfo?: UserInfo) => set({ userInfo }),
       setIsLoading:  (isLoading: boolean) => set({ isLoading }),
-      reset: () => set({userInfo: undefined, token: undefined}),
+      reset: () => set({
+        userInfo: undefined,
+        token: undefined,
+        isShowConnectWalletModal: false,
+      }),
     }),
     {
       name: 'authentication-storage', 

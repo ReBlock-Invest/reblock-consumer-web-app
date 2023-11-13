@@ -1,15 +1,13 @@
 import { Divider, Flex, Modal, Space, Spin, Typography } from "antd"
 import useWalletConnect from "hooks/useWeb3"
 import React from "react"
+import useAuthenticationStore from "stores/useAuthenticationStore"
 
 const { Text } = Typography
 
-type Props = {
-  open: boolean
-  onCancel: () => void
-}
+type Props = {}
 
-const ConnectWalletModal: React.FC<Props> = ({open, onCancel}) => {
+const ConnectWalletModal: React.FC<Props> = () => {
   const {
     isLoading,
     connectMetaMask,
@@ -17,8 +15,15 @@ const ConnectWalletModal: React.FC<Props> = ({open, onCancel}) => {
     connectWalletConnect,
   } = useWalletConnect()
 
+  const { isShowConnectWalletModal, setIsShowConnectWalletModal} = useAuthenticationStore()
+
   return (
-    <Modal title="Connect Your Wallet" open={open} onCancel={onCancel} footer={null}>
+    <Modal
+      title="Connect Your Wallet"
+      open={isShowConnectWalletModal}
+      onCancel={() => setIsShowConnectWalletModal(false)}
+      footer={null}
+    >
       {isLoading ? (
         <Flex align="center" justify="center" className="p-md">
           <Spin size="large" />
@@ -29,7 +34,7 @@ const ConnectWalletModal: React.FC<Props> = ({open, onCancel}) => {
             className="cursor-pointer"
             onClick={() => {
               connectMetaMask()
-              onCancel()
+              setIsShowConnectWalletModal(false)
             }}
           >
             <img
@@ -43,7 +48,7 @@ const ConnectWalletModal: React.FC<Props> = ({open, onCancel}) => {
             className="cursor-pointer"
             onClick={() => {
               connectWalletConnect()
-              onCancel()
+              setIsShowConnectWalletModal(false)
             }}
           >
             <img
@@ -57,7 +62,7 @@ const ConnectWalletModal: React.FC<Props> = ({open, onCancel}) => {
             className="cursor-pointer"
             onClick={() => {
               connectCoinbase()
-              onCancel()
+              setIsShowConnectWalletModal(false)
             }}
           >
             <img

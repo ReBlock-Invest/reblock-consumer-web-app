@@ -8,6 +8,7 @@ import MainLayout from "components/layouts/MainLayout"
 import React from "react"
 import TransactionActivityItem from "components/modules/transaction/TransactionActivityItem"
 import useRepositories from "hooks/useRepositories"
+import useAuthenticationStore from "stores/useAuthenticationStore"
 
 const { Title, Paragraph, Text, Link } = Typography
 
@@ -20,6 +21,8 @@ const ProjectPage: React.FC = () => {
       colorText,
     }
   } = theme.useToken()
+  
+  const authenticationStore = useAuthenticationStore()
 
   const repositories = useRepositories()
   const { projectId } = useParams()
@@ -159,6 +162,13 @@ const ProjectPage: React.FC = () => {
                             type="primary"
                             size='large'
                             icon={<PlusOutlined />}
+                            onClick={() => {
+                              if (!authenticationStore.token) {
+                                authenticationStore.setIsShowConnectWalletModal(true)
+                              } else {
+                                // investment logic
+                              }
+                            }}
                           >
                             Invest
                           </Button>
