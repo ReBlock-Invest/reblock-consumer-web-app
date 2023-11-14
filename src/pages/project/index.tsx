@@ -62,7 +62,7 @@ const ProjectPage: React.FC = () => {
     if (!userInfoData || !userInfoData.invest_state || userInfoData.invest_state === UserInvestStateEnum.WALLET_VERIFIED) {
       kycStore.setIsShowKYCModal(true)
     }
-    if (userInfoData?.invest_state == UserInvestStateEnum.KYC_VERIFIED) {
+    if (userInfoData?.invest_state === UserInvestStateEnum.KYC_VERIFIED) {
       // invest logic
     }
   }, [authenticationStore, userInfoData, kycStore])
