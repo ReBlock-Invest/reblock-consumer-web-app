@@ -4,6 +4,7 @@ import PersonalInlineInquiry from "../PersonaInlineInquiry"
 import { useQuery } from "react-query"
 import useRepositories from "hooks/useRepositories"
 import useKYCStore from "stores/useKYCStore"
+import UserInvestStateEnum from "entities/user/UserInvestStateEnum"
 
 type Props = {}
 
@@ -21,7 +22,7 @@ const PersonalInquiryModal: React.FC<Props> = () => {
   })
 
   useEffect(() => {
-    if (userInfoData && !userInfoData.invest_state) {
+    if (userInfoData?.invest_state !== UserInvestStateEnum.KYC_VERIFIED) {
       setIsShowKYCModal(true)
     }
   }, [setIsShowKYCModal, userInfoData])
