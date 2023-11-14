@@ -5,10 +5,12 @@ import { useQuery } from "react-query"
 import Colors from "components/themes/Colors"
 import FontFamilies from "components/themes/FontFamilies"
 import MainLayout from "components/layouts/MainLayout"
-import React from "react"
+import React, { useCallback, useMemo } from "react"
 import TransactionActivityItem from "components/modules/transaction/TransactionActivityItem"
 import useRepositories from "hooks/useRepositories"
 import useAuthenticationStore from "stores/useAuthenticationStore"
+import UserInvestStateEnum from "entities/user/UserInvestStateEnum"
+import useKYCStore from "stores/useKYCStore"
 
 const { Title, Paragraph, Text, Link } = Typography
 
@@ -22,16 +24,48 @@ const ProjectPage: React.FC = () => {
     }
   } = theme.useToken()
   
+  const kycStore = useKYCStore()
   const authenticationStore = useAuthenticationStore()
 
   const repositories = useRepositories()
   const { projectId } = useParams()
+
+  const {data: userInfoData} = useQuery({
+    queryKey: ['userinfo'],
+    queryFn: () => repositories.authenticationRepository?.getUserInfo(),
+    enabled: !!repositories.authenticationRepository?.getIsAuthenticated(),
+  })
   const { data, isLoading } = useQuery({
     queryKey: ['project', projectId],
     queryFn: () => repositories.projectRepository?.getProject(
       projectId as string
     )
   })
+  
+  const investButtonText = useMemo(() => {
+    if (!authenticationStore.token) {
+      return "Connect Wallet"
+    }
+    if (!userInfoData || !userInfoData.invest_state || userInfoData.invest_state === UserInvestStateEnum.WALLET_VERIFIED) {
+      return "Verify Identity"
+    }
+    if (userInfoData.invest_state === UserInvestStateEnum.PENDING_KYC) {
+      return "Pending Verification"
+    }
+    return "Invest"
+  }, [userInfoData, authenticationStore.token])
+
+  const onInvestButtonPressed = useCallback(() => {
+    if (!authenticationStore.token) {
+      authenticationStore.setIsShowConnectWalletModal(true)
+    }
+    if (!userInfoData || !userInfoData.invest_state || userInfoData.invest_state === UserInvestStateEnum.WALLET_VERIFIED) {
+      kycStore.setIsShowKYCModal(true)
+    }
+    if (userInfoData?.invest_state == UserInvestStateEnum.KYC_VERIFIED) {
+      // invest logic
+    }
+  }, [authenticationStore, userInfoData, kycStore])
 
   const project = data?.data!;
 
@@ -161,16 +195,10 @@ const ProjectPage: React.FC = () => {
                           <Button
                             type="primary"
                             size='large'
-                            icon={<PlusOutlined />}
-                            onClick={() => {
-                              if (!authenticationStore.token) {
-                                authenticationStore.setIsShowConnectWalletModal(true)
-                              } else {
-                                // investment logic
-                              }
-                            }}
+                            icon={userInfoData?.invest_state === UserInvestStateEnum.KYC_VERIFIED ? <PlusOutlined /> : null}
+                            onClick={onInvestButtonPressed}
                           >
-                            Invest
+                            {investButtonText}
                           </Button>
                         </Flex>
                       )

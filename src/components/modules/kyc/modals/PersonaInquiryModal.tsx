@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react"
 import PersonalInlineInquiry from "../PersonaInlineInquiry"
 import { useQuery } from "react-query"
 import useRepositories from "hooks/useRepositories"
+import useKYCStore from "stores/useKYCStore"
 
 type Props = {}
 
@@ -10,7 +11,7 @@ const PersonalInquiryModal: React.FC<Props> = () => {
   const { message } = App.useApp()
   
   const repositories = useRepositories()
-  const [open, setOpen] = useState(false)
+  const {isShowKYCModal, setIsShowKYCModal} = useKYCStore()
   const [isLoading, setIsLoading] = useState(true)
 
   const {data: userInfoData} = useQuery({
@@ -21,16 +22,16 @@ const PersonalInquiryModal: React.FC<Props> = () => {
 
   useEffect(() => {
     if (userInfoData && !userInfoData.invest_state) {
-      setOpen(true)
+      setIsShowKYCModal(true)
     }
-  }, [userInfoData])
+  }, [setIsShowKYCModal, userInfoData])
 
   return (
     <Modal
       title="Basic Modal"
-      open={open}
+      open={isShowKYCModal}
       footer={null}
-      onCancel={() => setOpen(false)}
+      onCancel={() => setIsShowKYCModal(false)}
     >
       {isLoading ? (
         <Skeleton active />
@@ -38,11 +39,11 @@ const PersonalInquiryModal: React.FC<Props> = () => {
       <PersonalInlineInquiry
         onComplete={() => {
           message.success("Congratulations! KYC Step is completed!")
-          setOpen(false)
+          setIsShowKYCModal(false)
         }}
         onError={() => {
           message.error("Ooops! KYC Step is failed!")
-          setOpen(false)
+          setIsShowKYCModal(false)
         }}
         onLoad={() => setIsLoading(false)}
       />

@@ -21,9 +21,7 @@ export default class AxiosHTTPClient implements IHttpClient {
               config.headers = {}
             }
             if (token) {
-              if (token) {
-                config.headers["Authorization"] = `${token}`
-              }
+              config.headers["Authorization"] = `${token}`
             }
       
             return config
