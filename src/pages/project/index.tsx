@@ -21,6 +21,7 @@ const ProjectPage: React.FC = () => {
       colorTextLightSolid,
       colorWarning,
       colorText,
+      colorBgContainer,
     }
   } = theme.useToken()
   
@@ -226,10 +227,17 @@ const ProjectPage: React.FC = () => {
               style={{
                 padding: '16px',
               }}>
-              <Affix offsetTop={80}>
+              <Affix
+                offsetTop={80}                
+              >
                 <Anchor
                   affix={false}
                   direction="horizontal"
+                  style={{
+                    backgroundColor: colorBgContainer,
+                    borderRadius: 8,
+                    padding: 4,
+                  }}
                   items={[
                     {
                       key: 'asset-overview',
@@ -343,6 +351,11 @@ const ProjectPage: React.FC = () => {
                   id="recent-activity"
                   itemLayout="horizontal"
                   dataSource={Array(10).fill(0)}
+                  header={
+                    <Title level={4}>
+                      Recent Activity
+                    </Title>
+                  }
                   renderItem={(item, index) => (
                     <TransactionActivityItem />
                   )}

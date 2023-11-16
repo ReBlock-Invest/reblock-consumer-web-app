@@ -1,4 +1,4 @@
-import { Avatar, Card, Col, Flex, Progress, Row, Space, Statistic, Tag, Typography, theme } from "antd"
+import { Avatar, Button, Card, Col, Flex, Progress, Row, Space, Statistic, Tag, Typography, theme } from "antd"
 import Colors from "components/themes/Colors"
 import Project from "entities/project/Project"
 import React from "react"
@@ -14,6 +14,8 @@ const ProjectCard: React.FC<Props> = ({project}) => {
     token: {
       colorWarning,
       colorText,
+      colorSuccess,
+      colorSuccessBg,
     },
   } = theme.useToken()
   return (
@@ -30,9 +32,16 @@ const ProjectCard: React.FC<Props> = ({project}) => {
             </Space>
           </Col>
           <Col>
-            <Space direction="vertical" align="end">
+            <Space
+              direction="vertical"
+              align="end"
+              style={{
+                backgroundColor: colorSuccessBg,
+              }}
+              className="p-sm br-sm"
+            >
               <Text type="secondary">APR</Text>
-              <Text strong>{project.APR}</Text>
+              <Text strong style={{color: colorSuccess}}>{project.APR}</Text>
             </Space>
           </Col>
         </Row>
@@ -66,12 +75,26 @@ const ProjectCard: React.FC<Props> = ({project}) => {
             </Space>
           </Col>
           <Col>
-            <Space direction="vertical">
+            <Space
+              direction="vertical"
+              align="end"              
+            >
               <Text type="secondary">Status</Text>
-              <Title level={5} className="m-0">{project.status}</Title>
+              <Text
+                strong
+                className="m-0 p-sm br-sm"
+                style={{
+                  color: colorSuccess,
+                  backgroundColor: colorSuccessBg
+                }}
+              >{project.status}</Text>
             </Space>
           </Col>
         </Row>
+
+        <Button type="primary">
+            See More
+        </Button>
       </Flex>
     </Card>
   )

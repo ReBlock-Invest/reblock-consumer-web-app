@@ -7,6 +7,8 @@ const Colors = {
   surface: 'white',
   cloud: '#f8f8f8',
   warning: '#FFDF46',
+  successLight: '#F0FEE7',
+  success: '#30920C',
   content: '#3D3D3D',
 }
 

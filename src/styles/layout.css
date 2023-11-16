@@ -53,3 +53,11 @@
   margin-right: 16px;
   margin-left: 16px;
 }
+
+.br-md {
+  border-radius: 16px;
+}
+
+.br-sm {
+  border-radius: 8px;
+}

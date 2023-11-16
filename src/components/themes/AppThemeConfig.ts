@@ -10,6 +10,8 @@ const AppThemeConfig: ThemeConfig = {
     colorWarning: Colors.warning,
     colorText: Colors.content,
     fontFamily: FontFamilies.primary,
+    colorSuccessBg: Colors.successLight,
+    colorSuccess: Colors.success,
   },
   components: {
     Typography: {      
