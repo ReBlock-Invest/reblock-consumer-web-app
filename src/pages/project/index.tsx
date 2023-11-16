@@ -73,7 +73,9 @@ const ProjectPage: React.FC = () => {
   return (
     <MainLayout>
       {isLoading || data == null ? (
-        <Skeleton />
+        <Card className="m-md">
+          <Skeleton />
+        </Card>
       ) : (
         <Layout>
           <Layout.Content style={{overflowX: 'hidden', marginTop: '-1px',}}>
