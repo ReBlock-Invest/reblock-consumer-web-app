@@ -35,6 +35,7 @@ const HomeJumbotron: React.FC<Props> = () => {
           backgroundImage: "url('/images/home-jumbotron-bg.svg')",
           backgroundPosition: "center",
           backgroundSize: "cover",
+          marginTop: '-1px',
         }}
       >
         <Title level={2} className="text-center" style={{color: colorTextLightSolid}}>
@@ -60,7 +61,9 @@ const HomeJumbotron: React.FC<Props> = () => {
         >
           {!!authenticationStore.token ? "Disconnect" : "Connect Wallet"}
         </Button>
-        <TrustedOverXUsers />        
+        <div className="mt-md">
+          <TrustedOverXUsers />    
+        </div>    
       </Flex>
 
       <div>
@@ -69,25 +72,12 @@ const HomeJumbotron: React.FC<Props> = () => {
             backgroundColor: colorPrimary,
             width: '100%',
             height: '50px',
-            marginBottom: '-100px',
             marginTop: '-2px',
-            borderBottomRightRadius: 100,
-            borderBottomLeftRadius: 100,
+            borderBottomRightRadius: '100%',
+            borderBottomLeftRadius: '100%',
           }}
         />
-      </div>
-
-      <Card className="mx-md" bordered={false} bodyStyle={{padding: '16px'}}>
-        <Statistic
-          title="Active loans amount"
-          value={143654323}
-          decimalSeparator=","
-          prefix="$"
-          valueStyle={{
-            fontFamily: "Red Rose",
-          }}
-        />
-      </Card>    
+      </div>  
     </Flex>
   )
 }

@@ -3,6 +3,7 @@ import useRepositories from "hooks/useRepositories"
 import useWeb3 from "hooks/useWeb3"
 import React, { useCallback, useEffect, useRef } from "react"
 import useAuthenticationStore from "stores/useAuthenticationStore"
+import useKYCStore from "stores/useKYCStore"
 
 type Props = {
 
@@ -16,6 +17,8 @@ const Authentication: React.FC<Props> = () => {
   const web3 = useWeb3()
   const repositories = useRepositories()
   const isAuthenticatingRef = useRef(false)
+
+  const {setIsShowKYCModal} = useKYCStore()
 
   useEffect(() => {
     if (authenticationStore.isLoading) {
@@ -47,6 +50,8 @@ const Authentication: React.FC<Props> = () => {
       authenticationStore.setToken(accessToken)
 
       message.success('Welcome!')
+
+      setIsShowKYCModal(true)
     } catch (error) {
       message.error('Authentication error!')
     } finally {
@@ -54,7 +59,14 @@ const Authentication: React.FC<Props> = () => {
       isAuthenticatingRef.current = false
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authenticationStore.setIsLoading, authenticationStore.setToken, message, repositories.authenticationRepository, web3.provider])
+  }, [
+    authenticationStore.setIsLoading,
+    authenticationStore.setToken,
+    message,
+    repositories.authenticationRepository,
+    web3.provider,
+    setIsShowKYCModal
+  ])
 
   useEffect(() => {
     if (web3.accounts && web3.accounts.length && !authenticationStore.token && !isAuthenticatingRef.current) {
