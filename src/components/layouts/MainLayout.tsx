@@ -1,10 +1,13 @@
-import React, { ReactNode } from 'react'
-import { Affix, App, Col, Flex, Image, Layout, Row, theme } from 'antd'
+import React, { ReactNode, useState } from 'react'
+import { Affix, App, Button, Col, Divider, Drawer, Flex, Image, Layout, Row, Typography, theme } from 'antd'
 import { Link, useLocation } from "react-router-dom"
 import useResponsiveValue from 'hooks/useResponsiveValue'
 import ReblockIcon from 'components/common/ReblockIcon'
 import useInterpolateScrollValue from 'hooks/useInterpolateScrollValue'
+import useWeb3 from 'hooks/useWeb3'
+import useAuthenticationStore from 'stores/useAuthenticationStore'
 
+const { Text } = Typography
 const { Header, Content, Footer } = Layout
 
 type Props = {
@@ -14,9 +17,13 @@ type Props = {
 const MainLayout: React.FC<Props> = ({ children }) => {
   const location = useLocation()
   const {
-    token: { colorBgContainer, colorText, colorPrimary },
+    token: { colorBgContainer, colorPrimary },
   } = theme.useToken()
-  // const { notification } = App.useApp()
+  const { message } = App.useApp()
+  const { isLoading, disconnect } = useWeb3()
+  const authenticationStore = useAuthenticationStore()
+
+  const [isOpenRightDrawer, setIsOpenRightDrawer] = useState(false)
 
   const headerBackgroundOpacity = useInterpolateScrollValue(
     0,
@@ -84,12 +91,49 @@ const MainLayout: React.FC<Props> = ({ children }) => {
 
               <Col>
                 <Flex align="center" justify="center">
-                  <ReblockIcon name="burger" color={`rgb(${headerIconColor}, ${headerIconColor}, ${headerIconColor})`} />
+                  <div onClick={() => setIsOpenRightDrawer(!isOpenRightDrawer)}>
+                    <ReblockIcon
+                      name="burger"
+                      color={`rgb(${headerIconColor}, ${headerIconColor}, ${headerIconColor})`}
+                    />
+                  </div>
                 </Flex>
               </Col>
             </Row>
           </Header>
         </Affix>
+        <Drawer
+          title="Main Menu"
+          placement="right"
+          closable
+          onClose={() => setIsOpenRightDrawer(false)}
+          open={isOpenRightDrawer}
+        >
+          <Flex vertical>
+              <Text strong>About</Text>
+              <Divider />
+              <Text strong>Community</Text>
+              <Button
+                type="primary"
+                size="large"
+                className="mt-lg"
+                loading={authenticationStore.isLoading || isLoading}
+                onClick={() => {
+                  if (!authenticationStore.token) {
+                    authenticationStore.setIsShowConnectWalletModal(true)
+                  } else {
+                    disconnect().then(() => {
+                      message.success("Disconnected from Wallet!")
+                    }).catch(() => {
+                      message.error("Failed to disconnect from Wallet!")
+                    })
+                  }
+                }}
+              >
+                {!!authenticationStore.token ? "Disconnect" : "Connect Wallet"}
+              </Button>
+          </Flex>
+        </Drawer>
         <Content>
           <div className="site-layout-content" style={{ background: colorBgContainer }}>
             {children}
