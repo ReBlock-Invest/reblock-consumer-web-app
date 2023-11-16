@@ -1,4 +1,4 @@
-import { Col, Layout, Row, Skeleton, Typography } from "antd"
+import { Card, Col, Flex, Layout, Row, Segmented, Skeleton, Typography, theme } from "antd"
 import { Link } from "react-router-dom"
 import { useQuery } from "react-query"
 import HomeJumbotron from "components/pages/home/HomeJumbotron"
@@ -12,6 +12,11 @@ const {Title} = Typography
 const HomePage: React.FC = () => {
   const repositories = useRepositories()
 
+  const {
+    token: {
+      colorBgContainer,
+    }
+  } = theme.useToken()
   const { data, isLoading } = useQuery({
     queryKey: ['projects'],
     queryFn: () => repositories.projectRepository?.getProjects()
@@ -23,7 +28,17 @@ const HomePage: React.FC = () => {
     
       <Layout>
         <Layout.Content className="px-md">
-          <Title level={3} className="w-100 text-center">Active Open Investments</Title>
+          <Flex align="center" vertical className="mb-md">
+            <Title level={3} className="w-100 text-center">Active Open Investments</Title>
+            <Card className="p-0" bodyStyle={{padding: 4}}>
+              <Segmented
+                options={['All', 'ORI', 'ST', 'SBR']}
+                style={{
+                  backgroundColor: colorBgContainer,
+                }}
+              />
+            </Card>
+          </Flex>
           {isLoading ? (
             <Skeleton />
           ) : (

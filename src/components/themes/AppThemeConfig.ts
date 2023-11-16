@@ -26,6 +26,11 @@ const AppThemeConfig: ThemeConfig = {
     },
     Tabs: {
       titleFontSize: 16,
+    },
+    Segmented: {
+      itemColor: Colors.primary, 
+      itemSelectedBg: Colors.primaryLight,
+      itemSelectedColor: Colors.primary,
     }
   }
 }
