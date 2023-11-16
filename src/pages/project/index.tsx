@@ -75,7 +75,7 @@ const ProjectPage: React.FC = () => {
         <Skeleton />
       ) : (
         <Layout>
-          <Layout.Content style={{overflowX: 'hidden'}}>
+          <Layout.Content style={{overflowX: 'hidden', marginTop: '-1px',}}>
             <Flex
               style={{
                 backgroundColor: colorPrimary,
@@ -86,12 +86,17 @@ const ProjectPage: React.FC = () => {
                 borderBottomLeftRadius: '50%',
                 borderBottomRightRadius: '50%',
                 marginLeft: '-100px',
-                height: '300px',
                 paddingLeft: '150px',
-                paddingRight: '150px',
+                paddingRight: '150px',                
               }}
             >
-              <Title level={2} className="text-center" style={{ color: colorTextLightSolid }}>
+              <Title level={2}
+                className="text-center"
+                style={{
+                  color: colorTextLightSolid,
+                  marginBottom: '180px',
+                }}
+              >
                 {project.title}
               </Title>
             </Flex>
@@ -221,7 +226,7 @@ const ProjectPage: React.FC = () => {
               style={{
                 padding: '16px',
               }}>
-              <Affix offsetTop={0}>
+              <Affix offsetTop={80}>
                 <Anchor
                   affix={false}
                   direction="horizontal"

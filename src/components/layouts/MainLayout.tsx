@@ -30,7 +30,7 @@ const MainLayout: React.FC<Props> = ({ children }) => {
     0,
     50
   )
-  const headerBurgerColor = useInterpolateScrollValue(
+  const headerIconColor = useInterpolateScrollValue(
     255,
     0,
     0,
@@ -61,10 +61,10 @@ const MainLayout: React.FC<Props> = ({ children }) => {
           >
             <Row justify="space-between" align="middle" className="h-100">
               <Col style={{height: '100%'}}>
-                <Flex align="center" justify="center" gap={8}>
+                <Flex align="center" gap={8} style={{height: '100%'}}>
                   {location.pathname !== "/" ? (
                     <Link to="/" style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                      <ReblockIcon name="back" color={colorText} size={24} />
+                      <ReblockIcon name="back" color={`rgb(${headerIconColor}, ${headerIconColor}, ${headerIconColor})`} size={24} />
                     </Link>
                   ) : null}
                   <div style={{position: 'relative', width: '128px', height: '100%'}}>
@@ -84,7 +84,7 @@ const MainLayout: React.FC<Props> = ({ children }) => {
 
               <Col>
                 <Flex align="center" justify="center">
-                  <ReblockIcon name="burger" color={`rgb(${headerBurgerColor}, ${headerBurgerColor}, ${headerBurgerColor})`} />
+                  <ReblockIcon name="burger" color={`rgb(${headerIconColor}, ${headerIconColor}, ${headerIconColor})`} />
                 </Flex>
               </Col>
             </Row>
