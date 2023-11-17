@@ -24,14 +24,14 @@ const ProjectPage: React.FC = () => {
       colorBgContainer,
     }
   } = theme.useToken()
-  
+
   const kycStore = useKYCStore()
   const authenticationStore = useAuthenticationStore()
 
   const repositories = useRepositories()
   const { projectId } = useParams()
 
-  const {data: userInfoData} = useQuery({
+  const { data: userInfoData } = useQuery({
     queryKey: ['userinfo'],
     queryFn: () => repositories.authenticationRepository?.getUserInfo(),
     enabled: !!repositories.authenticationRepository?.getIsAuthenticated(),
@@ -42,7 +42,7 @@ const ProjectPage: React.FC = () => {
       projectId as string
     )
   })
-  
+
   const investButtonText = useMemo(() => {
     if (!authenticationStore.token) {
       return "Connect Wallet"
@@ -78,7 +78,7 @@ const ProjectPage: React.FC = () => {
         </Card>
       ) : (
         <Layout>
-          <Layout.Content style={{overflowX: 'hidden', marginTop: '-1px',}}>
+          <Layout.Content style={{ overflowX: 'hidden', marginTop: '-1px', }}>
             <Flex
               style={{
                 backgroundColor: colorPrimary,
@@ -90,7 +90,7 @@ const ProjectPage: React.FC = () => {
                 borderBottomRightRadius: '50%',
                 marginLeft: '-100px',
                 paddingLeft: '150px',
-                paddingRight: '150px',                
+                paddingRight: '150px',
               }}
             >
               <Title level={2}
@@ -148,13 +148,14 @@ const ProjectPage: React.FC = () => {
                   <Text strong>{project.status}</Text>
                 </Space>
 
-                <Statistic
-                  title="Your current position"
-                  value={20}
-                  precision={2}
-                  decimalSeparator="."
-                  prefix="$"
-                />
+                {!authenticationStore.token ? null : (
+                  <Statistic
+                    title="Your current position"
+                    value={20}
+                    precision={2}
+                    decimalSeparator="."
+                    prefix="$"
+                  />)}
 
                 <Divider style={{ margin: 0 }} />
 
@@ -166,40 +167,44 @@ const ProjectPage: React.FC = () => {
                       label: 'Invest',
                       children: (
                         <Flex vertical gap={8}>
-                          <Row justify="space-between">
-                            <Col>
-                              <Text type="secondary">Amount</Text>
-                            </Col>
-                            <Col>
-                              <Text type="secondary">Balance: $999 USDC</Text>
-                            </Col>
-                          </Row>
-                          <Flex
-                            style={{
-                              backgroundColor: Colors.primaryLight,
-                              borderRadius: 4,
-                              padding: '8px',
-                            }}
-                            justify="space-between"
-                          >
-                            <Statistic
-                              value={33.78}
-                              precision={2}
-                              prefix="$"
-                            />
+                          {userInfoData?.invest_state === UserInvestStateEnum.PENDING_KYC || userInfoData?.invest_state === UserInvestStateEnum.WALLET_VERIFIED ? (
+                            <Space>
+                              <Row justify="space-between">
+                                <Col>
+                                  <Text type="secondary">Amount</Text>
+                                </Col>
+                                <Col>
+                                  <Text type="secondary">Balance: $999 USDC</Text>
+                                </Col>
+                              </Row>
+                              <Flex
+                                style={{
+                                  backgroundColor: Colors.primaryLight,
+                                  borderRadius: 4,
+                                  padding: '8px',
+                                }}
+                                justify="space-between"
+                              >
+                                <Statistic
+                                  value={33.78}
+                                  precision={2}
+                                  prefix="$"
+                                />
 
-                            <Button>
-                              MAX
-                            </Button>
-                          </Flex>
+                                <Button>
+                                  MAX
+                                </Button>
+                              </Flex>
 
-                          <Paragraph>
-                            By clicking “Invest” below, I hereby agree to the
-                            <Link href="https://ant.design" target="_blank">
-                              {" Pool Aggrement"}
-                            </Link>
-                            . Please note the protocol deducts a 0.50% fee upon withdrawal for protocol reserves.
-                          </Paragraph>
+                              <Paragraph>
+                                By clicking “Invest” below, I hereby agree to the
+                                <Link href="https://ant.design" target="_blank">
+                                  {" Pool Aggrement"}
+                                </Link>
+                                . Please note the protocol deducts a 0.50% fee upon withdrawal for protocol reserves.
+                              </Paragraph>
+                            </Space>
+                          ) : null}
                           <Button
                             type="primary"
                             size='large'
@@ -230,7 +235,7 @@ const ProjectPage: React.FC = () => {
                 padding: '16px',
               }}>
               <Affix
-                offsetTop={80}                
+                offsetTop={80}
               >
                 <Anchor
                   affix={false}
