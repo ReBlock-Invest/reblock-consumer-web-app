@@ -55,7 +55,7 @@ const ConnectWalletModal: React.FC<Props> = () => {
               alt="logo-icp"
               style={{width: '48px'}}
             />
-            <Text strong>Internet Identity (Under Construction)</Text>
+            <Text strong>Internet Identity</Text>
           </Space>
           <Divider/>
           <Space
