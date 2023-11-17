@@ -86,6 +86,20 @@ const ConnectWalletModal: React.FC<Props> = () => {
             />
             <Text strong>Coinbase</Text>
           </Space>
+          <Divider/>
+          <Space
+            className="cursor-pointer"
+            onClick={() => {              
+              setIsShowConnectWalletModal(false)
+            }}
+          >
+            <img
+              src="/images/logo-icp.png"
+              alt="logo-icp"
+              style={{width: '48px'}}
+            />
+            <Text strong>Internet Identity</Text>
+          </Space>
         </Flex>
       )}
     </Modal>

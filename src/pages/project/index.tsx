@@ -59,8 +59,7 @@ const ProjectPage: React.FC = () => {
   const onInvestButtonPressed = useCallback(() => {
     if (!authenticationStore.token) {
       authenticationStore.setIsShowConnectWalletModal(true)
-    }
-    if (!userInfoData || !userInfoData.invest_state || userInfoData.invest_state === UserInvestStateEnum.WALLET_VERIFIED) {
+    } else if (!userInfoData || !userInfoData.invest_state || userInfoData.invest_state === UserInvestStateEnum.WALLET_VERIFIED) {
       kycStore.setIsShowKYCModal(true)
     }
     if (userInfoData?.invest_state === UserInvestStateEnum.KYC_VERIFIED) {
