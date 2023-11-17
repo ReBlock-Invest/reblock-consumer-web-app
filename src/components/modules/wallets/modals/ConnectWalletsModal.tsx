@@ -52,6 +52,21 @@ const ConnectWalletModal: React.FC<Props> = () => {
             }}
           >
             <img
+              src="https://ljyte-qiaaa-aaaah-qaiva-cai.raw.ic0.app/be6d1595e958282d9ad760da6a40c1f8.svg"
+              alt="logo-internet-identity"
+              width={48}
+            />
+            <Text strong>Internet Identity (Under Construction)</Text>
+          </Space>
+          <Divider/>
+          <Space
+            className="cursor-pointer"
+            onClick={() => {
+              connectWalletConnect()
+              setIsShowConnectWalletModal(false)
+            }}
+          >
+            <img
               src="/images/logo-wallet-connect.png"
               alt="logo-wallet-connect"
             />
