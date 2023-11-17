@@ -13,7 +13,7 @@ const PersonalInquiryModal: React.FC<Props> = () => {
 
   return (
     <Modal
-      title="Basic Modal"
+      title="Identity Verification"
       open={isShowKYCModal}
       footer={null}
       onCancel={() => setIsShowKYCModal(false)}
