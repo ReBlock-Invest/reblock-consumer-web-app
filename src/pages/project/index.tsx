@@ -167,7 +167,7 @@ const ProjectPage: React.FC = () => {
                       children: (
                         <Flex vertical gap={8}>
                           {userInfoData?.invest_state === UserInvestStateEnum.PENDING_KYC || userInfoData?.invest_state === UserInvestStateEnum.WALLET_VERIFIED ? (
-                            <Space>
+                            <Space direction="vertical">
                               <Row justify="space-between">
                                 <Col>
                                   <Text type="secondary">Amount</Text>
