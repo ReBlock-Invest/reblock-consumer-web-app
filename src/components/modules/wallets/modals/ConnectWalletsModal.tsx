@@ -46,15 +46,14 @@ const ConnectWalletModal: React.FC<Props> = () => {
           <Divider/>
           <Space
             className="cursor-pointer"
-            onClick={() => {
-              connectWalletConnect()
+            onClick={() => {              
               setIsShowConnectWalletModal(false)
             }}
           >
             <img
-              src="https://ljyte-qiaaa-aaaah-qaiva-cai.raw.ic0.app/be6d1595e958282d9ad760da6a40c1f8.svg"
-              alt="logo-internet-identity"
-              width={48}
+              src="/images/logo-icp.png"
+              alt="logo-icp"
+              style={{width: '48px'}}
             />
             <Text strong>Internet Identity (Under Construction)</Text>
           </Space>
@@ -85,20 +84,6 @@ const ConnectWalletModal: React.FC<Props> = () => {
               alt="logo-coinbase"
             />
             <Text strong>Coinbase</Text>
-          </Space>
-          <Divider/>
-          <Space
-            className="cursor-pointer"
-            onClick={() => {              
-              setIsShowConnectWalletModal(false)
-            }}
-          >
-            <img
-              src="/images/logo-icp.png"
-              alt="logo-icp"
-              style={{width: '48px'}}
-            />
-            <Text strong>Internet Identity</Text>
           </Space>
         </Flex>
       )}
