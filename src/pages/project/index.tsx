@@ -1,16 +1,17 @@
-import { Affix, Anchor, Avatar, Button, Card, Col, Divider, Flex, Layout, List, Row, Space, Statistic, Skeleton, Tabs, Tag, Typography, theme } from "antd"
+import { Affix, Anchor, Avatar, Button, Card, Col, Divider, Flex, Layout, List, Row, Space, Statistic, Skeleton, Tabs, Tag, Typography, theme, InputNumber } from "antd"
 import { PlusOutlined } from "@ant-design/icons"
 import { useParams } from "react-router-dom"
 import { useQuery } from "react-query"
 import Colors from "components/themes/Colors"
 import FontFamilies from "components/themes/FontFamilies"
 import MainLayout from "components/layouts/MainLayout"
-import React, { useCallback, useMemo } from "react"
+import React, { useCallback, useMemo, useState } from "react"
 import TransactionActivityItem from "components/modules/transaction/TransactionActivityItem"
 import useRepositories from "hooks/useRepositories"
 import useAuthenticationStore from "stores/useAuthenticationStore"
 import UserInvestStateEnum from "entities/user/UserInvestStateEnum"
 import useKYCStore from "stores/useKYCStore"
+import ConfirmInvestmentDrawer from "components/modules/projects/drawers/ConfirmInvestmentDrawer"
 
 const { Title, Paragraph, Text, Link } = Typography
 
@@ -30,6 +31,10 @@ const ProjectPage: React.FC = () => {
 
   const repositories = useRepositories()
   const { projectId } = useParams()
+
+  const [isOpenConfirmInvestmentDrawer, setIsOpenInvestmentDrawer] =
+    useState(false)
+  const [investmentValue, setInvestmentValue] = useState(0)
 
   const { data: userInfoData } = useQuery({
     queryKey: ['userinfo'],
@@ -63,7 +68,7 @@ const ProjectPage: React.FC = () => {
       kycStore.setIsShowKYCModal(true)
     }
     if (userInfoData?.invest_state === UserInvestStateEnum.KYC_VERIFIED) {
-      // invest logic
+      setIsOpenInvestmentDrawer(true)
     }
   }, [authenticationStore, userInfoData, kycStore])
 
@@ -77,6 +82,10 @@ const ProjectPage: React.FC = () => {
         </Card>
       ) : (
         <Layout>
+          <ConfirmInvestmentDrawer
+            open={isOpenConfirmInvestmentDrawer}
+            onClose={() => setIsOpenInvestmentDrawer(false)}
+          />
           <Layout.Content style={{ overflowX: 'hidden', marginTop: '-1px', }}>
             <Flex
               style={{
@@ -168,34 +177,35 @@ const ProjectPage: React.FC = () => {
                         <Flex vertical gap={8}>
                           {userInfoData?.invest_state === UserInvestStateEnum.PENDING_KYC || userInfoData?.invest_state === UserInvestStateEnum.WALLET_VERIFIED ? (
                             <Space direction="vertical">
-                              <Row justify="space-between">
-                                <Col>
-                                  <Text type="secondary">Amount</Text>
-                                </Col>
-                                <Col>
-                                  <Text type="secondary">Balance: $999 USDC</Text>
-                                </Col>
-                              </Row>
-                              <Flex
+                              <Row
                                 style={{
                                   backgroundColor: Colors.primaryLight,
                                   borderRadius: 4,
                                   padding: '8px',
                                 }}
                                 justify="space-between"
+                                gutter={8}
                               >
-                                <Statistic
-                                  value={33.78}
-                                  precision={2}
-                                  prefix="$"
-                                />
+                                <Col span={18}>
+                                  <InputNumber
+                                    prefix="$"
+                                    precision={2}
+                                    value={investmentValue}
+                                    onChange={(value) => setInvestmentValue(value || 0)}
+                                    style={{width: '100%'}}
+                                  />
+                                </Col>
 
-                                <Button>
-                                  MAX
-                                </Button>
-                              </Flex>
+                                <Col span={6}>
+                                  <Button block>
+                                    MAX
+                                  </Button>
+                                </Col>
+                              </Row>
 
-                              <Paragraph>
+                              <Text>Balance: $33.78 USDC</Text>
+
+                              <Paragraph type="secondary">
                                 By clicking “Invest” below, I hereby agree to the
                                 <Link href="https://ant.design" target="_blank">
                                   {" Pool Aggrement"}

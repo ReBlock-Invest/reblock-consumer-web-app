@@ -33,6 +33,10 @@ const AppThemeConfig: ThemeConfig = {
       itemColor: Colors.primary, 
       itemSelectedBg: Colors.primaryLight,
       itemSelectedColor: Colors.primary,
+    },
+    InputNumber: {
+      fontFamily: FontFamilies.secondary,
+      fontSize: 24
     }
   }
 }
