@@ -35,7 +35,6 @@ const ProjectPage: React.FC = () => {
   const [isOpenConfirmInvestmentDrawer, setIsOpenInvestmentDrawer] =
     useState(false)
   const [investmentValue, setInvestmentValue] = useState(0)
-  const [backdoorInvest, setBackdoorInvest] = useState(false)
 
   const { data: userInfoData } = useQuery({
     queryKey: ['userinfo'],
@@ -56,7 +55,7 @@ const ProjectPage: React.FC = () => {
     if (!userInfoData || !userInfoData.invest_state || userInfoData.invest_state === UserInvestStateEnum.WALLET_VERIFIED) {
       return "Verify Identity"
     }
-    if (userInfoData.invest_state === UserInvestStateEnum.PENDING_KYC && !backdoorInvest) {
+    if (userInfoData.invest_state === UserInvestStateEnum.PENDING_KYC) {
       return "Pending Verification"
     }
     return "Invest"
@@ -68,7 +67,7 @@ const ProjectPage: React.FC = () => {
     } else if (!userInfoData || !userInfoData.invest_state || userInfoData.invest_state === UserInvestStateEnum.WALLET_VERIFIED) {
       kycStore.setIsShowKYCModal(true)
     }
-    if (userInfoData?.invest_state === UserInvestStateEnum.KYC_VERIFIED || backdoorInvest) {
+    if (userInfoData?.invest_state === UserInvestStateEnum.KYC_VERIFIED) {
       setIsOpenInvestmentDrawer(true)
     }
   }, [authenticationStore, userInfoData, kycStore])
@@ -176,7 +175,7 @@ const ProjectPage: React.FC = () => {
                       label: 'Invest',
                       children: (
                         <Flex vertical gap={8}>
-                          {userInfoData?.invest_state == UserInvestStateEnum.KYC_VERIFIED || backdoorInvest ? (
+                          {userInfoData?.invest_state == UserInvestStateEnum.KYC_VERIFIED ? (
                             <Space direction="vertical">
                               <Row
                                 style={{
@@ -198,7 +197,7 @@ const ProjectPage: React.FC = () => {
                                 </Col>
 
                                 <Col span={6}>
-                                  <Button block onClick={() => setBackdoorInvest(true)}>
+                                  <Button block>
                                     MAX
                                   </Button>
                                 </Col>
