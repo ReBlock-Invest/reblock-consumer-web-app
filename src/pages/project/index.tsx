@@ -35,6 +35,7 @@ const ProjectPage: React.FC = () => {
   const [isOpenConfirmInvestmentDrawer, setIsOpenInvestmentDrawer] =
     useState(false)
   const [investmentValue, setInvestmentValue] = useState(0)
+  const [backdoorInvest, setBackdoorInvest] = useState(false)
 
   const { data: userInfoData } = useQuery({
     queryKey: ['userinfo'],
@@ -197,7 +198,7 @@ const ProjectPage: React.FC = () => {
                                 </Col>
 
                                 <Col span={6}>
-                                  <Button block>
+                                  <Button block onClick={() => setBackdoorInvest(true)}>
                                     MAX
                                   </Button>
                                 </Col>
@@ -217,7 +218,7 @@ const ProjectPage: React.FC = () => {
                           <Button
                             type="primary"
                             size='large'
-                            icon={userInfoData?.invest_state === UserInvestStateEnum.KYC_VERIFIED ? <PlusOutlined /> : null}
+                            icon={userInfoData?.invest_state === UserInvestStateEnum.KYC_VERIFIED || backdoorInvest ? <PlusOutlined /> : null}
                             onClick={onInvestButtonPressed}
                           >
                             {investButtonText}
