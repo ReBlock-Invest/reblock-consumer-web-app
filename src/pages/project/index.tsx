@@ -56,7 +56,7 @@ const ProjectPage: React.FC = () => {
     if (!userInfoData || !userInfoData.invest_state || userInfoData.invest_state === UserInvestStateEnum.WALLET_VERIFIED) {
       return "Verify Identity"
     }
-    if (userInfoData.invest_state === UserInvestStateEnum.PENDING_KYC) {
+    if (userInfoData.invest_state === UserInvestStateEnum.PENDING_KYC && !backdoorInvest) {
       return "Pending Verification"
     }
     return "Invest"
@@ -68,7 +68,7 @@ const ProjectPage: React.FC = () => {
     } else if (!userInfoData || !userInfoData.invest_state || userInfoData.invest_state === UserInvestStateEnum.WALLET_VERIFIED) {
       kycStore.setIsShowKYCModal(true)
     }
-    if (userInfoData?.invest_state === UserInvestStateEnum.KYC_VERIFIED) {
+    if (userInfoData?.invest_state === UserInvestStateEnum.KYC_VERIFIED || backdoorInvest) {
       setIsOpenInvestmentDrawer(true)
     }
   }, [authenticationStore, userInfoData, kycStore])
@@ -176,7 +176,7 @@ const ProjectPage: React.FC = () => {
                       label: 'Invest',
                       children: (
                         <Flex vertical gap={8}>
-                          {userInfoData?.invest_state === UserInvestStateEnum.PENDING_KYC || userInfoData?.invest_state === UserInvestStateEnum.WALLET_VERIFIED ? (
+                          {userInfoData?.invest_state == UserInvestStateEnum.KYC_VERIFIED ? (
                             <Space direction="vertical">
                               <Row
                                 style={{
@@ -193,7 +193,7 @@ const ProjectPage: React.FC = () => {
                                     precision={2}
                                     value={investmentValue}
                                     onChange={(value) => setInvestmentValue(value || 0)}
-                                    style={{width: '100%'}}
+                                    style={{ width: '100%' }}
                                   />
                                 </Col>
 
@@ -218,7 +218,7 @@ const ProjectPage: React.FC = () => {
                           <Button
                             type="primary"
                             size='large'
-                            icon={userInfoData?.invest_state === UserInvestStateEnum.KYC_VERIFIED || backdoorInvest ? <PlusOutlined /> : null}
+                            icon={userInfoData?.invest_state === UserInvestStateEnum.KYC_VERIFIED ? <PlusOutlined /> : null}
                             onClick={onInvestButtonPressed}
                           >
                             {investButtonText}
@@ -230,7 +230,12 @@ const ProjectPage: React.FC = () => {
                       key: 'withdraw',
                       label: 'Withdraw',
                       children: (
-                        <Text>Withdraw Component</Text>
+                        <Button
+                          type="primary"
+                          size='large'
+                        >
+                          Withdraw
+                        </Button>
                       )
                     }
                   ]}
