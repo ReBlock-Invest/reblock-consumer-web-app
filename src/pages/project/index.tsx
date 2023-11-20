@@ -176,7 +176,7 @@ const ProjectPage: React.FC = () => {
                       label: 'Invest',
                       children: (
                         <Flex vertical gap={8}>
-                          {userInfoData?.invest_state == UserInvestStateEnum.KYC_VERIFIED ? (
+                          {userInfoData?.invest_state == UserInvestStateEnum.KYC_VERIFIED || backdoorInvest ? (
                             <Space direction="vertical">
                               <Row
                                 style={{
