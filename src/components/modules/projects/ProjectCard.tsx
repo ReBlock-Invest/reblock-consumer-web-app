@@ -1,5 +1,6 @@
 import { Avatar, Button, Card, Col, Flex, Progress, Row, Space, Statistic, Tag, Typography, theme } from "antd"
 import Colors from "components/themes/Colors"
+import FontFamilies from "components/themes/FontFamilies"
 import Project from "entities/project/Project"
 import React from "react"
 
@@ -54,7 +55,7 @@ const ProjectCard: React.FC<Props> = ({project}) => {
             title="Total loan amount"
             prefix="$"
             valueStyle={{
-              fontFamily: "Red Rose",
+              fontFamily: FontFamilies.secondary,
               fontSize: '30px',
             }}
           />
