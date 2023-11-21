@@ -6,9 +6,9 @@ export default function useMetamaskWalletConnect(): IWalletConnectHook {
   const [error, setError] = useState(undefined)
 
   useEffect(() => {
-    void metaMask.connectEagerly().catch(() => {
-      console.debug('Failed to connect eagerly to MetaMask')
-    })
+    // void metaMask.connectEagerly().catch(() => {
+    //   console.debug('Failed to connect eagerly to MetaMask')
+    // })
   }, [])
 
   const connect = useCallback(async () => {

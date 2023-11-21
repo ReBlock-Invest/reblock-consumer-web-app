@@ -14,6 +14,8 @@ import { hooks as metaMaskHooks, metaMask } from 'lib/web3/connectors/metaMask'
 import { hooks as walletConnectHooks, walletConnect } from 'lib/web3/connectors/walletConnect'
 import React, { ReactNode } from 'react'
 import useAuthenticationStore from 'stores/useAuthenticationStore'
+import usePlugWalletConnect from 'lib/web3/hooks/usePlugWalletConnect'
+import { Balance } from 'types'
 
 const connectors: [MetaMask | WalletConnect | WalletConnect | CoinbaseWallet, Web3ReactHooks][] = [
   [metaMask, metaMaskHooks],
@@ -22,8 +24,9 @@ const connectors: [MetaMask | WalletConnect | WalletConnect | CoinbaseWallet, We
 ]
 
 type Context = {
+  isPlugWalletConnected: boolean
   accounts?: string[]
-  balances?: string[]
+  balances?: Balance[]
   disconnect: () => Promise<void>
   isActive: boolean
   isLoading: boolean
@@ -31,10 +34,12 @@ type Context = {
   connectMetaMask: () => Promise<void>
   connectCoinbase: () => Promise<void>
   connectWalletConnect: () => Promise<void>
+  connectPlug: () => Promise<void>
   provider?: Web3Provider
 }
 
 export const Web3Context = React.createContext<Context>({
+  isPlugWalletConnected: false,
   accounts: [],
   balances: [],
   disconnect: async () => {}, 
@@ -44,6 +49,7 @@ export const Web3Context = React.createContext<Context>({
   connectMetaMask: async () => {},
   connectCoinbase: async () => {},
   connectWalletConnect: async () => {},
+  connectPlug: async () => {},
   provider: undefined
 })
 
@@ -66,9 +72,27 @@ const Web3ContextProviderWrapper: React.FC<{
     error: walletConnectError,
   } = useWalletConnectWalletConnect()
 
-  const { connector, isActivating, isActive, accounts, provider } = useWeb3React()
+  const {
+    connect: connectPlug,
+    error: plugError,
+    isActivating: plugIsActivating,
+    account: plugAccount,
+    balances: plugBalances
+  } = usePlugWalletConnect()
 
-  const [balances, setBalances] = useState<string[] | undefined>(undefined)
+  const {
+    connector,
+    isActivating,
+    isActive,
+    accounts,
+    provider,
+  } = useWeb3React()
+
+  const [balances, setBalances] = useState<Balance[] | undefined>(undefined)
+
+  useEffect(() => {
+    setBalances(plugBalances)
+  }, [plugBalances])
   
   useEffect(() => {
     if (provider && accounts?.length) {
@@ -77,7 +101,13 @@ const Web3ContextProviderWrapper: React.FC<{
       void Promise.all(accounts.map((account: string) => provider.getBalance(account)))
         .then((balances) => {
         if (stale) return
-        setBalances(balances.map((balance) => formatEther(balance)))
+
+        const mappedBalances: Balance[] = balances.map((balance) => ({
+          currency: 'ETH',
+          amount: formatEther(balance),
+        }))
+
+        setBalances(mappedBalances)
       })
 
       return () => {
@@ -100,15 +130,17 @@ const Web3ContextProviderWrapper: React.FC<{
 
   return (
     <Web3Context.Provider value={{
-      accounts,
+      isPlugWalletConnected: !!plugAccount,
+      accounts: plugAccount ? [plugAccount] : accounts,
       balances,
-      isActive,
-      isLoading: isActivating,
-      error: metamaskError || coinbaseError || walletConnectError,
+      isActive: isActive || !!plugAccount,
+      isLoading: isActivating || plugIsActivating,
+      error: metamaskError || coinbaseError || walletConnectError || plugError,
       disconnect,
       connectCoinbase,
       connectMetaMask,
       connectWalletConnect,
+      connectPlug,
       provider,
     }}>
       {children}

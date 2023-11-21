@@ -13,6 +13,7 @@ const ConnectWalletModal: React.FC<Props> = () => {
     connectMetaMask,
     connectCoinbase,
     connectWalletConnect,
+    connectPlug
   } = useWalletConnect()
 
   const { isShowConnectWalletModal, setIsShowConnectWalletModal} = useAuthenticationStore()
@@ -46,16 +47,17 @@ const ConnectWalletModal: React.FC<Props> = () => {
           <Divider/>
           <Space
             className="cursor-pointer"
-            onClick={() => {              
+            onClick={() => {         
+              connectPlug()
               setIsShowConnectWalletModal(false)
             }}
           >
             <img
-              src="/images/logo-icp.png"
+              src="/images/logo-plug-wallet.png"
               alt="logo-icp"
               style={{width: '48px'}}
             />
-            <Text strong>Internet Identity</Text>
+            <Text strong>PlugWallet</Text>
           </Space>
           <Divider/>
           <Space
