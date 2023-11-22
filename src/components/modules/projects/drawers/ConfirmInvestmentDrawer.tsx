@@ -29,7 +29,7 @@ const ConfirmInvestmentDrawer: React.FC<Props> = ({open, onClose, value}) => {
             </Button>
           </Col>
           <Col span={12}>
-            <Button type="primary" block size="large">
+            <Button type="primary" block size="large" onClick={onClose}>
               Confirm
             </Button>
           </Col>
