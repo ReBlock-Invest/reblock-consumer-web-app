@@ -24,7 +24,7 @@ const ConfirmInvestmentDrawer: React.FC<Props> = ({open, onClose, value}) => {
       footer={
         <Row style={{width: '100%'}} gutter={8}>
           <Col span={12}>
-            <Button block size="large">
+            <Button block size="large" onClick={onClose}>
               Cancel
             </Button>
           </Col>
