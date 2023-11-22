@@ -11,6 +11,7 @@ class ProjectRepository extends BaseRepository {
     const { items } = await listDocs<Project>({
       collection: "Project",
     });
+    console.log('debug1', items)
     return items || [];
   }
 

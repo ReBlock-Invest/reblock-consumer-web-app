@@ -1,4 +1,4 @@
-export default idlFactory = ({ IDL }) => {
+export default function idlFactory({ IDL }) {
   const Subaccount = IDL.Vec(IDL.Nat8);
   const Balance = IDL.Nat;
   const BurnArgs = IDL.Record({
