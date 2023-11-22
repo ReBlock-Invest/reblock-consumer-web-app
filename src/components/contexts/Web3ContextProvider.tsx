@@ -77,7 +77,8 @@ const Web3ContextProviderWrapper: React.FC<{
     error: plugError,
     isActivating: plugIsActivating,
     account: plugAccount,
-    balances: plugBalances
+    balances: plugBalances,
+    disconnect: plugDisconnect,
   } = usePlugWalletConnect()
 
   const {
@@ -124,9 +125,11 @@ const Web3ContextProviderWrapper: React.FC<{
       await connector.resetState()
     }
 
+    plugDisconnect()
+
     authenticationStore.reset()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [connector, authenticationStore.reset])
+  }, [connector, authenticationStore.reset, plugDisconnect])
 
   return (
     <Web3Context.Provider value={{

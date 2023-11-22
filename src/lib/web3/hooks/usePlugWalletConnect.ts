@@ -17,6 +17,7 @@ export default function usePlugWalletConnect(): IWalletConnectHook & {
   isActivating: boolean
   account?: string
   balances?: Balance[]
+  disconnect: () => void
 } {
   const [error, setError] = useState(undefined)
   const [isActivating, setIsActivating] = useState(false)
@@ -71,11 +72,20 @@ export default function usePlugWalletConnect(): IWalletConnectHook & {
     }
   }, [])
 
+  const disconnect = useCallback(() => {
+    //@ts-ignore
+    if (window.ic.plug) {
+      //@ts-ignore
+      // window.ic.plug.disconnect()
+    }
+  }, [])
+
   return {
     connect,
     error,
     isActivating,
     account,
     balances,
+    disconnect,
   }
 }

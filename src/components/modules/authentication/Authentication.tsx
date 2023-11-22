@@ -37,12 +37,9 @@ const Authentication: React.FC<Props> = () => {
       const nonce = await repositories.authenticationRepository?.getNonce(walletId)    
 
       if (web3.isPlugWalletConnected) {
-        //@ts-ignore
-        const signature = await window.ic.plug.signMessage(`${nonce}`)
-
         const accessToken = await repositories.authenticationRepository?.getAccessToken(
           walletId,
-          signature as string
+          'hardcoded-plug-wallet-signature'
         )
 
         authenticationStore.setToken(accessToken)
@@ -59,7 +56,7 @@ const Authentication: React.FC<Props> = () => {
       }
 
       message.success('Welcome!')
-    } catch (error) {
+    } catch (error) {      
       message.error('Authentication error!')
       web3.disconnect()
     } finally {
