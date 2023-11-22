@@ -140,7 +140,7 @@ const MainLayout: React.FC<Props> = ({ children }) => {
           </div>
         </Content>
         <Footer style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-          Reblock © 2023. Made with ❤️ from Bali.
+          ReBlock © 2023. Made with ❤️ from Bali.
           Powered by <Link to="https://dashboard.internetcomputer.org/canister/fr33d-ayaaa-aaaal-adbpa-cai" target="_blank" rel="noopener noreferrer">
             <Image src="/images/logo-icp.png" height={18} preview={false}></Image></Link>
         </Footer>
