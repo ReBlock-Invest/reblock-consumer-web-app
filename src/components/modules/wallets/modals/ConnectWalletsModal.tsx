@@ -16,7 +16,7 @@ const ConnectWalletModal: React.FC<Props> = () => {
     connectPlug
   } = useWalletConnect()
 
-  const { isShowConnectWalletModal, setIsShowConnectWalletModal} = useAuthenticationStore()
+  const { isShowConnectWalletModal, setIsShowConnectWalletModal } = useAuthenticationStore()
 
   return (
     <Modal
@@ -30,7 +30,22 @@ const ConnectWalletModal: React.FC<Props> = () => {
           <Spin size="large" />
         </Flex>
       ) : (
-        <Flex vertical style={{paddingTop: '16px'}}>
+        <Flex vertical style={{ paddingTop: '16px' }}>
+          <Space
+            className="cursor-pointer"
+            onClick={() => {
+              connectPlug()
+              setIsShowConnectWalletModal(false)
+            }}
+          >
+            <img
+              src="/images/logo-plug-wallet.png"
+              alt="logo-icp"
+              style={{ width: '48px' }}
+            />
+            <Text strong>Plug</Text>
+          </Space>
+          <Divider />
           <Space
             className="cursor-pointer"
             onClick={() => {
@@ -44,22 +59,7 @@ const ConnectWalletModal: React.FC<Props> = () => {
             />
             <Text strong>Metamask</Text>
           </Space>
-          <Divider/>
-          <Space
-            className="cursor-pointer"
-            onClick={() => {         
-              connectPlug()
-              setIsShowConnectWalletModal(false)
-            }}
-          >
-            <img
-              src="/images/logo-plug-wallet.png"
-              alt="logo-icp"
-              style={{width: '48px'}}
-            />
-            <Text strong>PlugWallet</Text>
-          </Space>
-          <Divider/>
+          <Divider />
           <Space
             className="cursor-pointer"
             onClick={() => {
@@ -73,7 +73,7 @@ const ConnectWalletModal: React.FC<Props> = () => {
             />
             <Text strong>WalletConnect</Text>
           </Space>
-          <Divider/>
+          <Divider />
           <Space
             className="cursor-pointer"
             onClick={() => {
