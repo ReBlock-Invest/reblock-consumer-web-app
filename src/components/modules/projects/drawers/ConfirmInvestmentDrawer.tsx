@@ -6,9 +6,10 @@ const { Text } = Typography
 type Props = {
   open?: boolean
   onClose?: () => void
+  value: number
 }
 
-const ConfirmInvestmentDrawer: React.FC<Props> = ({open, onClose}) => {
+const ConfirmInvestmentDrawer: React.FC<Props> = ({open, onClose, value}) => {
   const {
     token: {
       colorBgLayout,
@@ -45,15 +46,15 @@ const ConfirmInvestmentDrawer: React.FC<Props> = ({open, onClose}) => {
           className="p-sm"
         >
           <Statistic
-            value={33.78}
+            value={value}
             precision={2}
-            prefix="$USDC"
+            suffix="ICP"
           />
         </div>
 
         <Alert 
           message="Withdrawal timeline"
-          description="Phasellus purus purus, vulputate non lacus vehicula, tincidunt facilisis eros. Suspendisse sagittis sodales elit, vitae dapibus felis facilisis vitae. Vivamus sed fringilla augue. Maecenas ac porttitor sapien. Aenean rhoncus orci velit, ut maximus enim pellentesque non. Etiam euismod nibh sed est rutrum, vel mollis nibh blandit. Suspendisse efficitur tristique nibh nec vulputate. In feugiat dignissim nisl ac fermentum."
+          description="Based on withdrawal queue and the projected repayments by borrowers, you may not be able to withdraw the majority of your assets for at least 30 days. The actual time to withdraw your assets may be shorter or longer depending on variety of factors."
           type="success"
         />
 

@@ -53,7 +53,7 @@ const ProjectCard: React.FC<Props> = ({project}) => {
           <Statistic
             value={project.total_loan_amount}
             title="Total loan amount"
-            prefix="$"
+            suffix="ICP"
             valueStyle={{
               fontFamily: FontFamilies.secondary,
               fontSize: '30px',

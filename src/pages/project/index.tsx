@@ -85,6 +85,7 @@ const ProjectPage: React.FC = () => {
           <ConfirmInvestmentDrawer
             open={isOpenConfirmInvestmentDrawer}
             onClose={() => setIsOpenInvestmentDrawer(false)}
+            value={investmentValue}
           />
           <Layout.Content style={{ overflowX: 'hidden', marginTop: '-1px', }}>
             <Flex
@@ -162,7 +163,7 @@ const ProjectPage: React.FC = () => {
                     value={20}
                     precision={2}
                     decimalSeparator="."
-                    prefix="$"
+                    suffix="ICP"
                   />)}
 
                 <Divider style={{ margin: 0 }} />
@@ -188,7 +189,7 @@ const ProjectPage: React.FC = () => {
                               >
                                 <Col span={18}>
                                   <InputNumber
-                                    prefix="$"
+                                    suffix="ICP"
                                     precision={2}
                                     value={investmentValue}
                                     onChange={(value) => setInvestmentValue(value || 0)}
@@ -203,7 +204,7 @@ const ProjectPage: React.FC = () => {
                                 </Col>
                               </Row>
 
-                              <Text>Balance: $33.78 USDC</Text>
+                              <Text>Balance: 33.78 ICP</Text>
 
                               <Paragraph type="secondary">
                                 By clicking “Invest” below, I hereby agree to the
@@ -278,11 +279,10 @@ const ProjectPage: React.FC = () => {
                 <Space direction="vertical" size={0}>
                   <Text type="secondary">Outstanding loan value</Text>
                   <Statistic
-                    value={1341345.55}
+                    value={project.total_loan_amount}
                     precision={2}
-                    prefix="$"
                     suffix={
-                      <Text type="secondary" style={{ fontWeight: 400 }}>USDC</Text>
+                      <Text type="secondary" style={{ fontWeight: 400 }}>ICP</Text>
                     }
                     valueStyle={{
                       fontFamily: FontFamilies.primary,
@@ -297,11 +297,10 @@ const ProjectPage: React.FC = () => {
                 <Space direction="vertical" size={0}>
                   <Text type="secondary">Loan originated</Text>
                   <Statistic
-                    value={4587221.04}
+                    value={project.total_loan_amount * 0.78}
                     precision={2}
-                    prefix="$"
                     suffix={
-                      <Text type="secondary" style={{ fontWeight: 400 }}>USDC</Text>
+                      <Text type="secondary" style={{ fontWeight: 400 }}>ICP</Text>
                     }
                     valueStyle={{
                       fontFamily: FontFamilies.primary,
@@ -316,9 +315,8 @@ const ProjectPage: React.FC = () => {
                 <Space direction="vertical" size={0}>
                   <Text type="secondary">30-Day APY</Text>
                   <Statistic
-                    value={6.54}
+                    value={project.APR}
                     precision={2}
-                    prefix="$"
                     suffix={
                       <Text type="secondary" style={{ fontWeight: 400 }}>%</Text>
                     }
@@ -354,9 +352,8 @@ const ProjectPage: React.FC = () => {
                   <Statistic
                     value={96}
                     precision={2}
-                    prefix="$"
                     suffix={
-                      <Text type="secondary" style={{ fontWeight: 400 }}>USDC</Text>
+                      <Text type="secondary" style={{ fontWeight: 400 }}>ICP</Text>
                     }
                     valueStyle={{
                       fontFamily: FontFamilies.primary,
