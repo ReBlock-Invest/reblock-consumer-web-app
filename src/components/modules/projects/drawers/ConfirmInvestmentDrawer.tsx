@@ -4,12 +4,14 @@ import React from "react"
 const { Text } = Typography
 
 type Props = {
+  isLoading: boolean
   open?: boolean
   onClose?: () => void
+  onConfirm: () => void
   value: number
 }
 
-const ConfirmInvestmentDrawer: React.FC<Props> = ({open, onClose, value}) => {
+const ConfirmInvestmentDrawer: React.FC<Props> = ({isLoading, open, onClose, onConfirm, value}) => {
   const {
     token: {
       colorBgLayout,
@@ -21,6 +23,7 @@ const ConfirmInvestmentDrawer: React.FC<Props> = ({open, onClose, value}) => {
       open={open}
       onClose={onClose}
       title="Confirm Investment"
+      closable={!isLoading}
       footer={
         <Row style={{width: '100%'}} gutter={8}>
           <Col span={12}>
@@ -29,7 +32,7 @@ const ConfirmInvestmentDrawer: React.FC<Props> = ({open, onClose, value}) => {
             </Button>
           </Col>
           <Col span={12}>
-            <Button type="primary" block size="large" onClick={onClose}>
+            <Button type="primary" block size="large" onClick={onConfirm} loading={isLoading}>
               Confirm
             </Button>
           </Col>

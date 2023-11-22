@@ -9,7 +9,7 @@ export default function useWalletConnectWalletConnect(): IWalletConnectHook {
 
   useEffect(() => {
     walletConnect.events.on(URI_AVAILABLE, (uri: string) => {
-      console.log(`debug1 uri: ${uri}`)
+      // console.log(`debug1 uri: ${uri}`)
     })
   }, [])
 

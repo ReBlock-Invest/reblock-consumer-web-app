@@ -37,22 +37,22 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <RepositoriesContextProvider>
-        <QueryClientContextProvider>
-          <ConfigProvider theme={AppThemeConfig}>
-            <AntdApp>
-              <Web3ContextProvider>
+    <div className="App">      
+      <QueryClientContextProvider>
+        <ConfigProvider theme={AppThemeConfig}>
+          <AntdApp>
+            <Web3ContextProvider>
+              <RepositoriesContextProvider>
                 <PersonalInquiryModal />
                 <ConnectWalletModal />
 
                 <Authentication />
                 <RouterProvider router={router} />
-              </Web3ContextProvider>
-            </AntdApp>
-          </ConfigProvider>
-        </QueryClientContextProvider>
-      </RepositoriesContextProvider>
+              </RepositoriesContextProvider>
+            </Web3ContextProvider>
+          </AntdApp>
+        </ConfigProvider>
+      </QueryClientContextProvider>    
     </div>
   )
 }

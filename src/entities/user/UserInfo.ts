@@ -3,7 +3,7 @@ import UserTypeIDEnum from "./UserTypeIDEnum"
 
 type UserInfo = {
   invest_state: UserInvestStateEnum
-  user_type: UserTypeIDEnum
+  user_type: UserTypeIDEnum | ""
   address: string
 }
 
