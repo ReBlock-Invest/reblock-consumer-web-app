@@ -35,7 +35,6 @@ const Authentication: React.FC<Props> = () => {
       authenticationStore.setIsLoading(true)
 
       const nonce = await repositories.authenticationRepository?.getNonce(walletId)    
-      
       if (web3.isPlugWalletConnected) {
         //@ts-ignore
         const signature = await window.ic.plug.signMessage(`${nonce}`)
@@ -72,8 +71,7 @@ const Authentication: React.FC<Props> = () => {
     authenticationStore.setToken,
     message,
     repositories.authenticationRepository,
-    web3.provider,
-    web3.isPlugWalletConnected,
+    web3.provider
   ])
 
   useEffect(() => {
