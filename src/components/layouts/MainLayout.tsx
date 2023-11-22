@@ -139,10 +139,10 @@ const MainLayout: React.FC<Props> = ({ children }) => {
             {children}
           </div>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>
+        <Footer style={{ textAlign: 'center', verticalAlign: 'middle' }}>
           Reblock © 2023. Made with ❤️ from Bali.
           Powered by <Link to="https://dashboard.internetcomputer.org/canister/fr33d-ayaaa-aaaal-adbpa-cai" target="_blank" rel="noopener noreferrer">
-            <Image src="https://ljyte-qiaaa-aaaah-qaiva-cai.raw.ic0.app/be6d1595e958282d9ad760da6a40c1f8.svg" height={12} preview={false}></Image></Link>
+            <Image src="/images/logo-icp.png" height={18} preview={false}></Image></Link>
         </Footer>
       </Layout>
     </App>
