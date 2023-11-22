@@ -33,22 +33,32 @@ const Authentication: React.FC<Props> = () => {
     try {
       isAuthenticatingRef.current = true
       authenticationStore.setIsLoading(true)
+
       const nonce = await repositories.authenticationRepository?.getNonce(walletId)    
 
-      const signer = web3.provider?.getSigner(walletId)
+      if (web3.isPlugWalletConnected) {
+        const accessToken = await repositories.authenticationRepository?.getAccessToken(
+          walletId,
+          'hardcoded-plug-wallet-signature'
+        )
 
-      const signature = await signer?.signMessage(`${nonce}`)
+        authenticationStore.setToken(accessToken)
+      } else {
+        const signer = web3.provider?.getSigner(walletId)
+        const signature = await signer?.signMessage(`${nonce}`)
 
-      const accessToken = await repositories.authenticationRepository?.getAccessToken(
-        walletId,
-        signature as string
-      )
+        const accessToken = await repositories.authenticationRepository?.getAccessToken(
+          walletId,
+          signature as string
+        )
 
-      authenticationStore.setToken(accessToken)
+        authenticationStore.setToken(accessToken)
+      }
 
       message.success('Welcome!')
-    } catch (error) {
+    } catch (error) {      
       message.error('Authentication error!')
+      web3.disconnect()
     } finally {
       authenticationStore.setIsLoading(false)
       isAuthenticatingRef.current = false
@@ -59,7 +69,8 @@ const Authentication: React.FC<Props> = () => {
     authenticationStore.setToken,
     message,
     repositories.authenticationRepository,
-    web3.provider
+    web3.provider,
+    web3.isPlugWalletConnected,
   ])
 
   useEffect(() => {
