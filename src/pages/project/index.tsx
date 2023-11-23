@@ -1,7 +1,7 @@
-import { Affix, Anchor, Avatar, Button, Card, Col, Divider, Flex, Layout, List, Row, Space, Statistic, Skeleton, Tabs, Tag, Typography, theme, InputNumber } from "antd"
+import { Affix, Anchor, Avatar, Button, Card, Col, Divider, Flex, Layout, List, Row, Space, Statistic, Skeleton, Tabs, Tag, Typography, theme, InputNumber, App } from "antd"
 import { PlusOutlined } from "@ant-design/icons"
 import { useParams } from "react-router-dom"
-import { useQuery } from "react-query"
+import { useMutation, useQuery } from "react-query"
 import Colors from "components/themes/Colors"
 import FontFamilies from "components/themes/FontFamilies"
 import MainLayout from "components/layouts/MainLayout"
@@ -16,6 +16,7 @@ import ConfirmInvestmentDrawer from "components/modules/projects/drawers/Confirm
 const { Title, Paragraph, Text, Link } = Typography
 
 const ProjectPage: React.FC = () => {
+  const { message } = App.useApp()
   const {
     token: {
       colorPrimary,
@@ -48,6 +49,22 @@ const ProjectPage: React.FC = () => {
     )
   })
 
+  const { mutate: investMutation, isLoading: investMutationLoading } = useMutation({
+    mutationKey: ['invest', projectId],
+    mutationFn: async (value: number) => {
+      await repositories.icpTransactionRepository?.invest(
+        value
+      )
+    },
+    onSuccess() {
+      message.success('Investment succeed!')
+      setIsOpenInvestmentDrawer(false)
+    },
+    onError(err) {
+      message.error('Investment failed!')
+    }
+  })
+
   const investButtonText = useMemo(() => {
     if (!authenticationStore.token) {
       return "Connect Wallet"
@@ -68,9 +85,13 @@ const ProjectPage: React.FC = () => {
       kycStore.setIsShowKYCModal(true)
     }
     if (userInfoData?.invest_state === UserInvestStateEnum.KYC_VERIFIED) {
-      setIsOpenInvestmentDrawer(true)
+      if (investmentValue <= 0) {
+        message.error("Investment value should be greater than zero!")
+      } else {
+        setIsOpenInvestmentDrawer(true)
+      }
     }
-  }, [authenticationStore, userInfoData, kycStore])
+  }, [authenticationStore, userInfoData, kycStore, investmentValue, message])
 
   const project = data?.data!;
 
@@ -83,8 +104,10 @@ const ProjectPage: React.FC = () => {
       ) : (
         <Layout>
           <ConfirmInvestmentDrawer
+            isLoading={investMutationLoading}
             open={isOpenConfirmInvestmentDrawer}
             onClose={() => setIsOpenInvestmentDrawer(false)}
+            onConfirm={() => investMutation(investmentValue)}
             value={investmentValue}
           />
           <Layout.Content style={{ overflowX: 'hidden', marginTop: '-1px', }}>

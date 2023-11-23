@@ -1,4 +1,4 @@
-export default ({ IDL }) => {
+export default function idlFactory ({ IDL }) {
   const AccountIdentifier = IDL.Text;
   const Duration = IDL.Record({ 'secs' : IDL.Nat64, 'nanos' : IDL.Nat32 });
   const ArchiveOptions = IDL.Record({

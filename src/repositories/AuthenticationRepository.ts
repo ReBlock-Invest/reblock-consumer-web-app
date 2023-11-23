@@ -1,6 +1,7 @@
 import { IHttpClient } from "lib/httpclient/types";
 import BaseRepository from "./BaseRepository";
 import { GetNonceResponse, GetUserInfoResponse, IssueUIDResponse, WalletLoginResponse } from "./types";
+import UserInvestStateEnum from "entities/user/UserInvestStateEnum";
 
 class AuthenticationRepository extends BaseRepository {
   private httpClient: IHttpClient
@@ -31,6 +32,14 @@ class AuthenticationRepository extends BaseRepository {
 
   async getUserInfo(): Promise<GetUserInfoResponse> {
     const res = await this.httpClient.get<GetUserInfoResponse>(`${this.host}/userinfo`)
+    
+    if (process.env.REACT_APP_MOCK_KYC_ENABLED) {
+      return {
+        ...res.data,
+        invest_state: UserInvestStateEnum.KYC_VERIFIED,
+      }
+    }  
+    
     return res.data
   }
 

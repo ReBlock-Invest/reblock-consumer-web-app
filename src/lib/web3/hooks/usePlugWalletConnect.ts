@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import IWalletConnectHook from '../interfaces/IWalletConnectHook'
 import { Balance } from 'types';
 
-const nnsCanisterId = 'qoctq-giaaa-aaaaa-aaaea-cai'
+const nnsCanisterId = process.env.REACT_APP_NNS_CANISTER_ID
 const whitelist = [
   nnsCanisterId,
 ];
@@ -10,7 +10,7 @@ const host = "https://mainnet.dfinity.network"
 
 const onConnectionUpdate = () => {
   //@ts-ignore
-  console.log(window.ic.plug.sessionManager.sessionData)
+  // console.log(window.ic.plug.sessionManager.sessionData)
 }
 
 export default function usePlugWalletConnect(): IWalletConnectHook & {

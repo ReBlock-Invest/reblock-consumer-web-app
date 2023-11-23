@@ -10,7 +10,6 @@ const useInterpolateScrollValue = (x: number, y: number, a: number, b: number) =
       const range = b - a;
       const normalizedValue = (normalizedScroll - a) / range;
       const interpolated = x + normalizedValue * (y - x);
-      console.log('debug1', interpolated)
       setInterpolatedValue(interpolated);
     };
 
