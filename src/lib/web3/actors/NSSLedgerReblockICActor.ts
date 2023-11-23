@@ -4,14 +4,14 @@ import ICActor from "./ICActor"
 type SendDFXArgs = {
   to: string,
   fee: {
-    e8s: number
+    e8s: BigInt
   },
   amount: {
-    e8s: number
+    e8s: BigInt
   },
-  memo: number
-  from_subacount?: string[] | null
-  created_at_time?: string | null
+  memo: bigint
+  from_subaccount?: string[] | null
+  created_at_time?: string[] | null
 }
 interface NNSLedgerReblockICActorInterface {
   send_dfx(args: SendDFXArgs): Promise<void>
@@ -20,7 +20,8 @@ interface NNSLedgerReblockICActorInterface {
 interface NNSLedgerReblockICActorExtensionInterface extends NNSLedgerReblockICActorInterface, Actor {}
 
 export default class NNSLedgerReblockICActor extends ICActor<NNSLedgerReblockICActorExtensionInterface> implements NNSLedgerReblockICActorInterface  {
-  send_dfx(args: SendDFXArgs): Promise<void>  {
-    return this.getActor().send_dfx(args)
+  async send_dfx(args: SendDFXArgs): Promise<void>  {
+    const actor = await this.getActor()
+    await actor.send_dfx(args)
   }
 }

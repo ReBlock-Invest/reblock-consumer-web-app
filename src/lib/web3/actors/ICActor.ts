@@ -7,19 +7,24 @@ export type ICActorOptions = {
 }
 
 export default class ICActor<T extends Actor> {
-  private actor: T
+  private actor?: T
+  private canisterId: string
+  private idlFactory: any
 
   constructor(canisterId: string, idlFactory: any, options: ICActorOptions = {}) {
-    const agent = options.agent || new HttpAgent({ ...options.agentOptions })
-
-    this.actor = Actor.createActor(idlFactory, {
-      agent,
-      canisterId,
-      ...options.actorOptions,
-    });
+    this.canisterId = canisterId
+    this.idlFactory = idlFactory
   }
 
-  protected getActor(): T {
-    return this.actor
+  protected async getActor(): Promise<T> {
+    if (this.actor) return this.actor
+    
+    //@ts-ignore
+    const actor = await window.ic.plug.createActor({
+      canisterId: this.canisterId,
+      interfaceFactory: this.idlFactory,
+    })
+
+    return actor
   }
 }

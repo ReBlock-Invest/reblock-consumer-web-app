@@ -5345,6 +5345,13 @@ cross-spawn@^7.0.2, cross-spawn@^7.0.3:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
+crypto-random-bigint@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/crypto-random-bigint/-/crypto-random-bigint-2.1.0.tgz#07e1ab2de3676204f0fc8a6c46969bf480d524fe"
+  integrity sha512-g63bcqflSF6kWgV8Qgp8S8rmSCSPpltxTL3KbZvyvbQzQJwyKqjOD21JnQpDKVyc9mG2DlNRyXGnUZ7RrdmPeQ==
+  dependencies:
+    uint-rng "^1.1.0"
+
 crypto-random-string@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/crypto-random-string/-/crypto-random-string-2.0.0.tgz#ef2a7a966ec11083388369baa02ebead229b30d5"
@@ -11888,6 +11895,11 @@ thunky@^1.0.2:
   resolved "https://registry.yarnpkg.com/thunky/-/thunky-1.1.0.tgz#5abaf714a9405db0504732bbccd2cedd9ef9537d"
   integrity sha512-eHY7nBftgThBqOyHGVN+l8gF0BucP09fMo0oO/Lb0w1OF80dJv+lDVpXG60WMQvkcxAkNybKsrEIE3ZtKGmPrA==
 
+tiny-webcrypto@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/tiny-webcrypto/-/tiny-webcrypto-1.0.1.tgz#3700ce8fca27b5be1f8de93d8c2e2fe7124bc29f"
+  integrity sha512-xmRCZrKqgLNfDVjj12Da9l7a/gKyqwIQ0gTIQ2p+/tbosZxFGW41QQ5C6Pwz9tiVO0OTUDh8IcBqncVHbq1RqQ==
+
 tmpl@1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/tmpl/-/tmpl-1.0.5.tgz#8683e0b902bb9c20c4f726e3c0b69f36518c07cc"
@@ -12083,6 +12095,13 @@ typescript@^4.9.5:
   version "4.9.5"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.9.5.tgz#095979f9bcc0d09da324d58d03ce8f8374cbe65a"
   integrity sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==
+
+uint-rng@^1.1.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/uint-rng/-/uint-rng-1.2.0.tgz#9c38c3cdc8aeb3866bbe6afa4ca7c3529ad44dfc"
+  integrity sha512-ZQ+FZ7y4o0abzRjqHgSPXnC+sfpthLJI3B5zeazPh28f8l1WKTXxZfYvZrcS9RjrHDT6vFwc/KVi/1UyJC4s5A==
+  dependencies:
+    tiny-webcrypto "^1.0.1"
 
 uint8arrays@^3.0.0, uint8arrays@^3.1.0:
   version "3.1.1"

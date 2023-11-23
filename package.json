@@ -25,6 +25,7 @@
     "antd": "^5.10.2",
     "axios": "^1.6.1",
     "buffer": "^6.0.3",
+    "crypto-random-bigint": "^2.1.0",
     "ethers": "^6.8.1",
     "idx": "^3.0.1",
     "persona": "^4.11.0",

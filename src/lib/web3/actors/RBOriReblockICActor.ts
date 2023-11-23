@@ -3,16 +3,18 @@ import ICActor from "./ICActor"
 
 interface RBOriReblockICActorInterface {
   getDepositAddress(): Promise<string>
-  deposit(balance: number): Promise<any>
+  deposit(balance: bigint): Promise<any>
 }
 
 interface RBOriReblockICActorExtensionInterface extends RBOriReblockICActorInterface, Actor {}
 
 export default class RBOriReblockICActor extends ICActor<RBOriReblockICActorExtensionInterface> implements RBOriReblockICActorInterface  {
-  getDepositAddress(): Promise<string>  {
-    return this.getActor().getDepositAddress()
+  async getDepositAddress(): Promise<string>  {
+    const actor = await this.getActor()
+    return actor.getDepositAddress()
   }
-  deposit(balance: number): Promise<any> {
-    return this.getActor().deposit(balance)
+  async deposit(balance: bigint): Promise<any> {
+    const actor = await this.getActor()
+    return actor.deposit(balance)
   }
 }

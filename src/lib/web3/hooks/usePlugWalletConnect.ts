@@ -10,7 +10,7 @@ const host = "https://mainnet.dfinity.network"
 
 const onConnectionUpdate = () => {
   //@ts-ignore
-  console.log(window.ic.plug.sessionManager.sessionData)
+  // console.log(window.ic.plug.sessionManager.sessionData)
 }
 
 export default function usePlugWalletConnect(): IWalletConnectHook & {

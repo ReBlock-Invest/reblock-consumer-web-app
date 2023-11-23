@@ -58,6 +58,7 @@ const ProjectPage: React.FC = () => {
     },
     onSuccess() {
       message.success('Investment succeed!')
+      setIsOpenInvestmentDrawer(false)
     },
     onError(err) {
       message.error('Investment failed!')
