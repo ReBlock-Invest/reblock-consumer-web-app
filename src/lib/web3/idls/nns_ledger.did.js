@@ -1,11 +1,5 @@
 export default function idlFactory ({ IDL }) {
   const AccountIdentifier = IDL.Text;
-  const Duration = IDL.Record({ 'secs' : IDL.Nat64, 'nanos' : IDL.Nat32 });
-  const ArchiveOptions = IDL.Record({
-    'max_message_size_bytes' : IDL.Opt(IDL.Nat32),
-    'node_max_memory_size_bytes' : IDL.Opt(IDL.Nat32),
-    'controller_id' : IDL.Principal,
-  });
   const ICPTs = IDL.Record({ 'e8s' : IDL.Nat64 });
   const AccountBalanceArgs = IDL.Record({ 'account' : AccountIdentifier });
   const CanisterId = IDL.Principal;
