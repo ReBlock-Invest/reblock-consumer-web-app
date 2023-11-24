@@ -7,14 +7,6 @@ export default function idlFactory ({ IDL }) {
     'controller_id' : IDL.Principal,
   });
   const ICPTs = IDL.Record({ 'e8s' : IDL.Nat64 });
-  const LedgerCanisterInitPayload = IDL.Record({
-    'send_whitelist' : IDL.Vec(IDL.Tuple(IDL.Principal)),
-    'minting_account' : AccountIdentifier,
-    'transaction_window' : IDL.Opt(Duration),
-    'max_message_size_bytes' : IDL.Opt(IDL.Nat32),
-    'archive_options' : IDL.Opt(ArchiveOptions),
-    'initial_values' : IDL.Vec(IDL.Tuple(AccountIdentifier, ICPTs)),
-  });
   const AccountBalanceArgs = IDL.Record({ 'account' : AccountIdentifier });
   const CanisterId = IDL.Principal;
   const HeaderField = IDL.Tuple(IDL.Text, IDL.Text);
