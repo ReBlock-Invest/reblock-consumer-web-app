@@ -27,7 +27,7 @@ const HomePage: React.FC = () => {
       <HomeJumbotron />
     
       <Layout>
-        <Layout.Content className="px-md">
+        <Layout.Content className="px-md pb-md">
           <Flex align="center" vertical className="mb-md">
             <Title level={3} className="w-100 text-center">Active Open Investments</Title>
             <Card className="p-0" bodyStyle={{padding: 4}}>

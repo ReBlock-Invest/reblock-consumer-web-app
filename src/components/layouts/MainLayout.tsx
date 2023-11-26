@@ -1,13 +1,15 @@
 import React, { ReactNode, useState } from 'react'
-import { Affix, App, Button, Col, Divider, Drawer, Flex, Image, Layout, Row, Typography, theme } from 'antd'
+import { Affix, App, Button, Col, ConfigProvider, Divider, Drawer, Flex, Form, Image, Input, Layout, Menu, Row, Typography, theme } from 'antd'
 import { Link, useLocation } from "react-router-dom"
 import useResponsiveValue from 'hooks/useResponsiveValue'
 import ReblockIcon from 'components/common/ReblockIcon'
 import useInterpolateScrollValue from 'hooks/useInterpolateScrollValue'
 import useWeb3 from 'hooks/useWeb3'
 import useAuthenticationStore from 'stores/useAuthenticationStore'
+import Colors from 'components/themes/Colors'
+import FormItem from 'antd/es/form/FormItem'
 
-const { Text } = Typography
+const { Text, Link: AntdLink } = Typography
 const { Header, Content, Footer } = Layout
 
 type Props = {
@@ -53,6 +55,15 @@ const MainLayout: React.FC<Props> = ({ children }) => {
     xxl: 50,
   })
 
+  const isMenuCollapsed = useResponsiveValue({
+    xs: true,
+    sm: true,
+    md: true,
+    lg: true,
+    xl: false,
+    xxl: false,
+  })
+
   return (    
     <App>
       <Layout className="layout">
@@ -86,18 +97,69 @@ const MainLayout: React.FC<Props> = ({ children }) => {
                       alt="logo"
                     />
                   </div>
+
+                  {!isMenuCollapsed ? (
+                    <ConfigProvider
+                      theme={{
+                        components: {
+                          Menu: {
+                            itemColor: `${headerBackgroundOpacity ? colorPrimary : 'white'} !important`,
+                            itemSelectedColor: `${headerBackgroundOpacity ? colorPrimary : 'white'} !important`,
+                          }
+                        }
+                      }}
+                    >
+                      <Menu
+                        style={{
+                          backgroundColor: `rgba(255,255,255, 0)`,
+                          zIndex: 2,                        
+                        }}
+                        mode="horizontal"
+                        items={[
+                          {
+                            key: '/about',
+                            label: 'About',
+                          },
+                          {
+                            key: '/community',
+                            label: 'Community',
+                          },
+                        ]}
+                      />
+                    </ConfigProvider>
+                  ) : null}
                 </Flex>
               </Col>
 
               <Col>
-                <Flex align="center" justify="center">
-                  <div onClick={() => setIsOpenRightDrawer(!isOpenRightDrawer)}>
-                    <ReblockIcon
-                      name="burger"
-                      color={`rgb(${headerIconColor}, ${headerIconColor}, ${headerIconColor})`}
-                    />
-                  </div>
-                </Flex>
+                {isMenuCollapsed ? (
+                  <Flex align="center" justify="center">
+                    <div onClick={() => setIsOpenRightDrawer(!isOpenRightDrawer)} className='cursor-pointer'>
+                      <ReblockIcon
+                        name="burger"
+                        color={`rgb(${headerIconColor}, ${headerIconColor}, ${headerIconColor})`}
+                      />
+                    </div>
+                  </Flex>
+                ) : (
+                  <Button
+                    size="large"
+                    loading={authenticationStore.isLoading || isLoading}
+                    onClick={() => {
+                      if (!authenticationStore.token) {
+                        authenticationStore.setIsShowConnectWalletModal(true)
+                      } else {
+                        disconnect().then(() => {
+                          message.success("Disconnected from Wallet!")
+                        }).catch(() => {
+                          message.error("Failed to disconnect from Wallet!")
+                        })
+                      }
+                    }}
+                  >
+                    {!!authenticationStore.token ? "Disconnect" : "Connect Wallet"}
+                  </Button>
+                )}                
               </Col>
             </Row>
           </Header>
@@ -135,14 +197,101 @@ const MainLayout: React.FC<Props> = ({ children }) => {
           </Flex>
         </Drawer>
         <Content>
-          <div className="site-layout-content" style={{ background: colorBgContainer }}>
+          <div style={{ background: colorBgContainer }}>
             {children}
           </div>
         </Content>
-        <Footer style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-          ReBlock © 2023. Made with ❤️ from Bali.
-          Powered by <Link to="https://dashboard.internetcomputer.org/canister/fr33d-ayaaa-aaaal-adbpa-cai" target="_blank" rel="noopener noreferrer">
-            <Image src="/images/logo-icp.png" height={18} preview={false}></Image></Link>
+        <Footer style={{
+          position: 'relative',
+          backgroundImage: "url('/images/bg-ellipse.png')",
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'right',
+          padding: 0,
+          backgroundSize: 'cover',
+        }}>
+          <ConfigProvider
+            theme={{
+              token: {
+                colorText: colorBgContainer,                
+              },
+              components: {
+                Divider: {
+                  colorSplit: colorBgContainer,
+                },
+                Typography: {
+                  colorLink: colorBgContainer,
+                  colorLinkActive: colorBgContainer,
+                  colorLinkHover: Colors.primaryLight,
+                },
+                Input: {
+                  colorText: Colors.content,
+                }
+              }
+            }}
+          >
+            <Flex vertical
+              style={{
+                paddingRight: contentHorizontalPadding as number,
+                paddingLeft: contentHorizontalPadding as number,
+                paddingTop: 32,
+              }}
+            >
+              <Row gutter={[16, 32]}>
+                <Col lg={4} xxl={4} xl={4} xs={24}>
+                  <img
+                    src="/images/logo-light.svg"
+                    style={{width: '128px'}}
+                    alt="logo"
+                  />
+                </Col>
+                <Col lg={4} xxl={4} xl={4} xs={24}>
+                  <Flex vertical gap={8}>
+                    <Text strong>Legal</Text>
+                    <AntdLink href="#">Terms</AntdLink>
+                    <AntdLink href="#">Privacy</AntdLink>
+                  </Flex>
+                </Col>
+                <Col lg={6} xxl={6} xl={6} xs={24}>
+                  <Flex vertical gap={8}>
+                    <Text strong>Get in touch</Text>
+                    <AntdLink href="#">Press: press@reblock.finance</AntdLink>
+                    <AntdLink href="#">Partnership: bizdev@reblock.finance</AntdLink>
+                  </Flex>
+                </Col>
+                <Col lg={10} xxl={10} xl={10} xs={24}>
+                  <Flex vertical gap={8}>
+                    <Text strong>Early birds get the alpha.</Text>
+                    <Text>Sign up for weekly ReBlock updates</Text>
+                    <Form>
+                      <FormItem>
+                        <Input
+                          type="email"
+                          placeholder="Enter Email Address"
+                          suffix={
+                            <Button type="primary" htmlType="submit">
+                              Sign Up
+                            </Button>
+                          }
+                        />
+                      </FormItem>
+                    </Form>
+                  </Flex>
+                </Col>
+              </Row>
+
+              <Divider type="horizontal" style={{opacity: 0.5}} />
+              
+              <Flex align="center" justify="center" gap={8} className="mb-md">
+                <Text style={{color: colorBgContainer}}>ReBlock © 2023. Made with ❤️ from Bali. Powered by</Text>
+                <Link
+                  to="https://dashboard.internetcomputer.org/canister/fr33d-ayaaa-aaaal-adbpa-cai" target="_blank" rel="noopener noreferrer"
+                  style={{marginTop: '8px'}}
+                >
+                  <Image src="/images/logo-icp.png" height={18} preview={false}></Image>
+                </Link>
+              </Flex>
+            </Flex>
+          </ConfigProvider>
         </Footer>
       </Layout>
     </App>

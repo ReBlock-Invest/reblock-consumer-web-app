@@ -1,4 +1,5 @@
-import { useLayoutEffect, useState } from "react"
+import { WindowContext } from "components/contexts/WindowContextProvider"
+import { useContext, useLayoutEffect, useState } from "react"
 
 const breakpoints = {
   xs: 480,
@@ -12,26 +13,21 @@ const breakpoints = {
 type BreakPointsKey = keyof typeof breakpoints
 
 type Options = {
-  [key in BreakPointsKey]: number
+  [key in BreakPointsKey]: number | boolean | string
 }
 
-function useResponsiveValue(options: Options, defaultValue?: number) {
+function useResponsiveValue(options: Options, defaultValue?: number | boolean | string): number | boolean | string {
+  const {windowWidth} = useContext(WindowContext)
   const [activeBreakpoint, setActiveBreakpoint] = useState<BreakPointsKey>("md")
 
   useLayoutEffect(() => {
-    function updateSize() {
-      const size = window.innerWidth;
-      const foundBreakpoint = Object.keys(breakpoints).find((breakpoint) => size <= breakpoints[breakpoint as BreakPointsKey]) as BreakPointsKey;
+    const foundBreakpoint = Object.keys(breakpoints).find((breakpoint) => windowWidth <= breakpoints[breakpoint as BreakPointsKey]) as BreakPointsKey;
       if (foundBreakpoint) {
         setActiveBreakpoint(foundBreakpoint);
       }
-    }
-    window.addEventListener('resize', updateSize);
-    updateSize();
-    return () => window.removeEventListener('resize', updateSize);
-  }, []);
+  }, [windowWidth]);
 
-  return options[activeBreakpoint] || defaultValue || 16;
+  return typeof options[activeBreakpoint] === 'undefined' ? defaultValue || 16 : options[activeBreakpoint];
 }
 
 export default useResponsiveValue;

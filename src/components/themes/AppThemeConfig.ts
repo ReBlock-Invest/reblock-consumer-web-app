@@ -37,7 +37,19 @@ const AppThemeConfig: ThemeConfig = {
     InputNumber: {
       fontFamily: FontFamilies.secondary,
       fontSize: 24
-    }
+    },
+    Menu: {
+      itemHoverColor: Colors.primaryLight,
+      itemSelectedColor: 'red',
+      itemColor: 'green',
+
+      darkItemHoverColor: Colors.primaryLight,
+      darkItemSelectedColor: 'red',
+      darkItemColor: 'green',
+    },
+    Layout: {
+      footerBg: Colors.primary,
+    } 
   }
 }
 

@@ -1,9 +1,10 @@
-import { App, Button, Flex, theme } from "antd"
+import { App, Button, Flex, Image, theme } from "antd"
 import React from "react"
 import { Typography } from 'antd'
 import TrustedOverXUsers from "components/modules/users/TrustedOverXUsers"
 import useWeb3 from "hooks/useWeb3"
 import useAuthenticationStore from "stores/useAuthenticationStore"
+import useResponsiveValue from "hooks/useResponsiveValue"
 
 const { Title, Text } = Typography
 
@@ -23,11 +24,28 @@ const HomeJumbotron: React.FC<Props> = () => {
   const { isLoading, disconnect } = useWeb3()
   const authenticationStore = useAuthenticationStore()
 
+  const flexAlign = useResponsiveValue({
+    xs: "center",
+    sm: "center",
+    md: "center",
+    lg: "center",
+    xl: "center",
+    xxl: "flex-start",
+  })
+  const isShowReblockAppImage = useResponsiveValue({
+    xs: false,
+    sm: false,
+    md: false,
+    lg: false,
+    xl: false,
+    xxl: true,
+  })
+
   return (
     <Flex vertical align="stretch" style={{backgroundColor: colorBgLayout}}>      
       <Flex
         className="p-lg"
-        align="center"
+        align={flexAlign as string}
         vertical
         gap={24}
         style={{
@@ -36,12 +54,16 @@ const HomeJumbotron: React.FC<Props> = () => {
           backgroundPosition: "center",
           backgroundSize: "cover",
           marginTop: '-1px',
+          position: 'relative',
+          borderBottomLeftRadius: '48px',
+          borderBottomRightRadius: '48px',
+          overflow: 'hidden',
         }}
       >
         <Title level={2} className="text-center" style={{color: colorTextLightSolid}}>
           Real-world assets on your hand
         </Title>
-        <Text className="text-center w-100 d-block" style={{color: colorTextLightSolid}}>
+        <Text className="text-center d-block" style={{color: colorTextLightSolid}}>
           Generate passive income secured by real-world assets around the globe
         </Text>
         <Button
@@ -63,21 +85,25 @@ const HomeJumbotron: React.FC<Props> = () => {
         </Button>
         <div className="mt-md">
           <TrustedOverXUsers />    
-        </div>    
+        </div>   
+        
+        {isShowReblockAppImage ? (
+          <div style={{
+            position: 'absolute',
+            right: '128px',
+            width: '250px',
+            bottom: '0px',
+            overflow: 'hidden',
+            height: '380px',
+          }}>
+            <Image
+              src="/images/reblock-app.png"
+              alt="reblock-app"
+              preview={false}
+            />
+          </div> 
+        ) : null}          
       </Flex>
-
-      <div>
-        <div
-          style={{
-            backgroundColor: colorPrimary,
-            width: '100%',
-            height: '50px',
-            marginTop: '-2px',
-            borderBottomRightRadius: '100%',
-            borderBottomLeftRadius: '100%',
-          }}
-        />
-      </div>  
     </Flex>
   )
 }
