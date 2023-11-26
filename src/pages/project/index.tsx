@@ -129,282 +129,289 @@ const ProjectPage: React.FC = () => {
                 className="text-center"
                 style={{
                   color: colorTextLightSolid,
-                  marginBottom: '180px',
+                  marginBottom: '64px',
                 }}
               >
                 {project.title}
               </Title>
             </Flex>
-            <Card
-              className="mx-md"
-              bordered={false}
-              bodyStyle={{
-                padding: '16px',
-                marginTop: '-130px',
-              }}
-            >
-              <Paragraph>
-                {project.description}
-              </Paragraph>
-              <Flex vertical gap={16}>
-                <Row justify="space-between">
-                  <Col>
-                    <Space direction="vertical">
-                      <Space>
-                        <Avatar src={project.issuer_picture} />
-                        <Tag color="white" style={{ backgroundColor: colorWarning, color: colorText }} bordered={false}>Rating {project.credit_rating}</Tag>
-                      </Space>
-                      <Text type="secondary">{project.issuer_description}</Text>
-                    </Space>
-                  </Col>
-                  <Col>
-                    <Space direction="vertical" align="end">
-                      <Text type="secondary">APR</Text>
-                      <Text strong>{project.APR}</Text>
-                    </Space>
-                  </Col>
-                </Row>
-
-                <Space direction="vertical" size={0}>
-                  <Text type="secondary">Loan Term</Text>
-                  <Text strong>{project.loan_term}</Text>
-                </Space>
-
-                <Space direction="vertical" size={0}>
-                  <Text type="secondary">Payment Frequency</Text>
-                  <Text strong>{project.payment_frequency}</Text>
-                </Space>
-
-                <Space direction="vertical" size={0}>
-                  <Text type="secondary">Status</Text>
-                  <Text strong>{project.status}</Text>
-                </Space>
-
-                {!authenticationStore.token ? null : (
-                  <Statistic
-                    title="Your current position"
-                    value={20}
-                    precision={2}
-                    decimalSeparator="."
-                    suffix="ICP"
-                  />)}
-
-                <Divider style={{ margin: 0 }} />
-
-                <Tabs
-                  defaultActiveKey="invest"
-                  items={[
-                    {
-                      key: 'invest',
-                      label: 'Invest',
-                      children: (
-                        <Flex vertical gap={8}>
-                          {userInfoData?.invest_state === UserInvestStateEnum.KYC_VERIFIED ? (
-                            <Space direction="vertical">
-                              <Row
-                                style={{
-                                  backgroundColor: Colors.primaryLight,
-                                  borderRadius: 4,
-                                  padding: '8px',
-                                }}
-                                justify="space-between"
-                                gutter={8}
-                              >
-                                <Col span={18}>
-                                  <InputNumber
-                                    suffix="ICP"
-                                    precision={2}
-                                    value={investmentValue}
-                                    onChange={(value) => setInvestmentValue(value || 0)}
-                                    style={{ width: '100%' }}
-                                  />
-                                </Col>
-
-                                <Col span={6}>
-                                  <Button block>
-                                    MAX
-                                  </Button>
-                                </Col>
-                              </Row>
-
-                              <Text>Balance: 33.78 ICP</Text>
-
-                              <Paragraph type="secondary">
-                                By clicking “Invest” below, I hereby agree to the
-                                <Link href="https://ant.design" target="_blank">
-                                  {" Pool Aggrement"}
-                                </Link>
-                                . Please note the protocol deducts a 0.50% fee upon withdrawal for protocol reserves.
-                              </Paragraph>
-                            </Space>
-                          ) : null}
-                          <Button
-                            type="primary"
-                            size='large'
-                            icon={userInfoData?.invest_state === UserInvestStateEnum.KYC_VERIFIED ? <PlusOutlined /> : null}
-                            onClick={onInvestButtonPressed}
-                          >
-                            {investButtonText}
-                          </Button>
-                        </Flex>
-                      )
-                    },
-                    {
-                      key: 'withdraw',
-                      label: 'Withdraw',
-                      children: (
-                        <Button
-                          type="primary"
-                          size='large'
-                        >
-                          Withdraw
-                        </Button>
-                      )
-                    }
-                  ]}
-                />
-              </Flex>
-            </Card>
-
-            <Flex
-              vertical
-              gap={16}
-              style={{
-                padding: '16px',
-              }}>
-              <Affix
-                offsetTop={80}
-              >
-                <Anchor
-                  affix={false}
-                  direction="horizontal"
-                  style={{
-                    backgroundColor: colorBgContainer,
-                    borderRadius: 8,
-                    padding: 4,
+            <Row className="mt-md" gutter={[0, 16]}>
+              <Col xxl={12} xl={12} lg={12} md={12} xs={24}>
+                <Card
+                  className="mx-md"
+                  bordered={false}
+                  bodyStyle={{
+                    padding: '16px',                    
                   }}
-                  items={[
-                    {
-                      key: 'asset-overview',
-                      href: '#asset-overview',
-                      title: 'Asset Overview',
-                    },
-                    {
-                      key: 'recent-activity',
-                      href: '#recent-activity',
-                      title: 'Recent Activity',
-                    },
-                  ]}
-                />
-              </Affix>
+                >
+                  <Paragraph>
+                    {project.description}
+                  </Paragraph>
+                  <Flex vertical gap={16}>
+                    <Row justify="space-between">
+                      <Col>
+                        <Space direction="vertical">
+                          <Space>
+                            <Avatar src={project.issuer_picture} />
+                            <Tag color="white" style={{ backgroundColor: colorWarning, color: colorText }} bordered={false}>Rating {project.credit_rating}</Tag>
+                          </Space>
+                          <Text type="secondary">{project.issuer_description}</Text>
+                        </Space>
+                      </Col>
+                      <Col>
+                        <Space direction="vertical" align="end">
+                          <Text type="secondary">APR</Text>
+                          <Text strong>{project.APR}</Text>
+                        </Space>
+                      </Col>
+                    </Row>
 
-              <Flex vertical id="asset-overview">
-                <Space direction="vertical" size={0}>
-                  <Text type="secondary">Outstanding loan value</Text>
-                  <Statistic
-                    value={project.total_loan_amount}
-                    precision={2}
-                    suffix={
-                      <Text type="secondary" style={{ fontWeight: 400 }}>ICP</Text>
-                    }
-                    valueStyle={{
-                      fontFamily: FontFamilies.primary,
-                      fontSize: 16,
-                      fontWeight: 600,
-                    }}
-                  />
-                </Space>
+                    <Space direction="vertical" size={0}>
+                      <Text type="secondary">Loan Term</Text>
+                      <Text strong>{project.loan_term}</Text>
+                    </Space>
 
-                <Divider />
+                    <Space direction="vertical" size={0}>
+                      <Text type="secondary">Payment Frequency</Text>
+                      <Text strong>{project.payment_frequency}</Text>
+                    </Space>
 
-                <Space direction="vertical" size={0}>
-                  <Text type="secondary">Loan originated</Text>
-                  <Statistic
-                    value={project.total_loan_amount * 0.78}
-                    precision={2}
-                    suffix={
-                      <Text type="secondary" style={{ fontWeight: 400 }}>ICP</Text>
-                    }
-                    valueStyle={{
-                      fontFamily: FontFamilies.primary,
-                      fontSize: 16,
-                      fontWeight: 600,
-                    }}
-                  />
-                </Space>
+                    <Space direction="vertical" size={0}>
+                      <Text type="secondary">Status</Text>
+                      <Text strong>{project.status}</Text>
+                    </Space>
 
-                <Divider />
+                    {!authenticationStore.token ? null : (
+                      <Statistic
+                        title="Your current position"
+                        value={20}
+                        precision={2}
+                        decimalSeparator="."
+                        suffix="ICP"
+                      />)}
 
-                <Space direction="vertical" size={0}>
-                  <Text type="secondary">30-Day APY</Text>
-                  <Statistic
-                    value={project.APR}
-                    precision={2}
-                    suffix={
-                      <Text type="secondary" style={{ fontWeight: 400 }}>%</Text>
-                    }
-                    valueStyle={{
-                      fontFamily: FontFamilies.primary,
-                      fontSize: 16,
-                      fontWeight: 600,
-                    }}
-                  />
-                </Space>
+                    <Divider style={{ margin: 0 }} />
 
-                <Divider />
+                    <Tabs
+                      defaultActiveKey="invest"
+                      items={[
+                        {
+                          key: 'invest',
+                          label: 'Invest',
+                          children: (
+                            <Flex vertical gap={8}>
+                              {userInfoData?.invest_state === UserInvestStateEnum.KYC_VERIFIED ? (
+                                <Space direction="vertical">
+                                  <Row
+                                    style={{
+                                      backgroundColor: Colors.primaryLight,
+                                      borderRadius: 4,
+                                      padding: '8px',
+                                    }}
+                                    justify="space-between"
+                                    gutter={8}
+                                  >
+                                    <Col span={18}>
+                                      <InputNumber
+                                        suffix="ICP"
+                                        precision={2}
+                                        value={investmentValue}
+                                        onChange={(value) => setInvestmentValue(value || 0)}
+                                        style={{ width: '100%' }}
+                                      />
+                                    </Col>
 
-                <Space direction="vertical" size={0}>
-                  <Text type="secondary">Active loans</Text>
-                  <Statistic
-                    value={3}
-                    suffix={
-                      <Text type="secondary" style={{ fontWeight: 400 }}>Loans</Text>
-                    }
-                    valueStyle={{
-                      fontFamily: FontFamilies.primary,
-                      fontSize: 16,
-                      fontWeight: 600,
-                    }}
-                  />
-                </Space>
+                                    <Col span={6}>
+                                      <Button block>
+                                        MAX
+                                      </Button>
+                                    </Col>
+                                  </Row>
 
-                <Divider />
+                                  <Text>Balance: 33.78 ICP</Text>
 
-                <Space direction="vertical" size={0}>
-                  <Text type="secondary">Idle pool liquidity</Text>
-                  <Statistic
-                    value={96}
-                    precision={2}
-                    suffix={
-                      <Text type="secondary" style={{ fontWeight: 400 }}>ICP</Text>
-                    }
-                    valueStyle={{
-                      fontFamily: FontFamilies.primary,
-                      fontSize: 16,
-                      fontWeight: 600,
-                    }}
-                  />
-                </Space>
+                                  <Paragraph type="secondary">
+                                    By clicking “Invest” below, I hereby agree to the
+                                    <Link href="https://ant.design" target="_blank">
+                                      {" Pool Aggrement"}
+                                    </Link>
+                                    . Please note the protocol deducts a 0.50% fee upon withdrawal for protocol reserves.
+                                  </Paragraph>
+                                </Space>
+                              ) : null}
+                              <Button
+                                type="primary"
+                                size='large'
+                                icon={userInfoData?.invest_state === UserInvestStateEnum.KYC_VERIFIED ? <PlusOutlined /> : null}
+                                onClick={onInvestButtonPressed}
+                              >
+                                {investButtonText}
+                              </Button>
+                            </Flex>
+                          )
+                        },
+                        {
+                          key: 'withdraw',
+                          label: 'Withdraw',
+                          children: (
+                            <Button
+                              type="primary"
+                              size='large'
+                            >
+                              Withdraw
+                            </Button>
+                          )
+                        }
+                      ]}
+                    />
+                  </Flex>
+                </Card>
+              </Col>
+              <Col xxl={12} xl={12} lg={12} md={12} xs={24}>
+                <Flex
+                  vertical
+                  gap={16}
+                  style={{
+                    paddingLeft: '16px',
+                    paddingRight: '16px',
+                    paddingBottom: '16px',
+                    paddingTop: '4px',
+                  }}>
+                  <Affix
+                    offsetTop={80}
+                  >
+                    <Anchor
+                      affix={false}
+                      direction="horizontal"
+                      style={{
+                        backgroundColor: colorBgContainer,
+                        borderRadius: 8,
+                        padding: 4,
+                      }}
+                      items={[
+                        {
+                          key: 'asset-overview',
+                          href: '#asset-overview',
+                          title: 'Asset Overview',
+                        },
+                        {
+                          key: 'recent-activity',
+                          href: '#recent-activity',
+                          title: 'Recent Activity',
+                        },
+                      ]}
+                    />
+                  </Affix>
 
-                <Divider />
+                  <Flex vertical id="asset-overview">
+                    <Space direction="vertical" size={0}>
+                      <Text type="secondary">Outstanding loan value</Text>
+                      <Statistic
+                        value={project.total_loan_amount}
+                        precision={2}
+                        suffix={
+                          <Text type="secondary" style={{ fontWeight: 400 }}>ICP</Text>
+                        }
+                        valueStyle={{
+                          fontFamily: FontFamilies.primary,
+                          fontSize: 16,
+                          fontWeight: 600,
+                        }}
+                      />
+                    </Space>
 
-                <List
-                  id="recent-activity"
-                  itemLayout="horizontal"
-                  dataSource={Array(10).fill(0)}
-                  header={
-                    <Title level={4}>
-                      Recent Activity
-                    </Title>
-                  }
-                  renderItem={(item, index) => (
-                    <TransactionActivityItem />
-                  )}
-                />
-              </Flex>
+                    <Divider />
+
+                    <Space direction="vertical" size={0}>
+                      <Text type="secondary">Loan originated</Text>
+                      <Statistic
+                        value={project.total_loan_amount * 0.78}
+                        precision={2}
+                        suffix={
+                          <Text type="secondary" style={{ fontWeight: 400 }}>ICP</Text>
+                        }
+                        valueStyle={{
+                          fontFamily: FontFamilies.primary,
+                          fontSize: 16,
+                          fontWeight: 600,
+                        }}
+                      />
+                    </Space>
+
+                    <Divider />
+
+                    <Space direction="vertical" size={0}>
+                      <Text type="secondary">30-Day APY</Text>
+                      <Statistic
+                        value={project.APR}
+                        precision={2}
+                        suffix={
+                          <Text type="secondary" style={{ fontWeight: 400 }}>%</Text>
+                        }
+                        valueStyle={{
+                          fontFamily: FontFamilies.primary,
+                          fontSize: 16,
+                          fontWeight: 600,
+                        }}
+                      />
+                    </Space>
+
+                    <Divider />
+
+                    <Space direction="vertical" size={0}>
+                      <Text type="secondary">Active loans</Text>
+                      <Statistic
+                        value={3}
+                        suffix={
+                          <Text type="secondary" style={{ fontWeight: 400 }}>Loans</Text>
+                        }
+                        valueStyle={{
+                          fontFamily: FontFamilies.primary,
+                          fontSize: 16,
+                          fontWeight: 600,
+                        }}
+                      />
+                    </Space>
+
+                    <Divider />
+
+                    <Space direction="vertical" size={0}>
+                      <Text type="secondary">Idle pool liquidity</Text>
+                      <Statistic
+                        value={96}
+                        precision={2}
+                        suffix={
+                          <Text type="secondary" style={{ fontWeight: 400 }}>ICP</Text>
+                        }
+                        valueStyle={{
+                          fontFamily: FontFamilies.primary,
+                          fontSize: 16,
+                          fontWeight: 600,
+                        }}
+                      />
+                    </Space>
+
+                    <Divider />
+
+                    <List
+                      id="recent-activity"
+                      itemLayout="horizontal"
+                      dataSource={Array(10).fill(0)}
+                      header={
+                        <Title level={4}>
+                          Recent Activity
+                        </Title>
+                      }
+                      renderItem={(item, index) => (
+                        <TransactionActivityItem />
+                      )}
+                    />
+                  </Flex>
 
 
-            </Flex>
+                </Flex>
+              </Col>
+            </Row>            
           </Layout.Content>
         </Layout>
       )

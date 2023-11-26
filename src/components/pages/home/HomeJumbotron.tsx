@@ -58,6 +58,7 @@ const HomeJumbotron: React.FC<Props> = () => {
           borderBottomLeftRadius: '48px',
           borderBottomRightRadius: '48px',
           overflow: 'hidden',
+          marginRight: '-1px',
         }}
       >
         <Title level={2} className="text-center" style={{color: colorTextLightSolid}}>

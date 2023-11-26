@@ -67,7 +67,7 @@ const MainLayout: React.FC<Props> = ({ children }) => {
   return (    
     <App>
       <Layout className="layout">
-        <Affix style={{backgroundColor: colorPrimary}}>
+        <Affix style={{backgroundColor: colorPrimary, marginRight: '-1px'}}>
           <Header
             className="main-header"
             style={{
