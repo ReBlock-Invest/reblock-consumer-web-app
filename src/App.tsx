@@ -16,6 +16,7 @@ import Authentication from "components/modules/authentication/Authentication";
 import PersonalInquiryModal from "components/modules/kyc/modals/PersonaInquiryModal";
 import ConnectWalletModal from "components/modules/wallets/modals/ConnectWalletsModal";
 import WindowContextProvider from "components/contexts/WindowContextProvider";
+import PrivacyPolicyPage from "pages/privacy-policy";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: "/project/:projectId",
     element: <ProjectPage />,
+  },
+  {
+    path: "/privacy-policy",
+    element: <PrivacyPolicyPage />,
   },
 ])
 

@@ -247,8 +247,8 @@ const MainLayout: React.FC<Props> = ({ children }) => {
                 <Col lg={4} xxl={4} xl={4} xs={24}>
                   <Flex vertical gap={8}>
                     <Text strong>Legal</Text>
-                    <AntdLink href="#">Terms</AntdLink>
-                    <AntdLink href="#">Privacy</AntdLink>
+                    <AntdLink href="#">Terms of Use</AntdLink>
+                    <AntdLink href="/privacy-policy">Privacy Policy</AntdLink>
                   </Flex>
                 </Col>
                 <Col lg={6} xxl={6} xl={6} xs={24}>
