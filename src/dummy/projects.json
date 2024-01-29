@@ -49,5 +49,22 @@
     "status": "UPCOMING",
     "title": "Savings Sukuk (ST)",
     "total_loan_amount": 100000
+  },
+  {
+    "APR": "20%",
+    "credit_rating": "B",
+    "description": "Defarme is a sustainable organisation that thrive to bring impact to nation, particularly local society where the farm site become beneficial to the surrounding.",
+    "fundrise_end_time": "03/01/2024, 11:59:59 PM",
+    "issuer_description": "Defarme",
+    "issuer_picture": "",
+    "loan_term": "12 MONTHS",
+    "maturity_date": "01/01/2025, 11:59:59 PM",
+    "origination_date": "01/20/2024, 11:59:59 PM",
+    "payment_frequency": "MONTHLY",
+    "secured_by": "Productive Land",
+    "smart_contract_url": "https://etherscan.io/address/0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+    "status": "UPCOMING",
+    "title": "Cassava Farm Yield",
+    "total_loan_amount": 20000000000
   }
 ]

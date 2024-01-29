@@ -1,9 +1,8 @@
-import { listDocs, setDoc, Doc } from "@junobuild/core";
+import { listDocs, setDoc, getDoc, Doc } from "@junobuild/core";
 import BaseRepository from "./BaseRepository";
 import projects from 'dummy/projects.json'
 import { nanoid } from 'nanoid'
 import Project from "entities/project/Project";
-import idx from "idx";
 
 
 class ProjectRepository extends BaseRepository {
@@ -17,16 +16,14 @@ class ProjectRepository extends BaseRepository {
   async getProject(
     projectId: string
   ): Promise<Doc<Project> | null> {
-    const { items } = await listDocs<Project>({
+    const item = await getDoc<Project>({
       collection: "Project",
-      filter: {
-        matcher: {
-          key: projectId
-        }
-      }
+      key: projectId
     });
+    console.log(projectId);
+    console.log(item);
 
-    return idx(items, (_) => _[0]) || null;
+    return item || null;
   }
 
   async addDummyProject(): Promise<void> {
@@ -35,7 +32,7 @@ class ProjectRepository extends BaseRepository {
       collection: "Project",
       doc: {
         key,
-        data: projects[2]
+        data: projects[3]
       }
     });
   }
