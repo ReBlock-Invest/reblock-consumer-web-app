@@ -277,31 +277,6 @@ const ProjectPage: React.FC = () => {
                     paddingBottom: '16px',
                     paddingTop: '4px',
                   }}>
-                  <Affix
-                    offsetTop={80}
-                  >
-                    <Anchor
-                      affix={false}
-                      direction="horizontal"
-                      style={{
-                        backgroundColor: colorBgContainer,
-                        borderRadius: 8,
-                        padding: 4,
-                      }}
-                      items={[
-                        {
-                          key: 'asset-overview',
-                          href: '#asset-overview',
-                          title: 'Asset Overview',
-                        },
-                        {
-                          key: 'recent-activity',
-                          href: '#recent-activity',
-                          title: 'Recent Activity',
-                        },
-                      ]}
-                    />
-                  </Affix>
 
                   <Flex vertical id="asset-overview">
                     <Space direction="vertical" size={0}>
@@ -345,9 +320,6 @@ const ProjectPage: React.FC = () => {
                       <Statistic
                         value={project.APR}
                         precision={2}
-                        suffix={
-                          <Text type="secondary" style={{ fontWeight: 400 }}>%</Text>
-                        }
                         valueStyle={{
                           fontFamily: FontFamilies.primary,
                           fontSize: 16,
@@ -355,57 +327,6 @@ const ProjectPage: React.FC = () => {
                         }}
                       />
                     </Space>
-
-                    <Divider />
-
-                    <Space direction="vertical" size={0}>
-                      <Text type="secondary">Active loans</Text>
-                      <Statistic
-                        value={3}
-                        suffix={
-                          <Text type="secondary" style={{ fontWeight: 400 }}>Loans</Text>
-                        }
-                        valueStyle={{
-                          fontFamily: FontFamilies.primary,
-                          fontSize: 16,
-                          fontWeight: 600,
-                        }}
-                      />
-                    </Space>
-
-                    <Divider />
-
-                    <Space direction="vertical" size={0}>
-                      <Text type="secondary">Idle pool liquidity</Text>
-                      <Statistic
-                        value={96}
-                        precision={2}
-                        suffix={
-                          <Text type="secondary" style={{ fontWeight: 400 }}>ICP</Text>
-                        }
-                        valueStyle={{
-                          fontFamily: FontFamilies.primary,
-                          fontSize: 16,
-                          fontWeight: 600,
-                        }}
-                      />
-                    </Space>
-
-                    <Divider />
-
-                    <List
-                      id="recent-activity"
-                      itemLayout="horizontal"
-                      dataSource={Array(10).fill(0)}
-                      header={
-                        <Title level={4}>
-                          Recent Activity
-                        </Title>
-                      }
-                      renderItem={(item, index) => (
-                        <TransactionActivityItem />
-                      )}
-                    />
                   </Flex>
 
 
