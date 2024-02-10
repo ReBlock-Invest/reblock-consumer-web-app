@@ -34,7 +34,7 @@ const Authentication: React.FC<Props> = () => {
       isAuthenticatingRef.current = true
       authenticationStore.setIsLoading(true)
 
-      const nonce = await repositories.authenticationRepository?.getNonce(walletId)    
+      const nonce = await repositories.authenticationRepository?.getNonce(walletId)
 
       if (web3.isPlugWalletConnected) {
         const accessToken = await repositories.authenticationRepository?.getAccessToken(

@@ -16,11 +16,21 @@ class AuthenticationRepository extends BaseRepository {
   }
 
   async getNonce(address: string): Promise<number> {
+    // TODO: remove this
+    if (process.env.REACT_APP_MOCK_KYC_ENABLED) {
+      return 12
+    }
+
     const res = await this.httpClient.post<GetNonceResponse>(`${this.host}/nonce`, { address })
     return res.data.nonce
   }
 
   async getAccessToken(address: string, signature: string): Promise<string> {
+    // TODO: remove this
+    if (process.env.REACT_APP_MOCK_KYC_ENABLED) {
+      return 'dummytoken'
+    }
+
     const res = await this.httpClient.post<WalletLoginResponse>(`${this.host}/wallet/login`, { address, signature })
     return res.data.access_token
   }
@@ -33,6 +43,7 @@ class AuthenticationRepository extends BaseRepository {
   async getUserInfo(): Promise<GetUserInfoResponse> {
     const res = await this.httpClient.get<GetUserInfoResponse>(`${this.host}/userinfo`)
     
+    // TODO: remove this
     if (process.env.REACT_APP_MOCK_KYC_ENABLED) {
       return {
         ...res.data,

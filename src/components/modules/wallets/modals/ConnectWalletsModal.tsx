@@ -1,5 +1,5 @@
 import { Divider, Flex, Modal, Space, Spin, Typography } from "antd"
-import useWalletConnect from "hooks/useWeb3"
+import useWeb3 from "hooks/useWeb3"
 import React from "react"
 import useAuthenticationStore from "stores/useAuthenticationStore"
 
@@ -14,7 +14,7 @@ const ConnectWalletModal: React.FC<Props> = () => {
     connectCoinbase,
     connectWalletConnect,
     connectPlug
-  } = useWalletConnect()
+  } = useWeb3()
 
   const { isShowConnectWalletModal, setIsShowConnectWalletModal } = useAuthenticationStore()
 
