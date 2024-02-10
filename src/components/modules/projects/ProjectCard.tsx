@@ -6,6 +6,13 @@ import React from "react"
 
 const { Text, Title } = Typography
 
+const dateOptions: Intl.DateTimeFormatOptions = {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+};
+
 type Props = {
   project: Project
 }
@@ -72,7 +79,7 @@ const ProjectCard: React.FC<Props> = ({project}) => {
           <Col>
             <Space direction="vertical">
               <Text type="secondary">Maturity date</Text>
-              <Title level={5} className="m-0">Nov 31, 2024</Title>
+              <Title level={5} className="m-0">{new Date(project.maturity_date).toLocaleDateString(undefined, dateOptions)}</Title>
             </Space>
           </Col>
           <Col>
