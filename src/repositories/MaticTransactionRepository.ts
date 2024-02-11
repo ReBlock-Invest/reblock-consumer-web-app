@@ -2,12 +2,15 @@ import random from 'crypto-random-bigint'
 import BaseRepository from "./BaseRepository";
 
 export default class MaticTransactionRepository extends BaseRepository {
-  constructor() {
+  private accounts: string[]
+
+  constructor(accounts: string[]) {
     super()
+    this.accounts = accounts;
   }
 
   async invest(amount: number) {
-    //const depositAddress = await this.rbOriReblockICActor.getDepositAddress()
+    const senderAddress = this.accounts[0];
     const e8sAmount = BigInt(amount * 100000000)
     
     /*await this.nssLedgerReblockICActor.send_dfx({

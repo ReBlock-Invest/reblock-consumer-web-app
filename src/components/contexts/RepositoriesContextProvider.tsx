@@ -5,6 +5,7 @@ import AxiosHTTPClient from "lib/httpclient/AxiosHTTPClient"
 import useAuthenticationStore from "stores/useAuthenticationStore"
 import ICPTransactionRepository from "repositories/ICPTransactionRepository"
 import useWeb3 from "hooks/useWeb3"
+import MaticTransactionRepository from "repositories/MaticTransactionRepository"
 
 type Props = {
   children: ReactNode
@@ -14,6 +15,7 @@ type Context = {
   projectRepository?: ProjectRepository
   authenticationRepository?: AuthenticationRepository
   icpTransactionRepository?: ICPTransactionRepository
+  maticTransactionRepository?: MaticTransactionRepository
 }
 
 export const RepositoriesContext = React.createContext<Context>({})
@@ -21,7 +23,8 @@ export const RepositoriesContext = React.createContext<Context>({})
 const RepositoriesContextProvider: React.FC<Props> = ({children}) => {
   const {
     rbOriReblockICActor,
-    nnsLedgerActorReblockICActor
+    nnsLedgerActorReblockICActor,
+    accounts
   } = useWeb3()
   const authenticationStore = useAuthenticationStore()
 
@@ -38,12 +41,14 @@ const RepositoriesContextProvider: React.FC<Props> = ({children}) => {
         new ICPTransactionRepository(
           rbOriReblockICActor,
           nnsLedgerActorReblockICActor
-        ) : undefined
+        ) : undefined,
+        maticTransactionRepository: accounts ? new MaticTransactionRepository(accounts) : undefined
     }
   }, [
     authenticationStore.token,
     rbOriReblockICActor,
-    nnsLedgerActorReblockICActor
+    nnsLedgerActorReblockICActor,
+    accounts
   ])
 
   return (

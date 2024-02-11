@@ -50,6 +50,7 @@ const ProjectPage: React.FC = () => {
   const { mutate: investMutation, isLoading: investMutationLoading } = useMutation({
     mutationKey: ['invest', projectId],
     mutationFn: async (value: number) => {
+      // TODO: check if Metamask first, then check ICP
       await repositories.icpTransactionRepository?.invest(
         value
       )

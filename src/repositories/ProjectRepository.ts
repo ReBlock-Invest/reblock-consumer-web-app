@@ -20,8 +20,6 @@ class ProjectRepository extends BaseRepository {
       collection: "Project",
       key: projectId
     });
-    console.log(projectId);
-    console.log(item);
 
     return item || null;
   }
