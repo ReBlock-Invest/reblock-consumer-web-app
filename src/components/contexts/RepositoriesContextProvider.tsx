@@ -20,7 +20,7 @@ type Context = {
 
 export const RepositoriesContext = React.createContext<Context>({})
 
-const RepositoriesContextProvider: React.FC<Props> = ({children}) => {
+const RepositoriesContextProvider: React.FC<Props> = ({ children }) => {
   const {
     rbOriReblockICActor,
     nnsLedgerActorReblockICActor,
@@ -37,12 +37,13 @@ const RepositoriesContextProvider: React.FC<Props> = ({children}) => {
         authenticationHttpClient,
         !!authenticationStore.token
       ),
-      icpTransactionRepository: rbOriReblockICActor && nnsLedgerActorReblockICActor ? 
+      icpTransactionRepository: rbOriReblockICActor && nnsLedgerActorReblockICActor ?
         new ICPTransactionRepository(
           rbOriReblockICActor,
           nnsLedgerActorReblockICActor
         ) : undefined,
-        maticTransactionRepository: accounts ? new MaticTransactionRepository(accounts) : undefined
+      maticTransactionRepository: accounts && accounts?.length > 0 ?
+        new MaticTransactionRepository(accounts) : undefined
     }
   }, [
     authenticationStore.token,

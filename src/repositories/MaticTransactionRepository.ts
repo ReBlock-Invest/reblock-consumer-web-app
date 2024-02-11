@@ -1,4 +1,4 @@
-import random from 'crypto-random-bigint'
+//import random from 'crypto-random-bigint'
 import BaseRepository from "./BaseRepository";
 
 export default class MaticTransactionRepository extends BaseRepository {
@@ -10,8 +10,8 @@ export default class MaticTransactionRepository extends BaseRepository {
   }
 
   async invest(amount: number) {
-    const senderAddress = this.accounts[0];
-    const e8sAmount = BigInt(amount * 100000000)
+    //const senderAddress = this.accounts[0];
+    //const e8sAmount = BigInt(amount * 100000000)
     
     /*await this.nssLedgerReblockICActor.send_dfx({
       to: depositAddress,
