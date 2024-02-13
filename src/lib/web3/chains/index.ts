@@ -1,5 +1,3 @@
-
-
 const ETH = {
   name: 'Ether',
   symbol: 'ETH',
