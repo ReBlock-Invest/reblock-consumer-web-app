@@ -119,11 +119,11 @@ const Web3ContextProviderWrapper: React.FC<{
     if (provider && accounts?.length) {
       let stale = false
 
-      const contractAddress = "0x0D2d1f55ebb9809466fef811546f1F0252346931";
-      const contract = new Contract(contractAddress, rbVault.abi, provider.getSigner())
+      // const contractAddress = "0x0D2d1f55ebb9809466fef811546f1F0252346931";
+      // const contract = new Contract(contractAddress, rbVault.abi, provider.getSigner())
 
-      const usdcContractAddress = "0xa155009347F13cD78CF6B4C7d9C3cf11C821149b";
-      const usdcContract = new Contract(usdcContractAddress, rbUSDC.abi, provider.getSigner())
+      // const usdcContractAddress = "0xa155009347F13cD78CF6B4C7d9C3cf11C821149b";
+      // const usdcContract = new Contract(usdcContractAddress, rbUSDC.abi, provider.getSigner())
 
       // Lender -> put money into pool -> get RBT
       // usdcContract.approve(contractAddress, BigInt(20 * 1_000_000_000_000_000_000)).then((_: string) => {
@@ -147,9 +147,9 @@ const Web3ContextProviderWrapper: React.FC<{
       // })
 
       // Lender -> redeed RBT -> get USDC
-      contract.redeem(BigInt(1 * 1_000_000_000_000_000_000), accounts[0], accounts[0]).then((redeemResult: string) => {
-        console.log(redeemResult)
-      })
+      // contract.redeem(BigInt(1 * 1_000_000_000_000_000_000), accounts[0], accounts[0]).then((redeemResult: string) => {
+      //   console.log(redeemResult)
+      // })
 
 
       void Promise.all(accounts.map((account: string) => provider.getBalance(account)))
