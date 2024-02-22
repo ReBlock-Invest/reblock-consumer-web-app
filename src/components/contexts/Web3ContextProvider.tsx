@@ -8,7 +8,7 @@ import useMetamaskWalletConnect from "lib/web3/hooks/useMetamaskWalletConnect"
 import useWalletConnectWalletConnect from "lib/web3/hooks/useWalletConnectWalletConnect"
 import { useCallback, useEffect, useState } from "react"
 import { Web3Provider } from '@ethersproject/providers'
-import { Contract } from "@ethersproject/contracts"
+// import { Contract } from "@ethersproject/contracts"
 
 import { coinbaseWallet, hooks as coinbaseWalletHooks } from 'lib/web3/connectors/coinbaseWallet'
 import { hooks as metaMaskHooks, metaMask } from 'lib/web3/connectors/metaMask'
@@ -22,8 +22,8 @@ import NSSLedgerReblockICActor from 'lib/web3/actors/NSSLedgerReblockICActor'
 import rbOriIdlFactory from 'lib/web3/idls/rbori.did'
 import nnsLedgerIdlFactory from 'lib/web3/idls/nns_ledger.did'
 
-import rbVault from 'lib/web3/abis/rb_vault.json'
-import rbUSDC from 'lib/web3/abis/dummy_rb_usdc.json'
+// import rbVault from 'lib/web3/abis/rb_vault.json'
+// import rbUSDC from 'lib/web3/abis/dummy_rb_usdc.json'
 
 const connectors: [MetaMask | WalletConnect | WalletConnect | CoinbaseWallet, Web3ReactHooks][] = [
   [metaMask, metaMaskHooks],
