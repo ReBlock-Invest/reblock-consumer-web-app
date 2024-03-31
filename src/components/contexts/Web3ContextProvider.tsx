@@ -16,7 +16,7 @@ import { hooks as walletConnectHooks, walletConnect } from 'lib/web3/connectors/
 import React, { ReactNode } from 'react'
 import useAuthenticationStore from 'stores/useAuthenticationStore'
 import usePlugWalletConnect from 'lib/web3/hooks/usePlugWalletConnect'
-import { Balance } from 'types'
+import { AuthProviderEnum, Balance } from 'types'
 import RBOriReblockICActor from 'lib/web3/actors/RBOriReblockICActor'
 import NSSLedgerReblockICActor from 'lib/web3/actors/NSSLedgerReblockICActor'
 import rbOriIdlFactory from 'lib/web3/idls/rbori.did'
@@ -186,8 +186,8 @@ const Web3ContextProviderWrapper: React.FC<{
 
   return (
     <Web3Context.Provider value={{
-      isPlugWalletConnected: !!plugAccount,
-      accounts: plugAccount ? [plugAccount] : accounts,
+      isPlugWalletConnected: authenticationStore.selectedAuthProvider === AuthProviderEnum.ICP && !!plugAccount,
+      accounts: authenticationStore.selectedAuthProvider === AuthProviderEnum.ICP ? [...plugAccount ? [plugAccount] : []] : accounts,
       balances,
       isActive: isActive || !!plugAccount,
       isLoading: isActivating || plugIsActivating,

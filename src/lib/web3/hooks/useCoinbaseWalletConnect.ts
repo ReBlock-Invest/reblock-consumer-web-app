@@ -9,9 +9,9 @@ export default function useCoinbaseWalletConnect(): IWalletConnectHook {
   const [error, setError] = useState(undefined)
 
   useEffect(() => {
-    // void coinbaseWallet.connectEagerly().catch(() => {
-    //   console.debug('Failed to connect eagerly to Coinbase')
-    // })
+    void coinbaseWallet.connectEagerly().catch(() => {
+      console.debug('Failed to connect eagerly to Coinbase')
+    })
   }, [])
 
   const connect = useCallback(async () => {

@@ -14,9 +14,9 @@ export default function useWalletConnectWalletConnect(): IWalletConnectHook {
   }, [])
 
   useEffect(() => {
-    // void walletConnect.connectEagerly().catch(() => {
-    //   console.debug('Failed to connect eagerly to WalletConnect')
-    // })
+    void walletConnect.connectEagerly().catch(() => {
+      console.debug('Failed to connect eagerly to WalletConnect')
+    })
   }, [])
 
   const connect = useCallback(async () => {
