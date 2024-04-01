@@ -7,9 +7,9 @@ export default function useMetamaskWalletConnect(): IWalletConnectHook {
 
   useEffect(() => {
     // TODO: not sure how this would react with other wallet. Especially if you log in into two wallets (e.g. Plug and Metamask)
-    // void metaMask.connectEagerly().catch(() => {
-    //    console.debug('Failed to connect eagerly to MetaMask')
-    // })
+    void metaMask.connectEagerly().catch(() => {
+       console.debug('Failed to connect eagerly to MetaMask')
+    })
   }, [])
 
   const connect = useCallback(async () => {

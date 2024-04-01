@@ -7,3 +7,8 @@ export type Balance = {
   currency: string
   amount: string
 }
+
+export enum AuthProviderEnum {
+  EVM = 'EVM',
+  ICP = 'ICP'
+}

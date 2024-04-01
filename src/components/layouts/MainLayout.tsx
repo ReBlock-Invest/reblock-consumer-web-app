@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from 'react'
-import { Affix, App, Button, Col, ConfigProvider, Divider, Drawer, Flex, Form, Image, Input, Layout, Menu, Row, Typography, theme } from 'antd'
+import { Affix, App, Button, Col, ConfigProvider, Divider, Drawer, Dropdown, Flex, Form, Image, Input, Layout, Menu, Row, Typography, theme } from 'antd'
 import { Link, useLocation } from "react-router-dom"
 import useResponsiveValue from 'hooks/useResponsiveValue'
 import ReblockIcon from 'components/common/ReblockIcon'
@@ -8,6 +8,8 @@ import useWeb3 from 'hooks/useWeb3'
 import useAuthenticationStore from 'stores/useAuthenticationStore'
 import Colors from 'components/themes/Colors'
 import FormItem from 'antd/es/form/FormItem'
+import { CaretDownOutlined } from '@ant-design/icons'
+import { AuthProviderEnum } from 'types'
 
 const { Text, Link: AntdLink } = Typography
 const { Header, Content, Footer } = Layout
@@ -142,23 +144,51 @@ const MainLayout: React.FC<Props> = ({ children }) => {
                     </div>
                   </Flex>
                 ) : (
-                  <Button
-                    size="large"
-                    loading={authenticationStore.isLoading || isLoading}
-                    onClick={() => {
-                      if (!authenticationStore.token) {
-                        authenticationStore.setIsShowConnectWalletModal(true)
-                      } else {
-                        disconnect().then(() => {
-                          message.success("Disconnected from Wallet!")
-                        }).catch(() => {
-                          message.error("Failed to disconnect from Wallet!")
-                        })
+                  <Flex align="center" gap={8}>                    
+                    <Button
+                      size="large"
+                      loading={authenticationStore.isLoading || isLoading}
+                      onClick={() => {
+                        if (!authenticationStore.token) {
+                          authenticationStore.setIsShowConnectWalletModal(true)
+                        } else {
+                          disconnect().then(() => {
+                            message.success("Disconnected from Wallet!")
+                          }).catch(() => {
+                            message.error("Failed to disconnect from Wallet!")
+                          })
+                        }
+                      }}
+                    >
+                      {!!authenticationStore.token ? "Disconnect" : "Connect Wallet"}
+                    </Button>
+                    <Dropdown.Button 
+                      size="large"
+                      menu={{
+                        items: [
+                          {
+                            key: 'ICP',
+                            label: 'ICP',
+                            onClick: () => authenticationStore.setSelectedAuthProvider(
+                              AuthProviderEnum.ICP,
+                            )
+                          },
+                          {
+                            key: 'EVM',
+                            label: 'EVM',
+                            onClick: () => authenticationStore.setSelectedAuthProvider(
+                              AuthProviderEnum.EVM,
+                            )
+                          },                          
+                        ]
+                      }}
+                      icon={
+                        <CaretDownOutlined />
                       }
-                    }}
-                  >
-                    {!!authenticationStore.token ? "Disconnect" : "Connect Wallet"}
-                  </Button>
+                    >
+                      {authenticationStore.selectedAuthProvider}
+                    </Dropdown.Button>
+                  </Flex>
                 )}                
               </Col>
             </Row>

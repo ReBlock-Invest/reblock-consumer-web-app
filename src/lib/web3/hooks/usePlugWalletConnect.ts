@@ -26,9 +26,13 @@ export default function usePlugWalletConnect(): IWalletConnectHook & {
 
   const verifyConnection = async () => {
     //@ts-ignore
+    if (!window.ic.plug) return;
+    //@ts-ignore
     const connected = await window.ic.plug.isConnected();
     //@ts-ignore
     if (!connected) await window.ic.plug.requestConnect({ whitelist, host });
+    //@ts-ignore
+    setAccount(window.ic.plug.sessionManager.sessionData.accountId)
   };
 
   useEffect(() => {

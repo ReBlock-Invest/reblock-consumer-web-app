@@ -2,6 +2,7 @@ import { Divider, Flex, Modal, Space, Spin, Typography } from "antd"
 import useWeb3 from "hooks/useWeb3"
 import React from "react"
 import useAuthenticationStore from "stores/useAuthenticationStore"
+import { AuthProviderEnum } from "types"
 
 const { Text } = Typography
 
@@ -16,7 +17,7 @@ const ConnectWalletModal: React.FC<Props> = () => {
     connectPlug
   } = useWeb3()
 
-  const { isShowConnectWalletModal, setIsShowConnectWalletModal } = useAuthenticationStore()
+  const { isShowConnectWalletModal, setIsShowConnectWalletModal, selectedAuthProvider } = useAuthenticationStore()
 
   return (
     <Modal
@@ -30,64 +31,68 @@ const ConnectWalletModal: React.FC<Props> = () => {
           <Spin size="large" />
         </Flex>
       ) : (
-        <Flex vertical style={{ paddingTop: '16px' }}>
-          <Space
-            className="cursor-pointer"
-            onClick={() => {
-              connectPlug()
-              setIsShowConnectWalletModal(false)
-            }}
-          >
-            <img
-              src="/images/logo-plug-wallet.png"
-              alt="logo-icp"
-              style={{ width: '48px' }}
-            />
-            <Text strong>Plug</Text>
-          </Space>
-          <Divider />
-          <Space
-            className="cursor-pointer"
-            onClick={() => {
-              connectMetaMask()
-              setIsShowConnectWalletModal(false)
-            }}
-          >
-            <img
-              src="/images/logo-metamask.png"
-              alt="logo-metamask"
-            />
-            <Text strong>Metamask</Text>
-          </Space>
-          <Divider />
-          <Space
-            className="cursor-pointer"
-            onClick={() => {
-              connectWalletConnect()
-              setIsShowConnectWalletModal(false)
-            }}
-          >
-            <img
-              src="/images/logo-wallet-connect.png"
-              alt="logo-wallet-connect"
-            />
-            <Text strong>WalletConnect</Text>
-          </Space>
-          <Divider />
-          <Space
-            className="cursor-pointer"
-            onClick={() => {
-              connectCoinbase()
-              setIsShowConnectWalletModal(false)
-            }}
-          >
-            <img
-              src="/images/logo-coinbase.png"
-              alt="logo-coinbase"
-            />
-            <Text strong>Coinbase</Text>
-          </Space>
-        </Flex>
+        selectedAuthProvider === AuthProviderEnum.ICP ? (
+          <Flex vertical style={{ paddingTop: '16px' }}>
+            <Space
+              className="cursor-pointer"
+              onClick={() => {
+                connectPlug()
+                setIsShowConnectWalletModal(false)
+              }}
+            >
+              <img
+                src="/images/logo-plug-wallet.png"
+                alt="logo-icp"
+                style={{ width: '48px' }}
+              />
+              <Text strong>Plug</Text>
+            </Space>            
+          </Flex>
+        ) : (
+          <Flex vertical style={{paddingTop: '16px'}}>
+            <Space
+              className="cursor-pointer"
+              onClick={() => {
+                connectMetaMask()
+                setIsShowConnectWalletModal(false)
+              }}
+            >
+              <img
+                src="/images/logo-metamask.png"
+                alt="logo-metamask"
+              />
+              <Text strong>Metamask</Text>
+            </Space>
+            <Divider />
+            <Space
+              className="cursor-pointer"
+              onClick={() => {
+                connectWalletConnect()
+                setIsShowConnectWalletModal(false)
+              }}
+            >
+              <img
+                src="/images/logo-wallet-connect.png"
+                alt="logo-wallet-connect"
+              />
+              <Text strong>WalletConnect</Text>
+            </Space>
+            <Divider />
+            <Space
+              className="cursor-pointer"
+              onClick={() => {
+                connectCoinbase()
+                setIsShowConnectWalletModal(false)
+              }}
+            >
+              <img
+                src="/images/logo-coinbase.png"
+                alt="logo-coinbase"
+              />
+              <Text strong>Coinbase</Text>
+            </Space>
+          </Flex>
+        )
       )}
     </Modal>
   )
