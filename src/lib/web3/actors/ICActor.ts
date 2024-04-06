@@ -18,13 +18,12 @@ export default class ICActor<T extends Actor> {
 
   protected async getActor(): Promise<T> {
     if (this.actor) return this.actor
-    
     //@ts-ignore
-    const actor = await window.ic.plug.createActor({
+    this.actor = await window.ic.plug.createActor({
       canisterId: this.canisterId,
       interfaceFactory: this.idlFactory,
-    })
+    })    
 
-    return actor
+    return this.actor!!
   }
 }

@@ -17,6 +17,7 @@ import PersonalInquiryModal from "components/modules/kyc/modals/PersonaInquiryMo
 import ConnectWalletModal from "components/modules/wallets/modals/ConnectWalletsModal";
 import WindowContextProvider from "components/contexts/WindowContextProvider";
 import PrivacyPolicyPage from "pages/privacy-policy";
+import AdminProjectsPage from "pages/admin/projects";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
     path: "/privacy-policy",
     element: <PrivacyPolicyPage />,
   },
+  {
+    path: "/TfjFOUiXuVuhFqBcHIlb/projects",
+    element: <AdminProjectsPage />
+  }
 ])
 
 function App() {
