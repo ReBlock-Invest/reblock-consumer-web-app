@@ -40,12 +40,12 @@ const AppThemeConfig: ThemeConfig = {
     },
     Menu: {
       itemHoverColor: Colors.primaryLight,
-      itemSelectedColor: 'red',
-      itemColor: 'green',
+      // itemSelectedColor: 'red',
+      // itemColor: 'green',
 
       darkItemHoverColor: Colors.primaryLight,
-      darkItemSelectedColor: 'red',
-      darkItemColor: 'green',
+      // darkItemSelectedColor: 'red',
+      // darkItemColor: 'green',
     },
     Layout: {
       footerBg: Colors.primary,

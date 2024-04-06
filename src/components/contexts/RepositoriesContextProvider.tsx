@@ -6,6 +6,7 @@ import useAuthenticationStore from "stores/useAuthenticationStore"
 import ICPTransactionRepository from "repositories/ICPTransactionRepository"
 import useWeb3 from "hooks/useWeb3"
 import MaticTransactionRepository from "repositories/MaticTransactionRepository"
+import RBProBackendRepository from "repositories/RBProBackendRepository"
 
 type Props = {
   children: ReactNode
@@ -16,6 +17,7 @@ type Context = {
   authenticationRepository?: AuthenticationRepository
   icpTransactionRepository?: ICPTransactionRepository
   maticTransactionRepository?: MaticTransactionRepository
+  rbProBackendRepository?: RBProBackendRepository
 }
 
 export const RepositoriesContext = React.createContext<Context>({})
@@ -24,6 +26,7 @@ const RepositoriesContextProvider: React.FC<Props> = ({ children }) => {
   const {
     rbOriReblockICActor,
     nnsLedgerActorReblockICActor,
+    rbProBackendICActor,
     accounts
   } = useWeb3()
   const authenticationStore = useAuthenticationStore()
@@ -43,12 +46,16 @@ const RepositoriesContextProvider: React.FC<Props> = ({ children }) => {
           nnsLedgerActorReblockICActor
         ) : undefined,
       maticTransactionRepository: accounts && accounts?.length > 0 ?
-        new MaticTransactionRepository(accounts) : undefined
+        new MaticTransactionRepository(accounts) : undefined,
+      rbProBackendRepository: rbProBackendICActor ? new RBProBackendRepository(
+        rbProBackendICActor
+      ) : undefined
     }
   }, [
     authenticationStore.token,
     rbOriReblockICActor,
     nnsLedgerActorReblockICActor,
+    rbProBackendICActor,
     accounts
   ])
 
