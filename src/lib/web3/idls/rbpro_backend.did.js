@@ -11,6 +11,7 @@ const idlFactory = ({ IDL }) => {
     'owner' : IDL.Principal,
     'subaccount' : IDL.Opt(Subaccount),
   });
+  // eslint-disable-next-line
   const TokenInitArgs = IDL.Record({
     'fee' : Balance,
     'advanced_settings' : IDL.Opt(AdvancedSettings),

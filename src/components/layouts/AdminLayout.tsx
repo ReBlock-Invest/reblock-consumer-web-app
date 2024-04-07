@@ -1,15 +1,8 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode } from 'react';
 import {
   FolderOpenOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
 } from '@ant-design/icons';
-import { Layout, Menu, Button, theme, App, Flex } from 'antd';
-import { Link, useLocation } from 'react-router-dom';
-import ReblockIcon from 'components/common/ReblockIcon';
+import { Layout, Menu, theme, App, Flex } from 'antd';
 import useInterpolateScrollValue from 'hooks/useInterpolateScrollValue';
 
 const { Header, Sider, Content } = Layout;
@@ -19,18 +12,9 @@ type Props = {
 }
 
 const AdminLayout: React.FC<Props> = ({children}) => {
-  const location = useLocation()
-  const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-
-  const headerIconColor = useInterpolateScrollValue(
-    255,
-    0,
-    0,
-    50
-  )
 
   const headerBackgroundOpacity = useInterpolateScrollValue(
     0,
