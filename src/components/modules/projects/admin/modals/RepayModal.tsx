@@ -12,14 +12,16 @@ type Props = {
   onOk: (form: FieldType) => void
   onCancel: () => void
   confirmLoading: boolean
+  closable: boolean
 }
 
 
-const DepositModal: React.FC<Props> = ({
+const RepayModal: React.FC<Props> = ({
   open,
   onOk,
   confirmLoading,
-  onCancel
+  onCancel,
+  closable
 }) => {
   const [form] = Form.useForm<FieldType>();
 
@@ -28,7 +30,7 @@ const DepositModal: React.FC<Props> = ({
 
   return (
     <Modal
-      title="Deposit"
+      title="Repay"
       open={open}
       onOk={() => onOk({
         amount,
@@ -36,6 +38,7 @@ const DepositModal: React.FC<Props> = ({
       })}
       confirmLoading={confirmLoading}
       onCancel={onCancel}
+      closable={closable}
     >
       <Flex>
         <Form
@@ -70,4 +73,4 @@ const DepositModal: React.FC<Props> = ({
   )
 }
 
-export default DepositModal
+export default RepayModal

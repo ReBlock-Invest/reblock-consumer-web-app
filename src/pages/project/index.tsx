@@ -6,11 +6,11 @@ import Colors from "components/themes/Colors"
 import FontFamilies from "components/themes/FontFamilies"
 import MainLayout from "components/layouts/MainLayout"
 import React, { useCallback, useMemo, useState } from "react"
-import useRepositories from "hooks/useRepositories"
 import useAuthenticationStore from "stores/useAuthenticationStore"
 import UserInvestStateEnum from "entities/user/UserInvestStateEnum"
 import useKYCStore from "stores/useKYCStore"
 import ConfirmInvestmentDrawer from "components/modules/projects/drawers/ConfirmInvestmentDrawer"
+import useServices from "hooks/useServices"
 
 const { Title, Paragraph, Text, Link } = Typography
 
@@ -28,7 +28,7 @@ const ProjectPage: React.FC = () => {
   const kycStore = useKYCStore()
   const authenticationStore = useAuthenticationStore()
 
-  const repositories = useRepositories()
+  const services = useServices()
   const { projectId } = useParams()
 
   const [isOpenConfirmInvestmentDrawer, setIsOpenInvestmentDrawer] =
@@ -37,12 +37,12 @@ const ProjectPage: React.FC = () => {
 
   const { data: userInfoData } = useQuery({
     queryKey: ['userinfo'],
-    queryFn: () => repositories.authenticationRepository?.getUserInfo(),
-    enabled: !!repositories.authenticationRepository?.getIsAuthenticated(),
+    queryFn: () => services.authenticationService.getUserInfo(),
+    enabled: !!services.authenticationService.getIsAuthenticated(),
   })
   const { data, isLoading } = useQuery({
     queryKey: ['project', projectId],
-    queryFn: () => repositories.projectRepository?.getProject(
+    queryFn: () => services.projectService.getProject(
       projectId as string
     )
   })
@@ -50,9 +50,9 @@ const ProjectPage: React.FC = () => {
   const { mutate: investMutation, isLoading: investMutationLoading } = useMutation({
     mutationKey: ['invest', projectId],
     mutationFn: async (value: number) => {
-      // TODO: check if Metamask first, then check ICP
-      await repositories.icpTransactionRepository?.invest(
-        value
+      await services.projectService.depositToRBPoolPrincipal(
+        'dummy_usdc',
+        BigInt(value)
       )
     },
     onSuccess() {

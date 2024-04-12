@@ -11,6 +11,7 @@ type Props = {
   onOk: (form: FieldType) => void
   onCancel: () => void
   confirmLoading: boolean
+  closable: boolean
 }
 
 
@@ -18,7 +19,8 @@ const WithdrawModal: React.FC<Props> = ({
   open,
   onOk,
   confirmLoading,
-  onCancel
+  onCancel,
+  closable
 }) => {
   const [form] = Form.useForm<FieldType>();
 
@@ -33,6 +35,7 @@ const WithdrawModal: React.FC<Props> = ({
       })}
       confirmLoading={confirmLoading}
       onCancel={onCancel}
+      closable={closable}
     >
       <Flex>
         <Form

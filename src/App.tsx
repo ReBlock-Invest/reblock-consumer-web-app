@@ -7,7 +7,7 @@ import {
 } from "react-router-dom"
 import HomePage from './pages/home'
 import ProjectPage from './pages/project'
-import RepositoriesContextProvider from './components/contexts/RepositoriesContextProvider'
+import ServiceContextProvider from './components/contexts/ServiceContextProvider'
 import QueryClientContextProvider from './components/contexts/QueryClientContextProvider'
 import {App as AntdApp, ConfigProvider} from 'antd'
 import AppThemeConfig from "components/themes/AppThemeConfig";
@@ -53,7 +53,7 @@ function App() {
         <ConfigProvider theme={AppThemeConfig}>
           <AntdApp>
             <Web3ContextProvider>
-              <RepositoriesContextProvider>
+              <ServiceContextProvider>
                 <PersonalInquiryModal />
                 <ConnectWalletModal />
 
@@ -61,7 +61,7 @@ function App() {
                 <WindowContextProvider>
                   <RouterProvider router={router} />
                 </WindowContextProvider>
-              </RepositoriesContextProvider>
+              </ServiceContextProvider>
             </Web3ContextProvider>
           </AntdApp>
         </ConfigProvider>
