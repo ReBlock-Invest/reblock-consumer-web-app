@@ -24,7 +24,7 @@ const MainLayout: React.FC<Props> = ({ children }) => {
     token: { colorBgContainer, colorPrimary },
   } = theme.useToken()
   const { message } = App.useApp()
-  const { isLoading, disconnect } = useWeb3()
+  const { isLoading, disconnect, isActive } = useWeb3()
   const authenticationStore = useAuthenticationStore()
 
   const [isOpenRightDrawer, setIsOpenRightDrawer] = useState(false)
@@ -144,24 +144,26 @@ const MainLayout: React.FC<Props> = ({ children }) => {
                     </div>
                   </Flex>
                 ) : (
-                  <Flex align="center" gap={8}>                    
-                    <Button
-                      size="large"
-                      loading={authenticationStore.isLoading || isLoading}
-                      onClick={() => {
-                        if (!authenticationStore.token) {
-                          authenticationStore.setIsShowConnectWalletModal(true)
-                        } else {
-                          disconnect().then(() => {
-                            message.success("Disconnected from Wallet!")
-                          }).catch(() => {
-                            message.error("Failed to disconnect from Wallet!")
-                          })
-                        }
-                      }}
-                    >
-                      {!!authenticationStore.token ? "Disconnect" : "Connect Wallet"}
-                    </Button>
+                  <Flex align="center" gap={8}>  
+                    {!isActive || authenticationStore.selectedAuthProvider !== AuthProviderEnum.ICP ? (
+                       <Button
+                        size="large"
+                        loading={authenticationStore.isLoading || isLoading}
+                        onClick={() => {
+                          if (!authenticationStore.token) {
+                            authenticationStore.setIsShowConnectWalletModal(true)
+                          } else {
+                            disconnect().then(() => {
+                              message.success("Disconnected from Wallet!")
+                            }).catch(() => {
+                              message.error("Failed to disconnect from Wallet!")
+                            })
+                          }
+                        }}
+                      >
+                        {!!authenticationStore.token ? "Disconnect" : "Connect Wallet"}
+                      </Button>
+                    ) : null}                                     
                     <Dropdown.Button 
                       size="large"
                       menu={{
@@ -205,25 +207,27 @@ const MainLayout: React.FC<Props> = ({ children }) => {
               <Text strong>About</Text>
               <Divider />
               <Text strong>Community</Text>
-              <Button
-                type="primary"
-                size="large"
-                className="mt-lg"
-                loading={authenticationStore.isLoading || isLoading}
-                onClick={() => {
-                  if (!authenticationStore.token) {
-                    authenticationStore.setIsShowConnectWalletModal(true)
-                  } else {
-                    disconnect().then(() => {
-                      message.success("Disconnected from Wallet!")
-                    }).catch(() => {
-                      message.error("Failed to disconnect from Wallet!")
-                    })
-                  }
-                }}
-              >
-                {!!authenticationStore.token ? "Disconnect" : "Connect Wallet"}
-              </Button>
+              {!isActive || authenticationStore.selectedAuthProvider !== AuthProviderEnum.ICP ? (
+                <Button
+                  type="primary"
+                  size="large"
+                  className="mt-lg"
+                  loading={authenticationStore.isLoading || isLoading}
+                  onClick={() => {
+                    if (!authenticationStore.token) {
+                      authenticationStore.setIsShowConnectWalletModal(true)
+                    } else {
+                      disconnect().then(() => {
+                        message.success("Disconnected from Wallet!")
+                      }).catch(() => {
+                        message.error("Failed to disconnect from Wallet!")
+                      })
+                    }
+                  }}
+                >
+                  {!!authenticationStore.token ? "Disconnect" : "Connect Wallet"}
+                </Button>
+              ) : null}
           </Flex>
         </Drawer>
         <Content>

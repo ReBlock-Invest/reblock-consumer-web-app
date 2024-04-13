@@ -26,7 +26,7 @@ export default function usePlugWalletConnect(): IWalletConnectHook & {
 
   const verifyConnection = async () => {
     //@ts-ignore
-    if (!window.ic.plug) return;
+    if (!window.ic || !window.ic.plug) return;
     //@ts-ignore
     const connected = await window.ic.plug.isConnected();
     //@ts-ignore
@@ -41,7 +41,7 @@ export default function usePlugWalletConnect(): IWalletConnectHook & {
 
   const connect = useCallback(async () => {
     //@ts-ignore
-    if (!window.ic.plug) {
+    if (!window.ic || !window.ic.plug) {
       window.open('https://plugwallet.ooo/', '_blank')
       return 
     }

@@ -18,6 +18,7 @@ type Project = {
   status: ProjectStatusEnum
   title: string
   total_loan_amount: number
+  canister_id: string
 }
 
 export default Project

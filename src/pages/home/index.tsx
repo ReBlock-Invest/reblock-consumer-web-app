@@ -5,12 +5,12 @@ import HomeJumbotron from "components/pages/home/HomeJumbotron"
 import MainLayout from "components/layouts/MainLayout"
 import ProjectCard from "components/modules/projects/ProjectCard"
 import React from "react"
-import useRepositories from "hooks/useRepositories"
+import useServices from "hooks/useServices"
 
 const {Title} = Typography
 
 const HomePage: React.FC = () => {
-  const repositories = useRepositories()
+  const services = useServices()
 
   const {
     token: {
@@ -19,7 +19,7 @@ const HomePage: React.FC = () => {
   } = theme.useToken()
   const { data, isLoading } = useQuery({
     queryKey: ['projects'],
-    queryFn: () => repositories.projectRepository?.getProjects()
+    queryFn: () => services.projectService.getProjects()
   })
 
   return (

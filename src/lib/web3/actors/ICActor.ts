@@ -8,7 +8,7 @@ export type ICActorOptions = {
 
 export default class ICActor<T extends Actor> {
   private actor?: T
-  private canisterId: string
+  protected canisterId: string
   private idlFactory: any
 
   constructor(canisterId: string, idlFactory: any, options: ICActorOptions = {}) {

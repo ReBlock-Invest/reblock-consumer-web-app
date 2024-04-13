@@ -8,7 +8,6 @@ import useMetamaskWalletConnect from "lib/web3/hooks/useMetamaskWalletConnect"
 import useWalletConnectWalletConnect from "lib/web3/hooks/useWalletConnectWalletConnect"
 import { useCallback, useEffect, useState } from "react"
 import { Web3Provider } from '@ethersproject/providers'
-// import { Contract } from "@ethersproject/contracts"
 
 import { coinbaseWallet, hooks as coinbaseWalletHooks } from 'lib/web3/connectors/coinbaseWallet'
 import { hooks as metaMaskHooks, metaMask } from 'lib/web3/connectors/metaMask'
@@ -17,15 +16,7 @@ import React, { ReactNode } from 'react'
 import useAuthenticationStore from 'stores/useAuthenticationStore'
 import usePlugWalletConnect from 'lib/web3/hooks/usePlugWalletConnect'
 import { AuthProviderEnum, Balance } from 'types'
-import RBOriReblockICActor from 'lib/web3/actors/RBOriReblockICActor'
-import NSSLedgerReblockICActor from 'lib/web3/actors/NSSLedgerReblockICActor'
-import rbOriIdlFactory from 'lib/web3/idls/rbori.did'
-import nnsLedgerIdlFactory from 'lib/web3/idls/nns_ledger.did'
-import rbProBackendIdlFactory from 'lib/web3/idls/rbpro_backend.did'
-import RBProBackendICActor from 'lib/web3/actors/RBProBackendICActor'
 
-// import rbVault from 'lib/web3/abis/rb_vault.json'
-// import rbUSDC from 'lib/web3/abis/dummy_rb_usdc.json'
 
 const connectors: [MetaMask | WalletConnect | WalletConnect | CoinbaseWallet, Web3ReactHooks][] = [
   [metaMask, metaMaskHooks],
@@ -46,9 +37,6 @@ type Context = {
   connectWalletConnect: () => Promise<void>
   connectPlug: () => Promise<void>
   provider?: Web3Provider
-  rbOriReblockICActor?: RBOriReblockICActor
-  nnsLedgerActorReblockICActor?: NSSLedgerReblockICActor,
-  rbProBackendICActor?: RBProBackendICActor
 }
 
 export const Web3Context = React.createContext<Context>({
@@ -65,21 +53,6 @@ export const Web3Context = React.createContext<Context>({
   connectPlug: async () => { },
   provider: undefined
 })
-
-const rbOriReblockICActor = new RBOriReblockICActor(
-  process.env.REACT_APP_RB_ORI_CANISTER_ID as string,
-  rbOriIdlFactory
-)
-
-const nnsLedgerActorReblockICActor = new NSSLedgerReblockICActor(
-  process.env.REACT_APP_NNS_LEDGER_CANISTER_ID as string,
-  nnsLedgerIdlFactory
-)
-
-const rbProBackendICActor = new RBProBackendICActor(
-  process.env.REACT_APP_RB_PRO_BACKEND_CANISTER_ID as string,
-  rbProBackendIdlFactory
-)
 
 const Web3ContextProviderWrapper: React.FC<{
   children: ReactNode
@@ -206,9 +179,6 @@ const Web3ContextProviderWrapper: React.FC<{
       connectWalletConnect,
       connectPlug,
       provider,
-      rbOriReblockICActor,
-      nnsLedgerActorReblockICActor,
-      rbProBackendICActor,
     }}>
       {children}
     </Web3Context.Provider>

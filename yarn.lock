@@ -1408,6 +1408,13 @@
   dependencies:
     "@noble/hashes" "^1.3.1"
 
+"@dfinity/principal@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@dfinity/principal/-/principal-1.2.0.tgz#5cd4c2290c7a371e2aa2c4f35e15cd44deaa842c"
+  integrity sha512-7eurqPDL5ptlTTLMJPeiO75FAumXHsWEWDVQaN6XpA3aZtmofNK4Sb5g5Ne9syeuoCJcW3mFBbbFtFNxggxu+g==
+  dependencies:
+    "@noble/hashes" "^1.3.1"
+
 "@emotion/hash@^0.8.0":
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@emotion/hash/-/hash-0.8.0.tgz#bbbff68978fefdbe68ccb533bc8cbe1d1afb5413"

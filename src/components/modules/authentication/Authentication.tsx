@@ -1,5 +1,5 @@
 import { App } from "antd"
-import useRepositories from "hooks/useRepositories"
+import useServices from "hooks/useServices"
 import useWeb3 from "hooks/useWeb3"
 import React, { useCallback, useEffect, useRef } from "react"
 import useAuthenticationStore from "stores/useAuthenticationStore"
@@ -14,7 +14,7 @@ const Authentication: React.FC<Props> = () => {
   const { message } = App.useApp()
   const authenticationStore = useAuthenticationStore()
   const web3 = useWeb3()
-  const repositories = useRepositories()
+  const services = useServices()
   const isAuthenticatingRef = useRef(false)
 
   useEffect(() => {
@@ -34,10 +34,10 @@ const Authentication: React.FC<Props> = () => {
       isAuthenticatingRef.current = true
       authenticationStore.setIsLoading(true)
 
-      const nonce = await repositories.authenticationRepository?.getNonce(walletId)
+      const nonce = await services.authenticationService.getNonce(walletId)
 
       if (web3.isPlugWalletConnected) {
-        const accessToken = await repositories.authenticationRepository?.getAccessToken(
+        const accessToken = await services.authenticationService.getAccessToken(
           walletId,
           'hardcoded-plug-wallet-signature'
         )
@@ -47,7 +47,7 @@ const Authentication: React.FC<Props> = () => {
         const signer = web3.provider?.getSigner(walletId)
         const signature = await signer?.signMessage(`${nonce}`)
 
-        const accessToken = await repositories.authenticationRepository?.getAccessToken(
+        const accessToken = await services.authenticationService.getAccessToken(
           walletId,
           signature as string
         )
@@ -68,7 +68,7 @@ const Authentication: React.FC<Props> = () => {
     authenticationStore.setIsLoading,
     authenticationStore.setToken,
     message,
-    repositories.authenticationRepository,
+    services.authenticationService,
     web3.provider,
     web3.isPlugWalletConnected,
   ])

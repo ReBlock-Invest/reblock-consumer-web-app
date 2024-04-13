@@ -1,16 +1,14 @@
 import { IHttpClient } from "lib/httpclient/types";
-import BaseRepository from "./BaseRepository";
 import { GetNonceResponse, GetUserInfoResponse, IssueUIDResponse, WalletLoginResponse } from "./types";
 import UserInvestStateEnum from "entities/user/UserInvestStateEnum";
 import UserTypeIDEnum from "entities/user/UserTypeIDEnum";
 
-class AuthenticationRepository extends BaseRepository {
+class AuthenticationService {
   private httpClient: IHttpClient
   private host: string
   private isAuthenticated: boolean
 
   constructor(host: string, httpClient: IHttpClient, isAuthenticated: boolean) {
-    super()
     this.httpClient = httpClient
     this.host = host
     this.isAuthenticated = isAuthenticated
@@ -61,4 +59,4 @@ class AuthenticationRepository extends BaseRepository {
   }
 }
 
-export default AuthenticationRepository
+export default AuthenticationService
