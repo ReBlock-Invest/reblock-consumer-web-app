@@ -52,7 +52,7 @@ const ProjectPage: React.FC = () => {
     mutationFn: async (value: number) => {
       await services.projectService.depositToRBPoolPrincipal(
         'dummy_usdc',
-        BigInt(value)
+        BigInt(parseInt(`${parseFloat(`${value}`) * 100000000}`))
       )
     },
     onSuccess() {
