@@ -26,7 +26,7 @@ const ProjectsTable: React.FC<Props> = ({data, loading}) => {
     mutationKey: ['withdraw'],
     mutationFn: (args: {amount: number}) => services.projectService.depositToRBPoolPrincipal(
       'dummy_usdc',
-      BigInt(args.amount)
+      BigInt(parseInt(`${parseFloat(`${args.amount}`) * 100000000}`))
     ),
     onSuccess: () => {
       setSelectedWithdrawalCanisterId(undefined)
@@ -42,12 +42,12 @@ const ProjectsTable: React.FC<Props> = ({data, loading}) => {
     mutationFn: async (args: {amount: number, interest: number}) => {
       await services.projectService.repayPrincipal(
         'dummy_usdc',
-        BigInt(args.amount)
+        BigInt(parseInt(`${parseFloat(`${args.amount}`) * 100000000}`))
       )
 
       await services.projectService.repayInterest(
         'dummy_usdc',
-        BigInt(args.interest)
+        BigInt(parseInt(`${parseFloat(`${args.interest}`) * 100000000}`))
       )
     },
     onSuccess: () => {
