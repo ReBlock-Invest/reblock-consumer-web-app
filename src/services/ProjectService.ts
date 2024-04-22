@@ -101,5 +101,19 @@ export default class ProjectService {
     )
   }
 
+  async drawdownAsset(
+    amount: BigInt
+  ) {
+    await this.rbPollICActorRepository.drawdown(
+      amount
+    )
+  }
 
+  async withdraw(
+    amount: BigInt
+  ) {
+    await this.rbPollICActorRepository.withdraw(
+      amount
+    )
+  }
 }

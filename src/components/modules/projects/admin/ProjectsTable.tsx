@@ -24,8 +24,7 @@ const ProjectsTable: React.FC<Props> = ({data, loading}) => {
 
   const {mutate: withdraw, isLoading: isWithdrawLoading} = useMutation({
     mutationKey: ['withdraw'],
-    mutationFn: (args: {amount: number}) => services.projectService.depositToRBPoolPrincipal(
-      'dummy_usdc',
+    mutationFn: (args: {amount: number}) => services.projectService.drawdownAsset(
       BigInt(parseInt(`${parseFloat(`${args.amount}`) * 100000000}`))
     ),
     onSuccess: () => {

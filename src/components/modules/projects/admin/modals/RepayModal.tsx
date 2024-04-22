@@ -32,10 +32,13 @@ const RepayModal: React.FC<Props> = ({
     <Modal
       title="Repay"
       open={open}
-      onOk={() => onOk({
-        amount,
-        interest,
-      })}
+      onOk={() => {
+        onOk({
+          amount,
+          interest,
+        })
+        form.resetFields()
+      }}
       confirmLoading={confirmLoading}
       onCancel={onCancel}
       closable={closable}
