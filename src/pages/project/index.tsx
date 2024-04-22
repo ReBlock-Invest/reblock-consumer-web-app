@@ -34,6 +34,7 @@ const ProjectPage: React.FC = () => {
   const [isOpenConfirmInvestmentDrawer, setIsOpenInvestmentDrawer] =
     useState(false)
   const [investmentValue, setInvestmentValue] = useState(0)
+  const [withdrawValue, setWithdrawValue] = useState(0)
 
   const { data: userInfoData } = useQuery({
     queryKey: ['userinfo'],
@@ -58,9 +59,26 @@ const ProjectPage: React.FC = () => {
     onSuccess() {
       message.success('Investment succeed!')
       setIsOpenInvestmentDrawer(false)
+      setInvestmentValue(0)
     },
     onError(err) {
       message.error('Investment failed!')
+    }
+  })
+
+  const { mutate: withdrawMutation, isLoading: withdrawMutationLoading } = useMutation({
+    mutationKey: ['withdraw', projectId],
+    mutationFn: async (value: number) => {
+      await services.projectService.withdraw(
+        BigInt(parseInt(`${parseFloat(`${value}`) * 100000000}`))
+      )
+    },
+    onSuccess() {
+      message.success('Withdraw succeed!')
+      setWithdrawValue(0)
+    },
+    onError(err) {
+      message.error('Withdraw failed!')
     }
   })
 
@@ -91,6 +109,12 @@ const ProjectPage: React.FC = () => {
       }
     }
   }, [authenticationStore, userInfoData, kycStore, investmentValue, message])
+
+  const onWithdrawButtonPressed = useCallback(() => {
+    withdrawMutation(
+      withdrawValue
+    )
+  }, [withdrawMutation, withdrawValue])
 
   const project = data?.data!;
 
@@ -253,12 +277,45 @@ const ProjectPage: React.FC = () => {
                           key: 'withdraw',
                           label: 'Withdraw',
                           children: (
-                            <Button
-                              type="primary"
-                              size='large'
-                            >
-                              Withdraw
-                            </Button>
+                            <Flex vertical gap={8}>
+                              {userInfoData?.invest_state === UserInvestStateEnum.KYC_VERIFIED ? (
+                                <Space direction="vertical">
+                                  <Row
+                                    style={{
+                                      backgroundColor: Colors.primaryLight,
+                                      borderRadius: 4,
+                                      padding: '8px',
+                                    }}
+                                    justify="space-between"
+                                    gutter={8}
+                                  >
+                                    <Col span={18}>
+                                      <InputNumber
+                                        suffix="RBX"
+                                        precision={2}
+                                        value={withdrawValue}
+                                        onChange={(value) => setWithdrawValue(value || 0)}
+                                        style={{ width: '100%' }}
+                                      />
+                                    </Col>
+
+                                    <Col span={6}>
+                                      <Button block>
+                                        MAX
+                                      </Button>
+                                    </Col>
+                                  </Row>                                  
+                                </Space>
+                              ) : null}
+                              <Button
+                                type="primary"
+                                size='large'
+                                loading={withdrawMutationLoading}
+                                onClick={onWithdrawButtonPressed}
+                              >
+                                Withdraw
+                              </Button>
+                            </Flex>
                           )
                         }
                       ]}

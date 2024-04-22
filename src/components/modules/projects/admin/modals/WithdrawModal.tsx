@@ -30,9 +30,12 @@ const WithdrawModal: React.FC<Props> = ({
     <Modal
       title="Withdraw"
       open={open}
-      onOk={() => onOk({
-        amount,
-      })}
+      onOk={() => {
+        onOk({
+          amount,
+        })
+        form.resetFields()
+      }}
       confirmLoading={confirmLoading}
       onCancel={onCancel}
       closable={closable}
