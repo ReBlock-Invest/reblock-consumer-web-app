@@ -2,7 +2,7 @@
 
 import AdminLayout from "components/layouts/AdminLayout"
 import ProjectsTable from "components/modules/projects/admin/ProjectsTable"
-import React, { useMemo } from "react"
+import React from "react"
 import Project from "entities/project/Project"
 import { useQuery } from "react-query"
 import useServices from "hooks/useServices"
@@ -14,12 +14,13 @@ import useServices from "hooks/useServices"
 const AdminProjectsPage: React.FC = () => {
   const services = useServices()
 
-  const { data, isLoading } = useQuery({
+  const { data: projects, isLoading } = useQuery({
     queryKey: ['projects'],
-    queryFn: () => services.projectService.getProjects(),
+    queryFn: () => services.projectService.getProjects(
+      0,
+      99
+    ),
   })
-
-  const projects = useMemo(() => (data || []).map((d)=> d.data), [data])
 
   return (
     <AdminLayout>

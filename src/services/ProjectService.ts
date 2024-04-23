@@ -1,50 +1,48 @@
-import { listDocs, setDoc, getDoc, Doc } from "@junobuild/core"
-import projects from 'dummy/projects.json'
-import { nanoid } from 'nanoid'
 import Project from "entities/project/Project"
 import ProjectICActorRepository from "repositories/ProjectICActorRepository"
+import RBFactoryICActorRepository from "repositories/RBFactoryICActorRepository"
 import RBPoolICActorRepository from "repositories/RBPoolICActorRepository"
 
 export default class ProjectService {
 
   private projectICActorRepositoryRegistry: Record<string, ProjectICActorRepository>
   private rbPollICActorRepository: RBPoolICActorRepository
+  private rbFactoryICActorRepository: RBFactoryICActorRepository
 
   constructor(
     projectICActorRepositoryRegistry: Record<string, ProjectICActorRepository>,
-    rbPollICActorRepository: RBPoolICActorRepository
+    rbPollICActorRepository: RBPoolICActorRepository,
+    rbFactoryICActorRepository: RBFactoryICActorRepository
   ) {
     this.projectICActorRepositoryRegistry = projectICActorRepositoryRegistry
     this.rbPollICActorRepository = rbPollICActorRepository
+    this.rbFactoryICActorRepository = rbFactoryICActorRepository
   }
 
-  async getProjects(): Promise<Doc<Project>[]> {
-    const { items } = await listDocs<Project>({
-      collection: "Project",
-    })
-    return items || []
+  async getProjects(
+    start: number,
+    limit: number
+  ): Promise<Project[]> {
+    return this.rbFactoryICActorRepository.getPools(
+      start,
+      limit
+    )
   }
 
   async getProject(
     projectId: string
-  ): Promise<Doc<Project> | null> {
-    const item = await getDoc<Project>({
-      collection: "Project",
-      key: projectId
-    })
+  ): Promise<Project | undefined> {
+    const projects = await this.getProjects(0, 99)
 
-    return item || null
+    return projects.find((project) => (project.id as string) === projectId)
   }
 
-  async addDummyProject(): Promise<void> {
-    const key: string = nanoid()
-    setDoc({
-      collection: "Project",
-      doc: {
-        key,
-        data: projects[3]
-      }
-    })
+  async createProject(
+    project: Project
+  ): Promise<void> {
+    await this.rbFactoryICActorRepository.proposePool(
+      project
+    )
   }
 
   async depositToRBPoolPrincipal(
@@ -87,11 +85,11 @@ export default class ProjectService {
     projectId: string,
     amount: BigInt
   ) {
-    const projectICActorRepository = this.projectICActorRepositoryRegistry[
+    const dummyUSDCICActorRepository = this.projectICActorRepositoryRegistry[
       projectId
     ]
 
-    await projectICActorRepository.approve(
+    await dummyUSDCICActorRepository.approve(
       this.rbPollICActorRepository.getPoolPrincipal(),
       amount
     )

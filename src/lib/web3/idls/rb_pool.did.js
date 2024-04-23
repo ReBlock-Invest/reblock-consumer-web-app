@@ -1,28 +1,27 @@
 const idlFactory = ({ IDL }) => {
   const Balance = IDL.Nat;
   const Timestamp = IDL.Nat64;
-  const AdvancedSettings = IDL.Record({
-    'permitted_drift' : Timestamp,
-    'burned_tokens' : Balance,
-    'transaction_window' : Timestamp,
-  });
+  // const AdvancedSettings = IDL.Record({
+  //   'permitted_drift' : Timestamp,
+  //   'burned_tokens' : Balance,
+  //   'transaction_window' : Timestamp,
+  // });
   const Subaccount = IDL.Vec(IDL.Nat8);
   const Account = IDL.Record({
     'owner' : IDL.Principal,
     'subaccount' : IDL.Opt(Subaccount),
   });
-  // eslint-disable-next-line
-  const TokenInitArgs = IDL.Record({
-    'fee' : Balance,
-    'advanced_settings' : IDL.Opt(AdvancedSettings),
-    'decimals' : IDL.Nat8,
-    'minting_account' : IDL.Opt(Account),
-    'name' : IDL.Text,
-    'initial_balances' : IDL.Vec(IDL.Tuple(Account, Balance)),
-    'min_burn_amount' : Balance,
-    'max_supply' : Balance,
-    'symbol' : IDL.Text,
-  });
+  // const TokenInitArgs = IDL.Record({
+  //   'fee' : Balance,
+  //   'advanced_settings' : IDL.Opt(AdvancedSettings),
+  //   'decimals' : IDL.Nat8,
+  //   'minting_account' : IDL.Opt(Account),
+  //   'name' : IDL.Text,
+  //   'initial_balances' : IDL.Vec(IDL.Tuple(Account, Balance)),
+  //   'min_burn_amount' : Balance,
+  //   'max_supply' : Balance,
+  //   'symbol' : IDL.Text,
+  // });
   const BurnArgs = IDL.Record({
     'memo' : IDL.Opt(IDL.Vec(IDL.Nat8)),
     'from_subaccount' : IDL.Opt(Subaccount),
@@ -55,6 +54,30 @@ const idlFactory = ({ IDL }) => {
     'BalanceLow' : IDL.Null,
   });
   const DrawdownReceipt = IDL.Variant({ 'Ok' : IDL.Nat, 'Err' : DrawdownErr });
+  const PoolOperation = IDL.Variant({
+    'withdraw' : IDL.Null,
+    'init' : IDL.Null,
+    'repayPrincipal' : IDL.Null,
+    'deposit' : IDL.Null,
+    'drawdown' : IDL.Null,
+    'repayInterest' : IDL.Null,
+  });
+  const TransactionStatus = IDL.Variant({
+    'failed' : IDL.Null,
+    'succeeded' : IDL.Null,
+  });
+  const Time = IDL.Int;
+  const PoolTxRecord = IDL.Record({
+    'op' : PoolOperation,
+    'to' : IDL.Principal,
+    'fee' : IDL.Nat,
+    'status' : TransactionStatus,
+    'from' : IDL.Principal,
+    'timestamp' : Time,
+    'caller' : IDL.Opt(IDL.Principal),
+    'index' : IDL.Nat,
+    'amount' : IDL.Nat,
+  });
   const TxIndex__1 = IDL.Nat;
   const Burn = IDL.Record({
     'from' : Account,
@@ -175,12 +198,24 @@ const idlFactory = ({ IDL }) => {
     'get_borrower' : IDL.Func([], [IDL.Principal], []),
     'get_currency' : IDL.Func([], [IDL.Principal], []),
     'get_deposit_address' : IDL.Func([], [IDL.Text], []),
+    'get_pool_transaction' : IDL.Func([IDL.Nat], [PoolTxRecord], ['query']),
+    'get_pool_transactions' : IDL.Func(
+        [IDL.Nat, IDL.Nat],
+        [IDL.Vec(PoolTxRecord)],
+        ['query'],
+      ),
     'get_transaction' : IDL.Func([TxIndex__1], [IDL.Opt(Transaction__1)], []),
     'get_transactions' : IDL.Func(
         [GetTransactionsRequest],
         [GetTransactionsResponse],
         ['query'],
       ),
+    'get_user_transactons' : IDL.Func(
+        [IDL.Principal, IDL.Nat, IDL.Nat],
+        [IDL.Vec(PoolTxRecord)],
+        ['query'],
+      ),
+    'history_size' : IDL.Func([], [IDL.Nat], ['query']),
     'icrc1_balance_of' : IDL.Func([Account__1], [Balance__1], ['query']),
     'icrc1_decimals' : IDL.Func([], [IDL.Nat8], ['query']),
     'icrc1_fee' : IDL.Func([], [Balance__1], ['query']),
@@ -230,5 +265,6 @@ export const init = ({ IDL }) => {
   });
   return [TokenInitArgs, IDL.Principal, IDL.Principal];
 };
+
 
 export default idlFactory

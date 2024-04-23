@@ -9,6 +9,8 @@ import ProjectICActorRepository from "repositories/ProjectICActorRepository"
 import RBPoolICActorRepository from "repositories/RBPoolICActorRepository"
 import dummy_usdc from 'lib/web3/idls/dummy_usdc.did'
 import rb_pool from 'lib/web3/idls/rb_pool.did'
+import factory from 'lib/web3/idls/factory.did'
+import RBFactoryICActorRepository from "repositories/RBFactoryICActorRepository"
 
 type Props = {
   children: ReactNode
@@ -24,6 +26,11 @@ type Context = {
 const rbPoolICActorRepository = new RBPoolICActorRepository(
   process.env.REACT_APP_RB_POOL_CANISTER_ID as string,
   rb_pool
+)
+
+const rbFactoryICActorRepository = new RBFactoryICActorRepository(
+  process.env.REACT_APP_RB_POOL_FACTORY_CANISTER_ID as string,
+  factory
 )
 //TODO
 //- Add another project canister here
@@ -43,7 +50,8 @@ export const ServiceContext = React.createContext<Context>({
   ),
   projectService: new ProjectService(
     projectICActorRepositoryRegistry,
-    rbPoolICActorRepository
+    rbPoolICActorRepository,
+    rbFactoryICActorRepository
   ),
   rbPoolService: new RBPoolService(
     rbPoolICActorRepository
@@ -64,7 +72,8 @@ const ServiceContextProvider: React.FC<Props> = ({ children }) => {
       ),
       projectService: new ProjectService(
         projectICActorRepositoryRegistry,
-        rbPoolICActorRepository
+        rbPoolICActorRepository,
+        rbFactoryICActorRepository
       ),
       rbPoolService: new RBPoolService(
         rbPoolICActorRepository

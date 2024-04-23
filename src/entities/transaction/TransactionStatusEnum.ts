@@ -1,6 +1,6 @@
 enum TransactionStatusEnum {
-  SUCCEEDED = 'succeeded',
-  FAILED = 'failed'
+  SUCCEEDED = 'SUCCEEDED',
+  FAILED = 'FAILED'
 }
 
 export default TransactionStatusEnum

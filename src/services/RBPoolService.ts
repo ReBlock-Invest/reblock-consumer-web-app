@@ -1,3 +1,4 @@
+import { Principal } from "@dfinity/principal";
 import RBPoolICActorRepository from "repositories/RBPoolICActorRepository";
 
 export default class RBPoolService {
@@ -50,6 +51,16 @@ export default class RBPoolService {
       userPrincipal,
       start,
       limit
+    )
+  }
+
+  async getUserTotalSupply(
+    userPrincipal: Principal | undefined,
+  ) {
+    if (!userPrincipal) return 0
+    
+    return this.rbPoolICActorRepository.getUserTotalSupply(
+      userPrincipal
     )
   }
 }

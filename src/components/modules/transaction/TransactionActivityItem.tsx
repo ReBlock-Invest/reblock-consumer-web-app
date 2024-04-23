@@ -1,21 +1,24 @@
 import { Avatar, Flex, List, Space, Statistic, Typography } from "antd"
 import ReblockIcon from "components/common/ReblockIcon"
 import FontFamilies from "components/themes/FontFamilies"
+import Transaction from "entities/transaction/Transaction"
 import React from "react"
 
 const { Text, Link } = Typography
 
 type Props = {
-
+  transaction: Transaction
 }
 
-const TransactionActivityItem: React.FC<Props> = () => {
+const TransactionActivityItem: React.FC<Props> = ({
+  transaction,
+}) => {
   return (
     <List.Item actions={[
       <Flex vertical align="end">
           <Statistic
-            prefix="$"
-            value={13543.99}
+            prefix="USDC"
+            value={transaction.amount / 100000000}
             precision={2}
             valueStyle={{
               fontFamily: FontFamilies.primary,
@@ -23,7 +26,7 @@ const TransactionActivityItem: React.FC<Props> = () => {
               fontWeight: 'bold',
             }}
           />
-          <Text type="secondary" style={{fontSize: 12}}>Withdrawal</Text>
+          <Text type="secondary" style={{fontSize: 12}}>{transaction.op}</Text>
         </Flex>
     ]}>
       <List.Item.Meta
@@ -31,13 +34,13 @@ const TransactionActivityItem: React.FC<Props> = () => {
         <Avatar src={`https://xsgames.co/randomusers/avatar.php?g=pixel`} />
       }
         title={
-          <Text>0x8e41...5d0e</Text>
+          <Text ellipsis style={{maxWidth: '200px'}}>{transaction.from}</Text>
         }
         description={
           <Flex vertical>
-             <Text type="secondary" style={{fontSize: 12}}>Oct 8, 2023</Text>
+             <Text type="secondary" style={{fontSize: 12}}>{new Date(Math.floor(transaction.timestamp/1000000)).toLocaleDateString()}</Text>
 
-            <Link href="" target="_blank" style={{fontSize: 12}}>
+            <Link href="#" style={{fontSize: 12}}>
               <Space>
                 View Transaction
                 <ReblockIcon name="open-link" size={12} />
