@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, Col, Divider, Flex, Layout, Row, Space, Statistic, Skeleton, Tabs, Tag, Typography, theme, InputNumber, App } from "antd"
+import { Avatar, Button, Card, Col, Divider, Flex, Layout, Row, Space, Statistic, Skeleton, Tabs, Tag, Typography, theme, InputNumber, App, List } from "antd"
 import { PlusOutlined } from "@ant-design/icons"
 import { useParams } from "react-router-dom"
 import { useMutation, useQuery } from "react-query"
@@ -11,6 +11,10 @@ import UserInvestStateEnum from "entities/user/UserInvestStateEnum"
 import useKYCStore from "stores/useKYCStore"
 import ConfirmInvestmentDrawer from "components/modules/projects/drawers/ConfirmInvestmentDrawer"
 import useServices from "hooks/useServices"
+import ProjectStatusEnum from "entities/project/ProjectStatusEnum"
+import TransactionActivityItem from "components/modules/transaction/TransactionActivityItem"
+// import useWeb3 from "hooks/useWeb3"
+// import { Principal } from "@dfinity/principal"
 
 const { Title, Paragraph, Text, Link } = Typography
 
@@ -41,12 +45,31 @@ const ProjectPage: React.FC = () => {
     queryFn: () => services.authenticationService.getUserInfo(),
     enabled: !!services.authenticationService.getIsAuthenticated(),
   })
-  const { data, isLoading } = useQuery({
+  const { data: project, isLoading } = useQuery({
     queryKey: ['project', projectId],
     queryFn: () => services.projectService.getProject(
       projectId as string
     )
   })
+
+  const { data: transactions, isLoading: isLoadingTransactions } = useQuery({
+    queryKey: ['transactions'],
+    queryFn: () => services.rbPoolService.getPoolTransactions(
+      0,
+      10
+    )
+  })
+  
+  // const { accounts } = useWeb3()  
+
+  // const { data: balance, isLoading: isLoadingBalance } = useQuery({
+  //   queryKey: ['balance'],
+  //   queryFn: () => services.rbPoolService.getUserTotalSupply(      
+  //     (accounts?.length || 0) > 0 ? Principal.fromText(accounts!![0]) : undefined
+  //  ),
+  //   enabled: false, 
+  // })
+
 
   const { mutate: investMutation, isLoading: investMutationLoading } = useMutation({
     mutationKey: ['invest', projectId],
@@ -116,11 +139,9 @@ const ProjectPage: React.FC = () => {
     )
   }, [withdrawMutation, withdrawValue])
 
-  const project = data?.data!;
-
   return (
     <MainLayout>
-      {isLoading || data == null ? (
+      {isLoading || project == null ? (
         <Card className="m-md">
           <Skeleton />
         </Card>
@@ -133,7 +154,7 @@ const ProjectPage: React.FC = () => {
             onConfirm={() => investMutation(investmentValue)}
             value={investmentValue}
           />
-          <Layout.Content style={{ overflowX: 'hidden', marginTop: '-1px', }}>
+          <Layout.Content style={{ overflowX: 'hidden', marginTop: '-1px', paddingBottom: '16px' }}>
             <Flex
               style={{
                 backgroundColor: colorPrimary,
@@ -201,7 +222,7 @@ const ProjectPage: React.FC = () => {
 
                     <Space direction="vertical" size={0}>
                       <Text type="secondary">Status</Text>
-                      <Text strong>{project.status}</Text>
+                      <Text strong>{ProjectStatusEnum.OPEN}</Text>
                     </Space>
 
                     {!authenticationStore.token ? null : (
@@ -312,6 +333,9 @@ const ProjectPage: React.FC = () => {
                                 size='large'
                                 loading={withdrawMutationLoading}
                                 onClick={onWithdrawButtonPressed}
+                                style={{
+                                  marginTop: '16px'
+                                }}
                               >
                                 Withdraw
                               </Button>
@@ -356,7 +380,7 @@ const ProjectPage: React.FC = () => {
                     <Space direction="vertical" size={0}>
                       <Text type="secondary">Loan originated</Text>
                       <Statistic
-                        value={project.total_loan_amount * 0.78}
+                        value={(parseFloat(project.total_loan_amount)) * 0.78}
                         precision={2}
                         suffix={
                           <Text type="secondary" style={{ fontWeight: 400 }}>ICP</Text>
@@ -383,9 +407,27 @@ const ProjectPage: React.FC = () => {
                         }}
                       />
                     </Space>
+
+                    <List
+                      itemLayout="horizontal"
+                      dataSource={transactions}
+                      loading={isLoadingTransactions}
+                      header={
+                        <Title
+                          level={4}
+                        >
+                          Recent Activity
+                        </Title>
+                      }
+                      renderItem={(item, index) => (
+                        <TransactionActivityItem
+                          transaction={item}
+                        />
+                      )}
+                    />
+
+                    
                   </Flex>
-
-
                 </Flex>
               </Col>
             </Row>            

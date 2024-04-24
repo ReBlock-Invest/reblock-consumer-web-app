@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import IWalletConnectHook from '../interfaces/IWalletConnectHook'
 import { Balance } from 'types';
+import { Principal } from '@dfinity/principal';
 
 const nnsCanisterId = process.env.REACT_APP_NNS_CANISTER_ID
 const whitelist = [
@@ -32,7 +33,7 @@ export default function usePlugWalletConnect(): IWalletConnectHook & {
     //@ts-ignore
     if (!connected) await window.ic.plug.requestConnect({ whitelist, host });
     //@ts-ignore
-    setAccount(window.ic.plug.sessionManager.sessionData.accountId)
+    setAccount(window.ic.plug.sessionManager.sessionData.principalId)
   };
 
   useEffect(() => {
@@ -58,7 +59,11 @@ export default function usePlugWalletConnect(): IWalletConnectHook & {
       })
 
       //@ts-ignore
-      setAccount(window.ic.plug.accountId)
+      const principal: Principal = await window.ic.plug.getPrincipal()
+      //@ts-ignore
+      setAccount(principal.toText())
+
+      console.log('debugx', principal)
 
       //@ts-ignore
       const balances: any[] = await window.ic.plug.getBalance()

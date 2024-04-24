@@ -2,6 +2,7 @@ import { Avatar, Button, Card, Col, Flex, Progress, Row, Space, Statistic, Tag, 
 import Colors from "components/themes/Colors"
 import FontFamilies from "components/themes/FontFamilies"
 import Project from "entities/project/Project"
+import ProjectStatusEnum from "entities/project/ProjectStatusEnum"
 import React from "react"
 
 const { Text, Title } = Typography
@@ -79,7 +80,7 @@ const ProjectCard: React.FC<Props> = ({project}) => {
           <Col>
             <Space direction="vertical">
               <Text type="secondary">Maturity date</Text>
-              <Title level={5} className="m-0">{new Date(project.maturity_date).toLocaleDateString(undefined, dateOptions)}</Title>
+              <Title level={5} className="m-0">{new Date(project.maturity_date as number).toLocaleDateString(undefined, dateOptions)}</Title>
             </Space>
           </Col>
           <Col>
@@ -95,7 +96,7 @@ const ProjectCard: React.FC<Props> = ({project}) => {
                   color: colorSuccess,
                   backgroundColor: colorSuccessBg
                 }}
-              >{project.status}</Text>
+              >{ProjectStatusEnum.OPEN}</Text>
             </Space>
           </Col>
         </Row>

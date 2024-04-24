@@ -17,10 +17,13 @@ const HomePage: React.FC = () => {
       colorBgContainer,
     }
   } = theme.useToken()
-  const { data, isLoading } = useQuery({
+  const { data: projects, isLoading } = useQuery({
     queryKey: ['projects'],
-    queryFn: () => services.projectService.getProjects()
-  })
+    queryFn: () => services.projectService.getProjects(
+      0,
+      99
+    )
+  })  
 
   return (
     <MainLayout>
@@ -43,10 +46,10 @@ const HomePage: React.FC = () => {
             <Skeleton />
           ) : (
             <Row className="w-100 m-0" gutter={[8, 16]}>
-              {data?.map((d, index) => (       
-                <Col lg={8} md={24} sm={24} xs={24} key={d.key}>
-                  <Link to={`/project/${d.key}`}>
-                    <ProjectCard project={d.data} />
+              {projects?.map((d, index) => (       
+                <Col lg={8} md={24} sm={24} xs={24} key={d.id as string}>
+                  <Link to={`/project/${d.id}`}>
+                    <ProjectCard project={d} />
                   </Link>
                 </Col>
               ))}
