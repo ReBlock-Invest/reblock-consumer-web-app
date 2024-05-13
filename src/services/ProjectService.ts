@@ -23,7 +23,7 @@ export default class ProjectService {
     start: number,
     limit: number
   ): Promise<Project[]> {
-    return this.rbFactoryICActorRepository.getPools(
+    return await this.rbFactoryICActorRepository.getPools(
       start,
       limit
     )
