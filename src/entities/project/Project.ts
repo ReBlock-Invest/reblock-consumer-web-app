@@ -19,6 +19,7 @@ type Project = {
   payment_frequency: PaymentFrequencyEnum
   secured_by: string
   smart_contract_url: string
+  borrowers: Array<Principal>
   status: ProjectStatusEnum
   title: string
   total_loan_amount: string
