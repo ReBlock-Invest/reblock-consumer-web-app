@@ -59,9 +59,9 @@ const ProjectCard: React.FC<Props> = ({project}) => {
 
         <div>
           <Statistic
-            value={project.total_loan_amount}
+            value={Number(project.total_loan_amount) / 1000000 }
             title="Total loan amount"
-            suffix="ICP"
+            suffix="ckUSDC"
             valueStyle={{
               fontFamily: FontFamilies.secondary,
               fontSize: '30px',
@@ -80,7 +80,7 @@ const ProjectCard: React.FC<Props> = ({project}) => {
           <Col>
             <Space direction="vertical">
               <Text type="secondary">Maturity date</Text>
-              <Title level={5} className="m-0">{new Date(project.maturity_date as number).toLocaleDateString(undefined, dateOptions)}</Title>
+              <Title level={5} className="m-0">{new Date(Number(project.maturity_date) / 1000000).toLocaleDateString(undefined, dateOptions)}</Title>
             </Space>
           </Col>
           <Col>

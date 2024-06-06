@@ -55,6 +55,7 @@ const ProjectPage: React.FC = () => {
   const { data: transactions, isLoading: isLoadingTransactions } = useQuery({
     queryKey: ['transactions'],
     queryFn: () => services.rbPoolService.getPoolTransactions(
+      projectId as string,
       0,
       10
     )
@@ -362,7 +363,7 @@ const ProjectPage: React.FC = () => {
                     <Space direction="vertical" size={0}>
                       <Text type="secondary">Outstanding loan value</Text>
                       <Statistic
-                        value={project.total_loan_amount}
+                        value={project.total_loan_amount.toString()}
                         precision={2}
                         suffix={
                           <Text type="secondary" style={{ fontWeight: 400 }}>ICP</Text>
@@ -380,7 +381,7 @@ const ProjectPage: React.FC = () => {
                     <Space direction="vertical" size={0}>
                       <Text type="secondary">Loan originated</Text>
                       <Statistic
-                        value={(parseFloat(project.total_loan_amount)) * 0.78}
+                        value={project.total_loan_amount.toString()}
                         precision={2}
                         suffix={
                           <Text type="secondary" style={{ fontWeight: 400 }}>ICP</Text>

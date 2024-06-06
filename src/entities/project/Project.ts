@@ -22,7 +22,7 @@ type Project = {
   borrowers: Array<Principal>
   status: ProjectStatusEnum
   title: string
-  total_loan_amount: string
+  total_loan_amount: BigInt
   canister_id: string
 }
 

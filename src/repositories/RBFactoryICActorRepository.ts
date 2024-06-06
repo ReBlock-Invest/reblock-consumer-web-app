@@ -1,13 +1,17 @@
 import { Actor } from "@dfinity/agent"
 import ICActor from "../lib/web3/actors/ICActor"
 import Project from "entities/project/Project"
-import { Principal } from "@dfinity/principal"
+import Pool from "entities/factory/Pool"
+import ProjectCreditRatingEnum from "entities/project/ProjectCreditRatingEnum"
+import PaymentFrequencyEnum from "entities/project/PaymentFrequencyEnum"
+import ProjectStatusEnum from "entities/project/ProjectStatusEnum"
+import { createActor as makeFactoryActor } from "entities/factory"
 
 interface RBFactoryICActorInterface {
   get_pools(
     start: number,
     limit: number
-  ): Promise<Project[]>
+  ): Promise<Pool[]>
   proposePool(
     project: Project
   ): Promise<string>
@@ -20,18 +24,34 @@ export default class RBFactoryICActorRepository extends ICActor<RBFactoryICActor
     start: number,
     limit: number
   ) {
-    const actor = await this.getActor()
-    const pools = await actor.get_pools(
-      start,
-      limit
-    )
+
+    let bstart: bigint = BigInt(start)
+    let blimit: bigint = BigInt(limit)
+
+    let factory = makeFactoryActor(process.env.REACT_APP_RB_POOL_FACTORY_CANISTER_ID)
+    let result = await factory.get_pools([], bstart, blimit)
+    
+    const pools = result as Pool[]
 
     return pools.map((pool) => ({
-      ...pool,
-      id: (pool.id as Principal).toText(),
-      fundrise_end_time: Number(pool.fundrise_end_time as BigInt),
-      maturity_date: Number(pool.maturity_date as BigInt),
-      origination_date: Number(pool.origination_date as BigInt),
+      id: pool.id,
+      APR: pool.apr,
+      credit_rating: pool.credit_rating as ProjectCreditRatingEnum,
+      description: pool.description,
+      fundrise_end_time: pool.fundrise_end_time,
+      issuer_description: pool.issuer_description,
+      issuer_picture: pool.issuer_picture,
+      loan_term: pool.loan_term,
+      maturity_date: pool.maturity_date,
+      origination_date: pool.origination_date,
+      payment_frequency: pool.payment_frequency as PaymentFrequencyEnum,
+      secured_by: pool.secured_by,
+      smart_contract_url: pool.smart_contract_url,
+      borrowers: pool.borrowers,
+      status: pool.status as ProjectStatusEnum,
+      title: pool.title,
+      total_loan_amount: pool.total_loan_amount,
+      canister_id: pool.id.toString(),
     }))
   }
 
