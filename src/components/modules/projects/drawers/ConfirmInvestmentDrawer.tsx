@@ -51,7 +51,7 @@ const ConfirmInvestmentDrawer: React.FC<Props> = ({isLoading, open, onClose, onC
           <Statistic
             value={value}
             precision={2}
-            suffix="ICP"
+            suffix="ckUSDC"
           />
         </div>
 

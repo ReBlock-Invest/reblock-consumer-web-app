@@ -13,11 +13,12 @@ type Props = {
 const TransactionActivityItem: React.FC<Props> = ({
   transaction,
 }) => {
+
   return (
     <List.Item actions={[
       <Flex vertical align="end">
           <Statistic
-            prefix="USDC"
+            prefix="ckUSDC"
             value={transaction.amount / 100000000}
             precision={2}
             valueStyle={{
@@ -34,12 +35,12 @@ const TransactionActivityItem: React.FC<Props> = ({
         <Avatar src={`https://xsgames.co/randomusers/avatar.php?g=pixel`} />
       }
         title={
-          <Text ellipsis style={{maxWidth: '200px'}}>{transaction.from}</Text>
+          <Text ellipsis style={{maxWidth: '200px'}}>{ transaction.from }</Text>
         }
         description={
           <Flex vertical>
-             <Text type="secondary" style={{fontSize: 12}}>{new Date(Math.floor(transaction.timestamp/1000000)).toLocaleDateString()}</Text>
-
+             <Text type="secondary" style={{fontSize: 12}}>{new Date(Math.floor(transaction.timestamp)).toLocaleDateString()}</Text>
+          
             <Link href="#" style={{fontSize: 12}}>
               <Space>
                 View Transaction

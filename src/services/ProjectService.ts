@@ -33,8 +33,7 @@ export default class ProjectService {
     projectId: string
   ): Promise<Project | undefined> {
     const projects = await this.getProjects(0, 99)
-
-    return projects.find((project) => (project.id as string) === projectId)
+    return projects.find((project) => project.canister_id === projectId)
   }
 
   async createProject(

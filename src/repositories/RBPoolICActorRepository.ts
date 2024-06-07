@@ -4,6 +4,7 @@ import Transaction from "entities/transaction/Transaction"
 import { Principal } from "@dfinity/principal"
 import TransactionOperationEnum from "entities/transaction/TransactionOperationEnum"
 import TransactionStatusEnum from "entities/transaction/TransactionStatusEnum"
+import { createActor as makePoolActor } from "entities/pool"
 
 type PoolTransaction = {
   amount: BigInt
@@ -84,25 +85,29 @@ export default class RBPoolICActorRepository extends ICActor<RBPoolICActorExtens
   }
 
   async getPoolTransactions(
+    poolId: string,
     start: number,
     limit: number
   ): Promise<Transaction[]> {
-    const actor = await this.getActor()
-    const pool_transactions = await actor.get_pool_transactions(
-      start,
-      limit
-    )
 
-    return pool_transactions.map((transaction) => ({
+    let bstart: bigint = BigInt(start)
+    let blimit: bigint = BigInt(limit)
+
+    let pool = makePoolActor(poolId)
+    let result = await pool.get_pool_transactions(bstart, blimit)
+    
+    const transactions = result as PoolTransaction[];
+    //console.log(result);
+    return transactions.map((transaction) => ({
       amount: Number(transaction.amount),
       op: this.mapTransactionOperation(transaction),
       status: this.mapTransactionStatus(transaction),
-      from: transaction.from.toText(),
-      to: transaction.to.toText(),
+      from: transaction.from.toString(),
+      to: transaction.to.toString(),
       caller: '',
       fee: Number(transaction.fee),
       index: Number(transaction.index),
-      timestamp: Number(transaction.timestamp)
+      timestamp: Number(transaction.timestamp) / 1000000
     }))
   }
 

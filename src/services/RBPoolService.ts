@@ -33,10 +33,12 @@ export default class RBPoolService {
   }
 
   async getPoolTransactions(
+    poolId: string,
     start: number,
     limit: number,
   ) {
     return this.rbPoolICActorRepository.getPoolTransactions(
+      poolId,
       start,
       limit
     )

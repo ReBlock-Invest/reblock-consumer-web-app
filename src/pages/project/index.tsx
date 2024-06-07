@@ -51,15 +51,16 @@ const ProjectPage: React.FC = () => {
       projectId as string
     )
   })
-
+  //console.log(project);
   const { data: transactions, isLoading: isLoadingTransactions } = useQuery({
     queryKey: ['transactions'],
     queryFn: () => services.rbPoolService.getPoolTransactions(
+      projectId as string,
       0,
       10
     )
   })
-  
+  //console.log(transactions);
   // const { accounts } = useWeb3()  
 
   // const { data: balance, isLoading: isLoadingBalance } = useQuery({
@@ -231,7 +232,7 @@ const ProjectPage: React.FC = () => {
                         value={20}
                         precision={2}
                         decimalSeparator="."
-                        suffix="ICP"
+                        suffix="ckUSDC"
                       />)}
 
                     <Divider style={{ margin: 0 }} />
@@ -257,7 +258,7 @@ const ProjectPage: React.FC = () => {
                                   >
                                     <Col span={18}>
                                       <InputNumber
-                                        suffix="ICP"
+                                        suffix="ckUSDC"
                                         precision={2}
                                         value={investmentValue}
                                         onChange={(value) => setInvestmentValue(value || 0)}
@@ -272,7 +273,7 @@ const ProjectPage: React.FC = () => {
                                     </Col>
                                   </Row>
 
-                                  <Text>Balance: 33.78 ICP</Text>
+                                  <Text>Balance: 33.78 ckUSDC</Text>
 
                                   <Paragraph type="secondary">
                                     By clicking “Invest” below, I hereby agree to the
@@ -362,10 +363,10 @@ const ProjectPage: React.FC = () => {
                     <Space direction="vertical" size={0}>
                       <Text type="secondary">Outstanding loan value</Text>
                       <Statistic
-                        value={project.total_loan_amount}
+                        value={(Number(project.total_loan_amount) / 1000000).toString()}
                         precision={2}
                         suffix={
-                          <Text type="secondary" style={{ fontWeight: 400 }}>ICP</Text>
+                          <Text type="secondary" style={{ fontWeight: 400 }}>ckUSDC</Text>
                         }
                         valueStyle={{
                           fontFamily: FontFamilies.primary,
@@ -380,10 +381,10 @@ const ProjectPage: React.FC = () => {
                     <Space direction="vertical" size={0}>
                       <Text type="secondary">Loan originated</Text>
                       <Statistic
-                        value={(parseFloat(project.total_loan_amount)) * 0.78}
+                        value={(Number(project.total_loan_amount) / 1000000).toString()}
                         precision={2}
                         suffix={
-                          <Text type="secondary" style={{ fontWeight: 400 }}>ICP</Text>
+                          <Text type="secondary" style={{ fontWeight: 400 }}>ckUSDC</Text>
                         }
                         valueStyle={{
                           fontFamily: FontFamilies.primary,
