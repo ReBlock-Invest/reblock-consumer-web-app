@@ -62,11 +62,13 @@ export const idlFactory = ({ IDL }) => {
     max_supply: Balance,
     symbol: IDL.Text,
   });
+  /* eslint-disable no-unused-vars */
   const InitPool = IDL.Record({
     fee: Fee,
     loan: Loan,
     token_args: TokenInitArgs,
   });
+  /* eslint-enable no-unused-vars */
   const BurnArgs = IDL.Record({
     memo: IDL.Opt(IDL.Vec(IDL.Nat8)),
     from_subaccount: IDL.Opt(Subaccount),
