@@ -27,10 +27,12 @@ export const idlFactory = ({ IDL }) => {
     max_supply: Balance,
     symbol: IDL.Text,
   });
+  /* eslint-disable no-unused-vars */
   const InitFactory = IDL.Record({
     fee: Fee,
     pool_token_args: TokenInitArgs,
   });
+  /* eslint-enable no-unused-vars */
   const Fee__1 = IDL.Record({
     fee: IDL.Nat,
     fee_basis_point: IDL.Nat,
