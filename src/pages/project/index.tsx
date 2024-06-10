@@ -49,6 +49,23 @@ const ProjectPage: React.FC = () => {
     enabled: !!accounts && accounts.length > 0,
   })
 
+  const { data: userPoolTokenbalance, isLoading: isLoadingTokenBalance } = useQuery({
+    queryKey: ["userPoolTokenbalance", !!accounts && accounts.length > 0 ? accounts[0] : ""],
+    queryFn: () => services.rbPoolService.getUserPoolToken(
+      projectId as string,
+      !!accounts && accounts.length > 0 ? accounts[0] : ""
+    ),
+    enabled: !!accounts && accounts.length > 0,
+  })
+
+  const { data: tokenSymbol } = useQuery({
+    queryKey: ["tokenSymbol", projectId],
+    queryFn: () => services.rbPoolService.getTokenSymbol(
+      projectId as string,
+    ),
+    enabled: !!projectId,
+  })
+
   const { data: positionbalance, isLoading: isLoadingPositionBalance } = useQuery({
     queryKey: ["positionbalance", !!accounts && accounts.length > 0 ? accounts[0] : ""],
     queryFn: () => services.projectService.getPoolBalance(
@@ -63,12 +80,14 @@ const ProjectPage: React.FC = () => {
     queryFn: () => services.authenticationService.getUserInfo(),
     enabled: !!services.authenticationService.getIsAuthenticated(),
   })
+
   const { data: project, isLoading } = useQuery({
     queryKey: ['project', projectId],
     queryFn: () => services.projectService.getProject(
       projectId as string
     )
   })
+
   const { data: transactions, isLoading: isLoadingTransactions } = useQuery({
     queryKey: ['transactions'],
     queryFn: () => services.rbPoolService.getPoolTransactions(
@@ -320,7 +339,7 @@ const ProjectPage: React.FC = () => {
                                   >
                                     <Col span={18}>
                                       <InputNumber
-                                        suffix="RBX"
+                                        suffix={tokenSymbol as string}
                                         precision={2}
                                         value={withdrawValue}
                                         onChange={(value) => setWithdrawValue(value || 0)}
@@ -333,7 +352,10 @@ const ProjectPage: React.FC = () => {
                                         MAX
                                       </Button>
                                     </Col>
-                                  </Row>                                  
+                                  </Row>
+
+                                  <Text>Balance: { isLoadingTokenBalance ? "_" : Number(userPoolTokenbalance) / 1000000 } {tokenSymbol as string}</Text>
+
                                 </Space>
                               ) : null}
                               <Button

@@ -67,6 +67,22 @@ export default class RBPoolService {
     )
   }
 
+  async getUserPoolToken(
+    poolId: string,
+    userPrincipal: string,
+  ) {
+    return await this.rbPoolICActorRepository.getUserPoolToken(
+      poolId,
+      Principal.fromText(userPrincipal)
+    )
+  }
+
+  async getTokenSymbol(
+    poolId: string
+  ) {
+    return await this.rbPoolICActorRepository.getTokenSymbol(poolId)
+  }
+
   async getNextRepayments(
     poolId: string,
   ) {
