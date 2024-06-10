@@ -1,6 +1,5 @@
-import { Flex, Form, Input, Modal } from "antd"
+import { Flex, Form, Modal } from "antd"
 import React from "react"
-
 
 type FieldType = {
   amount: number
@@ -8,6 +7,7 @@ type FieldType = {
 
 type Props = {
   open: boolean
+  balance: number | undefined,
   onOk: (form: FieldType) => void
   onCancel: () => void
   confirmLoading: boolean
@@ -17,15 +17,18 @@ type Props = {
 
 const WithdrawModal: React.FC<Props> = ({
   open,
+  balance,
   onOk,
   confirmLoading,
   onCancel,
   closable
 }) => {
+
   const [form] = Form.useForm<FieldType>();
 
   const amount = Form.useWatch('amount', form);
 
+ 
   return (
     <Modal
       title="Withdraw"
@@ -51,14 +54,7 @@ const WithdrawModal: React.FC<Props> = ({
           onFinish={onOk}
           autoComplete="off"
         >
-          <Form.Item<FieldType>
-            label="Amount"
-            name="amount"
-            rules={[{ required: true, message: 'Please input withdraw amount' }]}
-            wrapperCol={{ span: 24 }}
-          >
-            <Input />
-          </Form.Item>
+          <div>Withdraw available funds:<strong> {balance} ckUSDT</strong>?</div><br/>
         </Form>
       </Flex>
     </Modal>

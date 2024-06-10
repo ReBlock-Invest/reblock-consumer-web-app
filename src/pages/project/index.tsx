@@ -11,15 +11,16 @@ import UserInvestStateEnum from "entities/user/UserInvestStateEnum"
 import useKYCStore from "stores/useKYCStore"
 import ConfirmInvestmentDrawer from "components/modules/projects/drawers/ConfirmInvestmentDrawer"
 import useServices from "hooks/useServices"
-import ProjectStatusEnum from "entities/project/ProjectStatusEnum"
 import TransactionActivityItem from "components/modules/transaction/TransactionActivityItem"
-// import useWeb3 from "hooks/useWeb3"
+import useWeb3 from "hooks/useWeb3"
 // import { Principal } from "@dfinity/principal"
 
 const { Title, Paragraph, Text, Link } = Typography
 
 const ProjectPage: React.FC = () => {
   const { message } = App.useApp()
+  const { accounts } = useWeb3()  
+  
   const {
     token: {
       colorPrimary,
@@ -40,6 +41,23 @@ const ProjectPage: React.FC = () => {
   const [investmentValue, setInvestmentValue] = useState(0)
   const [withdrawValue, setWithdrawValue] = useState(0)
 
+  const { data: userbalance, isLoading: isLoadingBalance } = useQuery({
+    queryKey: ["userbalance", !!accounts && accounts.length > 0 ? accounts[0] : ""],
+    queryFn: () => services.projectService.getCkUSDCBalance(      
+      !!accounts && accounts.length > 0 ? accounts[0] : ""
+    ),
+    enabled: !!accounts && accounts.length > 0,
+  })
+
+  const { data: positionbalance, isLoading: isLoadingPositionBalance } = useQuery({
+    queryKey: ["positionbalance", !!accounts && accounts.length > 0 ? accounts[0] : ""],
+    queryFn: () => services.projectService.getPoolBalance(
+      projectId as string,
+      !!accounts && accounts.length > 0 ? accounts[0] : ""
+    ),
+    enabled: !!accounts && accounts.length > 0,
+  })
+
   const { data: userInfoData } = useQuery({
     queryKey: ['userinfo'],
     queryFn: () => services.authenticationService.getUserInfo(),
@@ -51,7 +69,6 @@ const ProjectPage: React.FC = () => {
       projectId as string
     )
   })
-  //console.log(project);
   const { data: transactions, isLoading: isLoadingTransactions } = useQuery({
     queryKey: ['transactions'],
     queryFn: () => services.rbPoolService.getPoolTransactions(
@@ -60,24 +77,13 @@ const ProjectPage: React.FC = () => {
       10
     )
   })
-  //console.log(transactions);
-  // const { accounts } = useWeb3()  
-
-  // const { data: balance, isLoading: isLoadingBalance } = useQuery({
-  //   queryKey: ['balance'],
-  //   queryFn: () => services.rbPoolService.getUserTotalSupply(      
-  //     (accounts?.length || 0) > 0 ? Principal.fromText(accounts!![0]) : undefined
-  //  ),
-  //   enabled: false, 
-  // })
-
 
   const { mutate: investMutation, isLoading: investMutationLoading } = useMutation({
     mutationKey: ['invest', projectId],
     mutationFn: async (value: number) => {
       await services.projectService.depositToRBPoolPrincipal(
-        'dummy_usdc',
-        BigInt(parseInt(`${parseFloat(`${value}`) * 100000000}`))
+        projectId as string,
+        BigInt(parseInt(`${parseFloat(`${value}`) * 1000000}`))
       )
     },
     onSuccess() {
@@ -94,7 +100,8 @@ const ProjectPage: React.FC = () => {
     mutationKey: ['withdraw', projectId],
     mutationFn: async (value: number) => {
       await services.projectService.withdraw(
-        BigInt(parseInt(`${parseFloat(`${value}`) * 100000000}`))
+        projectId as string,
+        BigInt(parseInt(`${parseFloat(`${value}`) * 1000000}`))
       )
     },
     onSuccess() {
@@ -223,13 +230,13 @@ const ProjectPage: React.FC = () => {
 
                     <Space direction="vertical" size={0}>
                       <Text type="secondary">Status</Text>
-                      <Text strong>{ProjectStatusEnum.OPEN}</Text>
+                      <Text strong>{project.status.toUpperCase()}</Text>
                     </Space>
 
                     {!authenticationStore.token ? null : (
                       <Statistic
                         title="Your current position"
-                        value={20}
+                        value={isLoadingPositionBalance ? "_" : (Number(positionbalance) / 1000000)}
                         precision={2}
                         decimalSeparator="."
                         suffix="ckUSDC"
@@ -273,7 +280,7 @@ const ProjectPage: React.FC = () => {
                                     </Col>
                                   </Row>
 
-                                  <Text>Balance: 33.78 ckUSDC</Text>
+                                  <Text>Balance: { isLoadingBalance ? "_" : (Number(userbalance) / 1000000)} ckUSDC</Text>
 
                                   <Paragraph type="secondary">
                                     By clicking “Invest” below, I hereby agree to the

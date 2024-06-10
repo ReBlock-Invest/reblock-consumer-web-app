@@ -1,4 +1,5 @@
 import { Actor } from "@dfinity/agent"
+import { Principal } from "@dfinity/principal";
 import ICActor from "../lib/web3/actors/ICActor"
 import Project from "entities/project/Project"
 import Pool from "entities/factory/Pool"
@@ -6,6 +7,7 @@ import ProjectCreditRatingEnum from "entities/project/ProjectCreditRatingEnum"
 import PaymentFrequencyEnum from "entities/project/PaymentFrequencyEnum"
 import ProjectStatusEnum from "entities/project/ProjectStatusEnum"
 import { createActor as makeFactoryActor } from "entities/factory"
+import { createActor as makeCKUSDCActor } from "entities/icrc"
 
 interface RBFactoryICActorInterface {
   get_pools(
@@ -48,11 +50,28 @@ export default class RBFactoryICActorRepository extends ICActor<RBFactoryICActor
       secured_by: pool.secured_by,
       smart_contract_url: pool.smart_contract_url,
       borrowers: pool.borrowers,
-      status: pool.status as ProjectStatusEnum,
+      status: this.mapPoolStatus(pool),
       title: pool.title,
       total_loan_amount: pool.total_loan_amount,
       canister_id: pool.id.toString(),
     }))
+  }
+
+  async getPoolsWithBalance(
+    start: number,
+    limit: number
+  ) {
+
+    let pools = await this.getPools(start, limit)
+    let ckusdc = makeCKUSDCActor(process.env.REACT_APP_CKUSDC_CANISTER_ID)
+
+    const itemsWithBalance= await Promise.all(
+      pools.map(async (pool) => ({
+        ...pool,
+        balance: Number(await ckusdc.icrc1_balance_of({ owner: Principal.fromText(pool.canister_id), subaccount: []})) / 1000000
+      })))
+    
+    return itemsWithBalance
   }
 
   async proposePool(
@@ -62,5 +81,14 @@ export default class RBFactoryICActorRepository extends ICActor<RBFactoryICActor
     return actor.proposePool(
       project
     )
+  }
+
+  private mapPoolStatus(pool: Pool): ProjectStatusEnum {
+    if (pool.status === "closed") return ProjectStatusEnum.CLOSED
+    if (pool.status === "active") return ProjectStatusEnum.ACTIVE
+    if (pool.status === "pending") return ProjectStatusEnum.PENDING
+    if (pool.status === "open") return ProjectStatusEnum.OPEN
+    if (pool.status === "default") return ProjectStatusEnum.DEFAULT
+    return ProjectStatusEnum.OPEN
   }
 }

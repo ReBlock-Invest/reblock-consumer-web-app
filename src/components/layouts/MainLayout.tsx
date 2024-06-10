@@ -316,9 +316,9 @@ const MainLayout: React.FC<Props> = ({ children }) => {
               <Divider type="horizontal" style={{opacity: 0.5}} />
               
               <Flex align="center" justify="center" gap={8} className="mb-md">
-                <Text style={{color: colorBgContainer}}>ReBlock © 2023. Made with ❤️ from Bali. Powered by</Text>
+                <Text style={{color: colorBgContainer}}>ReBlock © 2024. Made with ❤️ from Bali. Powered by</Text>
                 <Link
-                  to="https://dashboard.internetcomputer.org/canister/fr33d-ayaaa-aaaal-adbpa-cai" target="_blank" rel="noopener noreferrer"
+                  to="https://dashboard.internetcomputer.org/canister/rugve-6qaaa-aaaal-ajafq-cai" target="_blank" rel="noopener noreferrer"
                   style={{marginTop: '8px'}}
                 >
                   <Image src="/images/logo-icp.png" height={18} preview={false}></Image>

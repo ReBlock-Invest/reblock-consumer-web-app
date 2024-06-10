@@ -19,7 +19,7 @@ const HomePage: React.FC = () => {
   } = theme.useToken()
   const { data: projects, isLoading } = useQuery({
     queryKey: ['projects'],
-    queryFn: () => services.projectService.getProjects(
+    queryFn: () => services.projectService.getProjectsWithBalance(
       0,
       99
     )

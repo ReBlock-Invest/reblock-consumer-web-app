@@ -58,6 +58,7 @@ const Web3ContextProviderWrapper: React.FC<{
   children: ReactNode
 }> = ({ children }) => {
   const authenticationStore = useAuthenticationStore()
+  
   const {
     connect: connectMetaMask,
     error: metamaskError,
@@ -72,7 +73,7 @@ const Web3ContextProviderWrapper: React.FC<{
     connect: connectWalletConnect,
     error: walletConnectError,
   } = useWalletConnectWalletConnect()
-
+  
   const {
     connect: connectPlug,
     error: plugError,

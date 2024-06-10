@@ -1,6 +1,7 @@
-import { Flex, Form, Input, Modal } from "antd"
+import { Modal } from "antd"
 import React from "react"
-
+import { useQuery } from "react-query"
+import useServices from "hooks/useServices"
 
 type FieldType = {
   amount: number
@@ -9,24 +10,38 @@ type FieldType = {
 
 type Props = {
   open: boolean
+  userBalance: bigint | undefined
+  poolId: string
   onOk: (form: FieldType) => void
   onCancel: () => void
   confirmLoading: boolean
   closable: boolean
 }
 
-
 const RepayModal: React.FC<Props> = ({
   open,
+  userBalance,
+  poolId,
   onOk,
   confirmLoading,
   onCancel,
   closable
 }) => {
-  const [form] = Form.useForm<FieldType>();
 
-  const amount = Form.useWatch('amount', form);
-  const interest = Form.useWatch('interest', form);
+  const services = useServices()
+  const { data: repayment, isLoading } = useQuery({
+    queryKey: ["repayment", poolId],
+    queryFn: () => services.rbPoolService.getNextRepayments(poolId),
+    enabled: !!poolId
+  })
+
+  let amount = 0;
+  let interest = 0;
+
+  if(!isLoading) {
+    amount = Number(repayment?.principal) / 1000000
+    interest = Number(repayment?.interest) / 1000000
+  }
 
   return (
     <Modal
@@ -37,41 +52,16 @@ const RepayModal: React.FC<Props> = ({
           amount,
           interest,
         })
-        form.resetFields()
       }}
       confirmLoading={confirmLoading}
       onCancel={onCancel}
       closable={closable}
     >
-      <Flex>
-        <Form
-          form={form}
-          name="basic"
-          labelCol={{ span: 4 }}
-          wrapperCol={{ span: 24 }}
-          style={{width: '100%'}}
-          initialValues={{ remember: true }}
-          onFinish={onOk}
-          autoComplete="off"
-        >
-          <Form.Item<FieldType>
-            label="Amount"
-            name="amount"
-            rules={[{ required: true, message: 'Please input deposit amount' }]}
-            wrapperCol={{ span: 24 }}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item<FieldType>
-            label="Interest"
-            name="interest"
-            rules={[{ required: true, message: 'Please input interest amount' }]}
-            wrapperCol={{ span: 24 }}
-          >
-            <Input />
-          </Form.Item>
-        </Form>
-      </Flex>
+
+        <div>Available: <strong>{Number(userBalance) / 1000000} ckUSDT</strong></div><br/><br/>
+        <div>Next principal repayment: <strong>{amount} ckUSDT</strong></div><br/>
+        <div>Next interest repayment:: <strong>{interest} ckUSDT</strong></div><br/>
+        <div><strong>Repay now?</strong></div>
     </Modal>
   )
 }

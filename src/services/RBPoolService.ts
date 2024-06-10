@@ -21,15 +21,16 @@ export default class RBPoolService {
   }
 
   async drawdown(
-    amount: BigInt
+    poolId: string
   ) {
-    await this.rbPoolICActorRepository.drawdown(amount)
+    await this.rbPoolICActorRepository.drawdown(poolId)
   }
 
   async withdraw(
-    amount: BigInt
+    poolId: string,
+    amount: bigint
   ) {
-    await this.rbPoolICActorRepository.withdraw(amount)
+    await this.rbPoolICActorRepository.withdraw(poolId, amount)
   }
 
   async getPoolTransactions(
@@ -64,5 +65,14 @@ export default class RBPoolService {
     return this.rbPoolICActorRepository.getUserTotalSupply(
       userPrincipal
     )
+  }
+
+  async getNextRepayments(
+    poolId: string,
+  ) {
+    const principal = await this.rbPoolICActorRepository.nextPrincipalRepayment(Principal.fromText(poolId))
+    const interest = await this.rbPoolICActorRepository.nextInterestRepayment(Principal.fromText(poolId))
+
+    return { principal: principal, interest: interest }
   }
 }

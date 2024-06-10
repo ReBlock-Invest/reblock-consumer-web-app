@@ -1,32 +1,49 @@
 import { DownloadOutlined, UploadOutlined } from "@ant-design/icons"
-import { App, Button, Flex, Table, Tooltip, Typography } from "antd"
+import { App, Button, Flex, Skeleton, Table, Tooltip, Typography } from "antd"
 import { ColumnsType } from "antd/es/table"
-import Project from "entities/project/Project"
+import ProjectWithBalance from "entities/project/ProjectWithBalance"
 import React, { useMemo, useState } from "react"
 import WithdrawModal from "./modals/WithdrawModal"
 import RepayModal from "./modals/RepayModal"
-import { useMutation } from "react-query"
+import { useMutation, useQuery } from "react-query"
 import useServices from "hooks/useServices"
+import useWeb3 from "hooks/useWeb3"
 
 const { Text } = Typography
 
 type Props = {
-  data: Project[]
+  data: ProjectWithBalance[]
   loading: boolean
 }
 
+const dateOptions: Intl.DateTimeFormatOptions = {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+};
+
 const ProjectsTable: React.FC<Props> = ({data, loading}) => {
   const { message } = App.useApp()
-  const [selectedWithdrawalCanisterId, setSelectedWithdrawalCanisterId] = useState<string | undefined>(undefined)
-  const [selectedDepositCanisterId, setSelectedDepositCanisterId] = useState<string | undefined>(undefined)
+  const { accounts, isLoading: isAccountLoading } = useWeb3()
+  const [selectedWithdrawalCanisterId, setSelectedWithdrawalCanisterId] = useState<ProjectWithBalance | undefined>(undefined)
+  const [selectedDepositCanisterId, setSelectedDepositCanisterId] = useState<ProjectWithBalance | undefined>(undefined)
   
   const services = useServices()
 
+  const { data: userbalance } = useQuery({
+    queryKey: ["userbalance", !!accounts && accounts.length > 0 ? accounts[0] : ""],
+    queryFn: () => services.projectService.getCkUSDCBalance(      
+      !!accounts && accounts.length > 0 ? accounts[0] : ""
+    ),
+    enabled: !!accounts && accounts.length > 0,
+  })
+
   const {mutate: withdraw, isLoading: isWithdrawLoading} = useMutation({
     mutationKey: ['withdraw'],
-    mutationFn: (args: {amount: number}) => services.projectService.drawdownAsset(
-      BigInt(parseInt(`${parseFloat(`${args.amount}`) * 100000000}`))
-    ),
+    mutationFn: async (args: {poolId: string}) => {
+      await services.projectService.drawdownAsset(args.poolId)
+    },
     onSuccess: () => {
       setSelectedWithdrawalCanisterId(undefined)
       message.success('Success to withdraw from project.')
@@ -38,15 +55,15 @@ const ProjectsTable: React.FC<Props> = ({data, loading}) => {
 
   const {mutate: deposit, isLoading: isDepositLoading} = useMutation({
     mutationKey: ['deposit'],
-    mutationFn: async (args: {amount: number, interest: number}) => {
+    mutationFn: async (args: {poolId: string, amount: number, interest: number}) => {
       await services.projectService.repayPrincipal(
-        'dummy_usdc',
-        BigInt(parseInt(`${parseFloat(`${args.amount}`) * 100000000}`))
+        args.poolId,
+        BigInt(parseInt(`${parseFloat(`${args.amount}`) * 1000000}`))
       )
 
       await services.projectService.repayInterest(
-        'dummy_usdc',
-        BigInt(parseInt(`${parseFloat(`${args.interest}`) * 100000000}`))
+        args.poolId,
+        BigInt(parseInt(`${parseFloat(`${args.interest}`) * 1000000}`))
       )
     },
     onSuccess: () => {
@@ -58,7 +75,7 @@ const ProjectsTable: React.FC<Props> = ({data, loading}) => {
     },
   })
 
-  const columns: ColumnsType<Project> = useMemo(() => [
+  const columns: ColumnsType<ProjectWithBalance> = useMemo(() => [
     {
       title: 'Title',
       dataIndex: 'title',
@@ -68,23 +85,37 @@ const ProjectsTable: React.FC<Props> = ({data, loading}) => {
       title: 'Description',
       dataIndex: 'description',
       key: 'description',
+      render: (_, record) => (
+        <div>
+        <Text>{ record.description }</Text><br/><br/>
+        <Text><i>Fundrise End Date</i>: {new Date(Number(record.fundrise_end_time) / 1000000).toLocaleDateString(undefined, dateOptions)}</Text><br/>
+        <Text><i>Origination Date</i>: {new Date(Number(record.origination_date) / 1000000).toLocaleDateString(undefined, dateOptions)}</Text><br/>
+        <Text><i>Maturity Date</i>: {new Date(Number(record.maturity_date) / 1000000).toLocaleDateString(undefined, dateOptions)}</Text><br/>
+        </div>
+      )
     },
     {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
+      render: (_, record) => (
+        <Text><strong>{ record.status.toString() }</strong></Text>
+      )
     },
     {
       title: 'Total Loan',
       dataIndex: 'total_loan_amount',
       key: 'total_loan_amount',
+      render: (_, record) => (
+        <Text>{ Number(record.total_loan_amount) / 1000000 }</Text>
+      )
     },
     {
       title: 'Pool Balance',
       dataIndex: 'pool_balance',
       key: 'pool_balance',
       render: (_, record) => (
-        <Text>0</Text>
+        <Text>{ record.balance / 1000000 }</Text>
       )
     },
     {
@@ -97,7 +128,7 @@ const ProjectsTable: React.FC<Props> = ({data, loading}) => {
               type="primary"
               icon={<DownloadOutlined />}
               //Demo purpose only
-              onClick={() => setSelectedWithdrawalCanisterId(process.env.REACT_APP_DUMMY_USDC_CANISTER_ID as string)}
+              onClick={() => setSelectedWithdrawalCanisterId(record)}
             />
           </Tooltip>
           <Tooltip title="Repay">
@@ -105,7 +136,7 @@ const ProjectsTable: React.FC<Props> = ({data, loading}) => {
               type="primary"
               icon={<UploadOutlined />}
               //Demo purpose only
-              onClick={() => setSelectedDepositCanisterId(process.env.REACT_APP_DUMMY_USDC_CANISTER_ID as string)}
+              onClick={() => setSelectedDepositCanisterId(record)}
               style={{ backgroundColor: 'green'}}
             />
           </Tooltip>
@@ -114,20 +145,28 @@ const ProjectsTable: React.FC<Props> = ({data, loading}) => {
     },
   ], [setSelectedWithdrawalCanisterId, setSelectedDepositCanisterId])
 
+  if (isAccountLoading) {
+    return <Skeleton/>
+  }
+
   return (
     <Flex>
       <WithdrawModal
         open={!!selectedWithdrawalCanisterId}
+        balance={selectedWithdrawalCanisterId?.balance}
         confirmLoading={isWithdrawLoading}
         onCancel={() => setSelectedWithdrawalCanisterId(undefined)}
-        onOk={(form) => withdraw({amount: form.amount})}
+        onOk={(form) => withdraw({poolId: selectedWithdrawalCanisterId?.canister_id as string})}
         closable={!isWithdrawLoading}
       />
       <RepayModal
         open={!!selectedDepositCanisterId}
+        userBalance={userbalance as bigint}
+        poolId={selectedDepositCanisterId?.canister_id as string}
         confirmLoading={isDepositLoading}
         onCancel={() => setSelectedDepositCanisterId(undefined)}
         onOk={(form) => deposit({
+          poolId: selectedDepositCanisterId?.canister_id as string,
           amount: form.amount,
           interest: form.interest,
         })}
