@@ -161,6 +161,15 @@ export default class RBPoolICActorRepository extends ICActor<RBPoolICActorExtens
     return balance as bigint
   }
 
+  async getUserPoolToken(
+    poolId: string,
+    userPrincipal: Principal
+  ) {
+    const actor = makePoolActor(poolId)
+    let balance =  await actor.icrc1_balance_of({ owner: userPrincipal, subaccount: [] })
+    return balance as bigint
+  }
+
   async nextPrincipalRepayment(
     poolId: Principal
   ) {
@@ -197,6 +206,13 @@ export default class RBPoolICActorRepository extends ICActor<RBPoolICActorExtens
     return Number(timestamp) / 1000
   }
 
+  async getTokenSymbol(
+    poolId: string
+  ) {
+    const pool = makePoolActor(poolId)
+
+    return await pool.icrc1_symbol()
+  }
 
   async getTotalSupply() {
     const actor = await this.getActor()
