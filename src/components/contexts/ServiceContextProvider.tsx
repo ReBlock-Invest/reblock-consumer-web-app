@@ -5,9 +5,9 @@ import AuthenticationService from "services/AuthenticationService"
 import ProjectService from "services/ProjectService"
 import RBPoolService from "services/RBPoolService"
 import TransactionService from "services/TransactionService"
-import ProjectICActorRepository from "repositories/ProjectICActorRepository"
+import CKUSDCActorRepository from "repositories/CKUSDCActorRepository"
 import RBPoolICActorRepository from "repositories/RBPoolICActorRepository"
-import dummy_usdc from 'lib/web3/idls/dummy_usdc.did'
+import ckusdc from 'lib/web3/idls/ckusdc.did'
 import rb_pool from 'lib/web3/idls/rb_pool.did'
 import factory from 'lib/web3/idls/factory.did'
 import RBFactoryICActorRepository from "repositories/RBFactoryICActorRepository"
@@ -32,15 +32,12 @@ const rbFactoryICActorRepository = new RBFactoryICActorRepository(
   process.env.REACT_APP_RB_POOL_FACTORY_CANISTER_ID as string,
   factory
 )
-//TODO
-//- Add another project canister here
-const projectICActorRepository = new ProjectICActorRepository(
-  process.env.REACT_APP_DUMMY_USDC_CANISTER_ID as string, 
-  dummy_usdc
+
+const ckUSDCActorRepository = new CKUSDCActorRepository(
+  process.env.REACT_APP_CKUSDC_CANISTER_ID as string, 
+  ckusdc
 )
 
-const projectICActorRepositoryRegistry: Record<string, ProjectICActorRepository> = {}
-projectICActorRepositoryRegistry['dummy_usdc'] = projectICActorRepository
 
 export const ServiceContext = React.createContext<Context>({
   authenticationService: new AuthenticationService(
@@ -49,7 +46,7 @@ export const ServiceContext = React.createContext<Context>({
     false
   ),
   projectService: new ProjectService(
-    projectICActorRepositoryRegistry,
+    ckUSDCActorRepository,
     rbPoolICActorRepository,
     rbFactoryICActorRepository
   ),
@@ -71,7 +68,7 @@ const ServiceContextProvider: React.FC<Props> = ({ children }) => {
         !!authenticationStore.token
       ),
       projectService: new ProjectService(
-        projectICActorRepositoryRegistry,
+        ckUSDCActorRepository,
         rbPoolICActorRepository,
         rbFactoryICActorRepository
       ),

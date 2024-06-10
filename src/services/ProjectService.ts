@@ -1,21 +1,23 @@
 import Project from "entities/project/Project"
-import ProjectICActorRepository from "repositories/ProjectICActorRepository"
+import ProjectWithBalance from "entities/project/ProjectWithBalance"
+import { Principal } from "@dfinity/principal"
+import CKUSDCActorRepository from "repositories/CKUSDCActorRepository"
 import RBFactoryICActorRepository from "repositories/RBFactoryICActorRepository"
 import RBPoolICActorRepository from "repositories/RBPoolICActorRepository"
 
 export default class ProjectService {
 
-  private projectICActorRepositoryRegistry: Record<string, ProjectICActorRepository>
-  private rbPollICActorRepository: RBPoolICActorRepository
+  private ckUSDCActorRepository: CKUSDCActorRepository
+  private rbPoolICActorRepository: RBPoolICActorRepository
   private rbFactoryICActorRepository: RBFactoryICActorRepository
 
   constructor(
-    projectICActorRepositoryRegistry: Record<string, ProjectICActorRepository>,
+    ckUSDCActorRepository: CKUSDCActorRepository,
     rbPollICActorRepository: RBPoolICActorRepository,
     rbFactoryICActorRepository: RBFactoryICActorRepository
   ) {
-    this.projectICActorRepositoryRegistry = projectICActorRepositoryRegistry
-    this.rbPollICActorRepository = rbPollICActorRepository
+    this.ckUSDCActorRepository = ckUSDCActorRepository
+    this.rbPoolICActorRepository = rbPollICActorRepository
     this.rbFactoryICActorRepository = rbFactoryICActorRepository
   }
 
@@ -24,6 +26,16 @@ export default class ProjectService {
     limit: number
   ): Promise<Project[]> {
     return await this.rbFactoryICActorRepository.getPools(
+      start,
+      limit
+    )
+  }
+
+  async getProjectsWithBalance(
+    start: number,
+    limit: number
+  ): Promise<ProjectWithBalance[]> {
+    return await this.rbFactoryICActorRepository.getPoolsWithBalance(
       start,
       limit
     )
@@ -46,71 +58,66 @@ export default class ProjectService {
 
   async depositToRBPoolPrincipal(
     projectId: string,
-    amount: BigInt
+    amount: bigint
   ) {
-    const projectICActorRepository = this.projectICActorRepositoryRegistry[
-      projectId
-    ]
 
-    await projectICActorRepository.approve(
-      this.rbPollICActorRepository.getPoolPrincipal(),
+    await this.ckUSDCActorRepository.approve(
+      Principal.fromText(projectId),
       amount
     )
 
-    await this.rbPollICActorRepository.deposit(
-      amount
-    )
+    await this.rbPoolICActorRepository.deposit(projectId, amount)
   }
 
   async repayInterest(
     projectId: string,
-    amount: BigInt
+    amount: bigint
   ) {
-    const projectICActorRepository = this.projectICActorRepositoryRegistry[
-      projectId
-    ]
 
-    await projectICActorRepository.approve(
-      this.rbPollICActorRepository.getPoolPrincipal(),
+    await this.ckUSDCActorRepository.approve(
+      Principal.fromText(projectId),
       amount
     )
 
-    await this.rbPollICActorRepository.repayInterest(
-      amount
-    )
+    await this.rbPoolICActorRepository.repayInterest(projectId)
   }
 
   async repayPrincipal(
     projectId: string,
-    amount: BigInt
+    amount: bigint
   ) {
-    const dummyUSDCICActorRepository = this.projectICActorRepositoryRegistry[
-      projectId
-    ]
 
-    await dummyUSDCICActorRepository.approve(
-      this.rbPollICActorRepository.getPoolPrincipal(),
+    await this.ckUSDCActorRepository.approve(
+      Principal.fromText(projectId),
       amount
     )
 
-    await this.rbPollICActorRepository.repayPrincipal(
-      amount
-    )
+    await this.rbPoolICActorRepository.repayPrincipal(projectId)
   }
 
   async drawdownAsset(
-    amount: BigInt
+    poolId: string,
   ) {
-    await this.rbPollICActorRepository.drawdown(
-      amount
-    )
+    await this.rbPoolICActorRepository.drawdown(poolId)
   }
 
   async withdraw(
+    poolId: string,
     amount: BigInt
   ) {
-    await this.rbPollICActorRepository.withdraw(
-      amount
-    )
+    await this.rbPoolICActorRepository.withdraw(poolId, amount)
+  }
+
+  async getPoolBalance(
+    poolId: string,
+    userPrincipal: string
+  ): Promise<bigint> {
+    return await this.rbPoolICActorRepository.getPoolBalance(poolId, Principal.fromText(userPrincipal))
+  }
+
+  async getCkUSDCBalance(
+    assetPrincipal: string
+  ): Promise<bigint> {
+    return await this.ckUSDCActorRepository.getBalance(Principal.fromText(assetPrincipal))
   }
 }

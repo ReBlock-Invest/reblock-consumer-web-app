@@ -1,8 +1,7 @@
 import { Avatar, Button, Card, Col, Flex, Progress, Row, Space, Statistic, Tag, Typography, theme } from "antd"
 import Colors from "components/themes/Colors"
 import FontFamilies from "components/themes/FontFamilies"
-import Project from "entities/project/Project"
-import ProjectStatusEnum from "entities/project/ProjectStatusEnum"
+import ProjectWithBalance from "entities/project/ProjectWithBalance"
 import React from "react"
 
 const { Text, Title } = Typography
@@ -15,7 +14,7 @@ const dateOptions: Intl.DateTimeFormatOptions = {
 };
 
 type Props = {
-  project: Project
+  project: ProjectWithBalance
 }
 
 const ProjectCard: React.FC<Props> = ({project}) => {
@@ -68,7 +67,7 @@ const ProjectCard: React.FC<Props> = ({project}) => {
             }}
           />
 
-          <Progress percent={75} strokeColor={{
+          <Progress percent={(project.balance * 100) /  (Number(project.total_loan_amount) / 1000000)} strokeColor={{
             '0%': Colors.secondary,
             '100%': Colors.primary
             }}
@@ -96,7 +95,7 @@ const ProjectCard: React.FC<Props> = ({project}) => {
                   color: colorSuccess,
                   backgroundColor: colorSuccessBg
                 }}
-              >{ProjectStatusEnum.OPEN}</Text>
+              >{project.status.toUpperCase()}</Text>
             </Space>
           </Col>
         </Row>

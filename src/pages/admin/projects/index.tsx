@@ -3,7 +3,7 @@
 import AdminLayout from "components/layouts/AdminLayout"
 import ProjectsTable from "components/modules/projects/admin/ProjectsTable"
 import React from "react"
-import Project from "entities/project/Project"
+import ProjectWithBalance from "entities/project/ProjectWithBalance"
 import { useQuery } from "react-query"
 import useServices from "hooks/useServices"
 // import useRepositories from "hooks/useRepositories"
@@ -16,7 +16,7 @@ const AdminProjectsPage: React.FC = () => {
 
   const { data: projects, isLoading } = useQuery({
     queryKey: ['projects'],
-    queryFn: () => services.projectService.getProjects(
+    queryFn: () => services.projectService.getProjectsWithBalance(
       0,
       99
     ),
@@ -25,7 +25,7 @@ const AdminProjectsPage: React.FC = () => {
   return (
     <AdminLayout>
       <ProjectsTable
-        data={projects as Project[]}
+        data={projects as ProjectWithBalance[]}
         loading={isLoading}
       />
     </AdminLayout>

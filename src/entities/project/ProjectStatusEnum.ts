@@ -1,9 +1,9 @@
 enum ProjectStatusEnum {
-  UPCOMING = 'UPCOMING',
-  MAKER_POOL = 'MAKER POOL',
-  OPEN = 'OPEN',
-  CLOSED = 'CLOSED',
-  DEFAULT = 'DEFAULT'
+  CLOSED = 'closed',
+  ACTIVE = 'active',
+  PENDING = 'pending',
+  OPEN = 'open',
+  DEFAULT = 'default'
 }
 
 export default ProjectStatusEnum

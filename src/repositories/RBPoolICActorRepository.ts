@@ -50,38 +50,44 @@ export default class RBPoolICActorRepository extends ICActor<RBPoolICActorExtens
   }
 
   async deposit(
+    poolId: string,
     amount: BigInt
   ) {
-    const actor = await this.getActor()
-    await actor.deposit(amount)
+    const pool = makePoolActor(poolId)
+    await pool.deposit(amount)
   }
 
   async repayPrincipal(
-    amount: BigInt
+    poolId: string
   ) {
-    const actor = await this.getActor()
-    await actor.repay_principal(amount)
+    const pool = makePoolActor(poolId)
+    const result = await pool.repay_principal()
+    return result
   }
 
   async repayInterest(
-    amount: BigInt
+    poolId: string
   ) {
-    const actor = await this.getActor()
-    await actor.repay_interest(amount)
+    const pool = makePoolActor(poolId)
+    const result = await pool.repay_interest()
+    return result
   }
 
   async withdraw(
+    poolId: string,
     amount: BigInt
   ) {
-    const actor = await this.getActor()
-    await actor.withdraw(amount)
+    const pool = makePoolActor(poolId)
+    const result = await pool.withdraw(amount)
+    return result
   }
 
   async drawdown(
-    amount: BigInt
+    poolId: string
   ) {
-    const actor = await this.getActor()
-    await actor.drawdown(amount)
+    const pool = makePoolActor(poolId)
+    const result = await pool.drawdown()
+    return result
   }
 
   async getPoolTransactions(
@@ -97,7 +103,7 @@ export default class RBPoolICActorRepository extends ICActor<RBPoolICActorExtens
     let result = await pool.get_pool_transactions(bstart, blimit)
     
     const transactions = result as PoolTransaction[];
-    //console.log(result);
+
     return transactions.map((transaction) => ({
       amount: Number(transaction.amount),
       op: this.mapTransactionOperation(transaction),
@@ -145,6 +151,52 @@ export default class RBPoolICActorRepository extends ICActor<RBPoolICActorExtens
     const actor = await this.getActor()
     return actor.icrc1_balance_of(userPrincipal)
   }
+
+  async getPoolBalance(
+    poolId: string,
+    userPrincipal: Principal
+  ) {
+    const actor = makePoolActor(poolId)
+    let balance =  await actor.balance_of(userPrincipal)
+    return balance as bigint
+  }
+
+  async nextPrincipalRepayment(
+    poolId: Principal
+  ) {
+    const pool = makePoolActor(poolId)
+    let amount =  await pool.next_principal_repayment()
+
+    return amount as bigint
+  }
+
+  async nextInterestRepayment(
+    poolId: Principal
+  ) {
+    const pool = makePoolActor(poolId)
+    let amount =  await pool.next_interest_repayment()
+
+    return amount as bigint
+  }
+
+  async nextPrincipalRepaymentDeadline(
+    poolId: Principal
+  ) {
+    const pool = makePoolActor(poolId)
+    let timestamp =  await pool.next_principal_repayment_deadline()
+
+    return Number(timestamp) / 1000
+  }
+
+  async nextInterestRepaymentDeadline(
+    poolId: Principal
+  ) {
+    const pool = makePoolActor(poolId)
+    let timestamp =  await pool.next_interest_repayment_deadline()
+
+    return Number(timestamp) / 1000
+  }
+
 
   async getTotalSupply() {
     const actor = await this.getActor()

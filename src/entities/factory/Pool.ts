@@ -21,4 +21,4 @@ type Pool = {
   borrowers: Principal[];
 };
 
-  export default Pool
+export default Pool
