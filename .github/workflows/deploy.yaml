@@ -24,7 +24,8 @@ jobs:
       REACT_APP_RB_POOL_CANISTER_ID: ${{ vars.REACT_APP_RB_POOL_CANISTER_ID }}
       REACT_APP_RB_POOL_PRINCIPAL_ID: ${{ vars.REACT_APP_RB_POOL_PRINCIPAL_ID }}
       REACT_APP_RB_POOL_FACTORY_CANISTER_ID: ${{ vars.REACT_APP_RB_POOL_FACTORY_CANISTER_ID }}
-      
+      REACT_APP_CKUSDC_CANISTER_ID: ${{ vars.REACT_APP_CKUSDC_CANISTER_ID }}
+
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
