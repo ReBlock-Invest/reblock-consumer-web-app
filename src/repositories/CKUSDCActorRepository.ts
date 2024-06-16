@@ -20,21 +20,21 @@ export default class CKUSDCActorRepository extends ICActor<CKUSDCActorExtensionI
       fee: [],
       memo: [],
       from_subaccount: [],
-      created_at_time: [],
+      created_at_time: [BigInt(Date.now()  * 1000000 )],
       amount: amount,
       expected_allowance: [],
       expires_at: [],
       spender: { owner: spender_principal, subaccount: [] }
     }
 
-    const actor = makeAssetActor(process.env.REACT_APP_CKUSDC_CANISTER_ID)
-    await actor.icrc2_approve(args)
+    const actor = await makeAssetActor(process.env.REACT_APP_CKUSDC_CANISTER_ID)
+    return await actor.icrc2_approve(args)
   }
 
   async getBalance(
     userPrincipal: Principal
   ) {
-    const actor = makeAssetActor(process.env.REACT_APP_CKUSDC_CANISTER_ID)
+    const actor = await makeAssetActor(process.env.REACT_APP_CKUSDC_CANISTER_ID)
     let balance =  await actor.icrc1_balance_of({ owner: userPrincipal, subaccount: [] })
     return balance as bigint
   }

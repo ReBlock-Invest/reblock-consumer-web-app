@@ -80,7 +80,7 @@ const Web3ContextProviderWrapper: React.FC<{
     isActivating: plugIsActivating,
     account: plugAccount,
     balances: plugBalances,
-    disconnect: plugDisconnect,
+    disconnect: plugDisconnect
   } = usePlugWalletConnect()
 
   const {
@@ -179,7 +179,7 @@ const Web3ContextProviderWrapper: React.FC<{
       connectMetaMask,
       connectWalletConnect,
       connectPlug,
-      provider,
+      provider
     }}>
       {children}
     </Web3Context.Provider>

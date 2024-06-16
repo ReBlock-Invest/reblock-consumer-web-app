@@ -60,13 +60,20 @@ export default class ProjectService {
     projectId: string,
     amount: bigint
   ) {
-
-    await this.ckUSDCActorRepository.approve(
+    console.log("depo1", projectId , ":", Number(amount))
+    let result = await this.ckUSDCActorRepository.approve(
       Principal.fromText(projectId),
       amount
     )
 
-    await this.rbPoolICActorRepository.deposit(projectId, amount)
+    let resultObj = result as { Err: any, Ok: any}
+    console.log("err", resultObj)
+    if (!!resultObj.Err) {
+      throw new Error("Approval failed")
+    }
+  
+    let result2 = await this.rbPoolICActorRepository.deposit(projectId, amount)
+    console.log("res", result2)
   }
 
   async repayInterest(

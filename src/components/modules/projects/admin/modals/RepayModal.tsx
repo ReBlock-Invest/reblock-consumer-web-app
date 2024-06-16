@@ -60,7 +60,7 @@ const RepayModal: React.FC<Props> = ({
 
         <div>Available: <strong>{Number(userBalance) / 1000000} ckUSDT</strong></div><br/><br/>
         <div>Next principal repayment: <strong>{amount} ckUSDT</strong></div><br/>
-        <div>Next interest repayment:: <strong>{interest} ckUSDT</strong></div><br/>
+        <div>Next interest repayment: <strong>{interest} ckUSDT</strong></div><br/>
         <div><strong>Repay now?</strong></div>
     </Modal>
   )

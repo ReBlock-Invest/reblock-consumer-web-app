@@ -4,10 +4,14 @@ import { Balance } from 'types';
 import { Principal } from '@dfinity/principal';
 
 const nnsCanisterId = process.env.REACT_APP_NNS_CANISTER_ID
+const factoryCanisterId = process.env.REACT_APP_RB_POOL_FACTORY_CANISTER_ID
+const ckusdcCanisterId = process.env.REACT_APP_CKUSDC_CANISTER_ID
 const whitelist = [
   nnsCanisterId,
+  factoryCanisterId,
+  ckusdcCanisterId
 ];
-const host = "https://mainnet.dfinity.network"
+const host = "https://icp-api.io"
 
 const onConnectionUpdate = () => {
   //@ts-ignore
@@ -19,6 +23,7 @@ export default function usePlugWalletConnect(): IWalletConnectHook & {
   account?: string
   balances?: Balance[]
   disconnect: () => void
+  verifyConnection: () => void
 } {
   const [error, setError] = useState(undefined)
   const [isActivating, setIsActivating] = useState(false)
@@ -96,5 +101,6 @@ export default function usePlugWalletConnect(): IWalletConnectHook & {
     account,
     balances,
     disconnect,
+    verifyConnection
   }
 }
