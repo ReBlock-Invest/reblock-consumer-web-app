@@ -11,7 +11,7 @@ export { idlFactory } from "./icrc.did.js";
  */
 export const canisterId = process.env.CANISTER_ID_POOL;
 
-export const createActor = (canisterId, options = {}) => {
+export const createActor = async (canisterId, options = {}) => {
   const agent = options.agent || new HttpAgent({ ...options.agentOptions });
 
   if (options.agent && options.agentOptions) {
@@ -30,11 +30,18 @@ export const createActor = (canisterId, options = {}) => {
     });
   }
 
+  if (!window.ic || !window.ic.plug) {
+    return Actor.createActor(idlFactory, {
+      agent,
+      canisterId,
+      ...options.actorOptions,
+    });
+  }
+
   // Creates an actor with using the candid interface and the HttpAgent
-  return Actor.createActor(idlFactory, {
-    agent,
-    canisterId,
-    ...options.actorOptions,
+  return await window.ic.plug.createActor({
+    canisterId: canisterId,
+    interfaceFactory: idlFactory,
   });
 };
 

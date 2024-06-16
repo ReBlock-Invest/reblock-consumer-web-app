@@ -20,7 +20,7 @@ const { Title, Paragraph, Text, Link } = Typography
 const ProjectPage: React.FC = () => {
   const { message } = App.useApp()
   const { accounts } = useWeb3()  
-  
+
   const {
     token: {
       colorPrimary,
@@ -165,6 +165,7 @@ const ProjectPage: React.FC = () => {
       withdrawValue
     )
   }, [withdrawMutation, withdrawValue])
+    
 
   return (
     <MainLayout>
