@@ -119,7 +119,14 @@ export default class ProjectService {
     poolId: string,
     amount: BigInt
   ) {
-    await this.rbPoolICActorRepository.withdraw(poolId, amount)
+    console.log("withdraw", poolId , ":", amount)
+    let result = await this.rbPoolICActorRepository.withdraw(poolId, amount)
+
+    let resultObj = result as { Err: any, Ok: any}
+    console.log("err", resultObj)
+    if (!!resultObj.Err) {
+      throw new Error("Withdraw Failed")
+    }
   }
 
   async getPoolBalance(
