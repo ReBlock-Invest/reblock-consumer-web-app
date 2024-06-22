@@ -65,6 +65,7 @@ const idlFactory = ({ IDL }) => {
   /* eslint-disable no-unused-vars */
   const InitPool = IDL.Record({
     fee: Fee,
+    owner: IDL.Principal,
     loan: Loan,
     token_args: TokenInitArgs,
   });
@@ -90,18 +91,43 @@ const idlFactory = ({ IDL }) => {
     InsufficientFunds: IDL.Record({ balance: Balance }),
   });
   const TransferResult = IDL.Variant({ Ok: TxIndex, Err: TransferError });
+  const Tokens = IDL.Nat;
+  const BlockIndex = IDL.Nat;
   const DepositErr = IDL.Variant({
+    GenericError: IDL.Record({
+      message: IDL.Text,
+      error_code: IDL.Nat,
+    }),
+    TemporarilyUnavailable: IDL.Null,
+    InsufficientAllowance: IDL.Record({ allowance: Tokens }),
+    BadBurn: IDL.Record({ min_burn_amount: Tokens }),
+    Duplicate: IDL.Record({ duplicate_of: BlockIndex }),
     TransferFailure: IDL.Null,
     FundriseTimeEnded: IDL.Null,
+    BadFee: IDL.Record({ expected_fee: Tokens }),
+    CreatedInFuture: IDL.Record({ ledger_time: IDL.Nat64 }),
     BalanceLow: IDL.Null,
+    TooOld: IDL.Null,
+    InsufficientFunds: IDL.Record({ balance: Tokens }),
   });
   const DepositReceipt = IDL.Variant({ Ok: IDL.Nat, Err: DepositErr });
   const DrawdownErr = IDL.Variant({
+    GenericError: IDL.Record({
+      message: IDL.Text,
+      error_code: IDL.Nat,
+    }),
     BeforeOriginationDate: IDL.Null,
     InvalidDrawdown: IDL.Null,
+    TemporarilyUnavailable: IDL.Null,
+    BadBurn: IDL.Record({ min_burn_amount: Tokens }),
+    Duplicate: IDL.Record({ duplicate_of: BlockIndex }),
     TransferFailure: IDL.Null,
     NotAuthorized: IDL.Null,
+    BadFee: IDL.Record({ expected_fee: Tokens }),
+    CreatedInFuture: IDL.Record({ ledger_time: IDL.Nat64 }),
     BalanceLow: IDL.Null,
+    TooOld: IDL.Null,
+    InsufficientFunds: IDL.Record({ balance: Tokens }),
   });
   const DrawdownReceipt = IDL.Variant({ Ok: IDL.Nat, Err: DrawdownErr });
   const Fee__1 = IDL.Record({
@@ -248,18 +274,42 @@ const idlFactory = ({ IDL }) => {
     amount: Balance,
   });
   const RepayInterestErr = IDL.Variant({
+    GenericError: IDL.Record({
+      message: IDL.Text,
+      error_code: IDL.Nat,
+    }),
+    TemporarilyUnavailable: IDL.Null,
+    InsufficientAllowance: IDL.Record({ allowance: Tokens }),
+    BadBurn: IDL.Record({ min_burn_amount: Tokens }),
+    Duplicate: IDL.Record({ duplicate_of: BlockIndex }),
     TransferFailure: IDL.Null,
+    BadFee: IDL.Record({ expected_fee: Tokens }),
+    CreatedInFuture: IDL.Record({ ledger_time: IDL.Nat64 }),
     BalanceLow: IDL.Null,
+    TooOld: IDL.Null,
     ZeroAmountTransfer: IDL.Null,
+    InsufficientFunds: IDL.Record({ balance: Tokens }),
   });
   const RepayInterestReceipt = IDL.Variant({
     Ok: IDL.Nat,
     Err: RepayInterestErr,
   });
   const RepayPrincipalErr = IDL.Variant({
+    GenericError: IDL.Record({
+      message: IDL.Text,
+      error_code: IDL.Nat,
+    }),
+    TemporarilyUnavailable: IDL.Null,
+    InsufficientAllowance: IDL.Record({ allowance: Tokens }),
+    BadBurn: IDL.Record({ min_burn_amount: Tokens }),
+    Duplicate: IDL.Record({ duplicate_of: BlockIndex }),
     TransferFailure: IDL.Null,
+    BadFee: IDL.Record({ expected_fee: Tokens }),
+    CreatedInFuture: IDL.Record({ ledger_time: IDL.Nat64 }),
     BalanceLow: IDL.Null,
+    TooOld: IDL.Null,
     ZeroAmountTransfer: IDL.Null,
+    InsufficientFunds: IDL.Record({ balance: Tokens }),
   });
   const RepayPrincipalReceipt = IDL.Variant({
     Ok: IDL.Nat,
@@ -273,9 +323,20 @@ const idlFactory = ({ IDL }) => {
     default: IDL.Null,
   });
   const WithdrawErr = IDL.Variant({
+    GenericError: IDL.Record({
+      message: IDL.Text,
+      error_code: IDL.Nat,
+    }),
+    TemporarilyUnavailable: IDL.Null,
+    BadBurn: IDL.Record({ min_burn_amount: Tokens }),
+    Duplicate: IDL.Record({ duplicate_of: BlockIndex }),
     TransferFailure: IDL.Null,
     WithdrawBeforeMaturityDate: IDL.Null,
+    BadFee: IDL.Record({ expected_fee: Tokens }),
+    CreatedInFuture: IDL.Record({ ledger_time: IDL.Nat64 }),
     BalanceLow: IDL.Null,
+    TooOld: IDL.Null,
+    InsufficientFunds: IDL.Record({ balance: Tokens }),
   });
   const WithdrawReceipt = IDL.Variant({ Ok: IDL.Nat, Err: WithdrawErr });
   const Pool = IDL.Service({
@@ -292,11 +353,17 @@ const idlFactory = ({ IDL }) => {
     get_deposit_address: IDL.Func([], [IDL.Text], []),
     get_fee: IDL.Func([], [Fee__1], ["query"]),
     get_info: IDL.Func([], [PoolRecord], ["query"]),
+    get_owner: IDL.Func([], [IDL.Principal], ["query"]),
     get_pool_transaction: IDL.Func([IDL.Nat], [PoolTxRecord], ["query"]),
     get_pool_transactions: IDL.Func(
       [IDL.Nat, IDL.Nat],
       [IDL.Vec(PoolTxRecord)],
       ["query"]
+    ),
+    get_repayment_index: IDL.Func(
+      [],
+      [IDL.Record({ total: IDL.Nat, index: IDL.Nat })],
+      []
     ),
     get_total_fund: IDL.Func([], [IDL.Nat], ["query"]),
     get_transaction: IDL.Func([TxIndex__1], [IDL.Opt(Transaction__1)], []),
@@ -336,6 +403,10 @@ const idlFactory = ({ IDL }) => {
     set_borrower: IDL.Func([IDL.Principal], [], ["oneway"]),
     set_decimal_offset: IDL.Func([IDL.Nat8], [IDL.Nat8], []),
     set_fee: IDL.Func([Fee__1], [Fee__1], []),
+    set_fundrise_end_time: IDL.Func([Time], [Time], []),
+    set_maturity_date: IDL.Func([Time], [Time], []),
+    set_origination_date: IDL.Func([Time], [Time], []),
+    transfer_ownership: IDL.Func([IDL.Principal], [IDL.Principal], []),
     trigger_closed: IDL.Func([], [PoolStatus], []),
     trigger_default: IDL.Func([], [PoolStatus], []),
     withdraw: IDL.Func([IDL.Nat], [WithdrawReceipt], []),
@@ -408,6 +479,7 @@ export const init = ({ IDL }) => {
   });
   const InitPool = IDL.Record({
     fee: Fee,
+    owner: IDL.Principal,
     loan: Loan,
     token_args: TokenInitArgs,
   });
