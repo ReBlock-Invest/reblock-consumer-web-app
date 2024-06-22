@@ -78,8 +78,7 @@ export default class RBPoolICActorRepository extends ICActor<RBPoolICActorExtens
     amount: BigInt
   ) {
     const pool = await makePoolActor(poolId)
-    const result = await pool.withdraw(amount)
-    return result
+    return await pool.withdraw(amount)
   }
 
   async drawdown(
