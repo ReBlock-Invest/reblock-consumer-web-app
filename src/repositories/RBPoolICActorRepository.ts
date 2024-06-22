@@ -5,6 +5,7 @@ import { Principal } from "@dfinity/principal"
 import TransactionOperationEnum from "entities/transaction/TransactionOperationEnum"
 import TransactionStatusEnum from "entities/transaction/TransactionStatusEnum"
 import { createActor as makePoolActor } from "entities/pool"
+import { ConsoleSqlOutlined } from "@ant-design/icons"
 
 type PoolTransaction = {
   amount: BigInt
@@ -54,7 +55,7 @@ export default class RBPoolICActorRepository extends ICActor<RBPoolICActorExtens
     amount: BigInt
   ) {
     const pool = await makePoolActor(poolId)
-    await pool.deposit(amount)
+    return await pool.deposit(amount)
   }
 
   async repayPrincipal(
