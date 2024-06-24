@@ -104,13 +104,13 @@ export default class RBPoolICActorRepository extends ICActor<RBPoolICActorExtens
     const transactions = result as PoolTransaction[];
 
     return transactions.map((transaction) => ({
-      amount: Number(transaction.amount),
+      amount: transaction.amount as bigint,
       op: this.mapTransactionOperation(transaction),
       status: this.mapTransactionStatus(transaction),
       from: transaction.from.toString(),
       to: transaction.to.toString(),
       caller: '',
-      fee: Number(transaction.fee),
+      fee: transaction.fee as bigint,
       index: Number(transaction.index),
       timestamp: Number(transaction.timestamp) / 1000000
     }))

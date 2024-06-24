@@ -17,6 +17,10 @@ import useWeb3 from "hooks/useWeb3"
 
 const { Title, Paragraph, Text, Link } = Typography
 
+function formatBigInt(amount: bigint): string {
+  return (Number(amount / BigInt(10000)) / 100).toFixed(2)
+}
+
 const ProjectPage: React.FC = () => {
   const { message } = App.useApp()
   const { accounts } = useWeb3()  
@@ -256,7 +260,7 @@ const ProjectPage: React.FC = () => {
                     {!authenticationStore.token ? null : (
                       <Statistic
                         title="Your current position"
-                        value={isLoadingPositionBalance ? "_" : (Number(positionbalance) / 1000000)}
+                        value={isLoadingPositionBalance ? "_" : formatBigInt(positionbalance as bigint)}
                         precision={2}
                         decimalSeparator="."
                         suffix="ckUSDC"
@@ -300,7 +304,7 @@ const ProjectPage: React.FC = () => {
                                     </Col>
                                   </Row>
 
-                                  <Text>Balance: { isLoadingBalance ? "_" : (Number(userbalance) / 1000000)} ckUSDC</Text>
+                                  <Text>Balance: { isLoadingBalance ? "_" : formatBigInt(userbalance as bigint)} ckUSDC</Text>
 
                                   <Paragraph type="secondary">
                                     By clicking “Invest” below, I hereby agree to the
@@ -355,7 +359,7 @@ const ProjectPage: React.FC = () => {
                                     </Col>
                                   </Row>
 
-                                  <Text>Balance: { isLoadingTokenBalance ? "_" : Number(userPoolTokenbalance) / 1000000 } {tokenSymbol as string}</Text>
+                                  <Text>Balance: { isLoadingTokenBalance ? "_" : formatBigInt(userPoolTokenbalance as bigint)} {tokenSymbol as string}</Text>
 
                                 </Space>
                               ) : null}
@@ -391,9 +395,15 @@ const ProjectPage: React.FC = () => {
 
                   <Flex vertical id="asset-overview">
                     <Space direction="vertical" size={0}>
+                      <Text type="secondary">Pool Canister</Text>
+                      <a href={"https://dashboard.internetcomputer.org/canister/" + project.canister_id} target="_blank" rel="noopener noreferrer" >{project.canister_id}</a>
+                    </Space>
+
+                    <Divider />
+                    <Space direction="vertical" size={0}>
                       <Text type="secondary">Outstanding loan value</Text>
                       <Statistic
-                        value={(Number(project.total_loan_amount) / 1000000).toString()}
+                        value={formatBigInt(project.total_loan_amount as bigint)}
                         precision={2}
                         suffix={
                           <Text type="secondary" style={{ fontWeight: 400 }}>ckUSDC</Text>
@@ -411,7 +421,7 @@ const ProjectPage: React.FC = () => {
                     <Space direction="vertical" size={0}>
                       <Text type="secondary">Loan originated</Text>
                       <Statistic
-                        value={(Number(project.total_loan_amount) / 1000000).toString()}
+                        value={formatBigInt(project.total_loan_amount as bigint)}
                         precision={2}
                         suffix={
                           <Text type="secondary" style={{ fontWeight: 400 }}>ckUSDC</Text>

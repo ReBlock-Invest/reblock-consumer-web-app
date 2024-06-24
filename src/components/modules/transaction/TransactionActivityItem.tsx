@@ -10,6 +10,11 @@ type Props = {
   transaction: Transaction
 }
 
+function formatBigInt(amount: bigint): string {
+  return (Number(amount / BigInt(10000)) / 100).toFixed(2)
+}
+
+
 const TransactionActivityItem: React.FC<Props> = ({
   transaction,
 }) => {
@@ -19,7 +24,7 @@ const TransactionActivityItem: React.FC<Props> = ({
       <Flex vertical align="end">
           <Statistic
             prefix="ckUSDC"
-            value={transaction.amount / 100000000}
+            value={ formatBigInt(transaction.amount) }
             precision={2}
             valueStyle={{
               fontFamily: FontFamilies.primary,
