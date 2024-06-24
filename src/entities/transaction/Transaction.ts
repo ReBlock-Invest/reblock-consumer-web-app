@@ -6,11 +6,11 @@ type Transaction = {
   from: string
   to: string
   caller: string
-  fee: number
+  fee: bigint
   status: TransactionStatusEnum
   timestamp: number
   index: number
-  amount: number
+  amount: bigint
 }
 
 export default Transaction

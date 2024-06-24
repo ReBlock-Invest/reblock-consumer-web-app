@@ -17,6 +17,10 @@ type Props = {
   project: ProjectWithBalance
 }
 
+function formatBigInt(amount: bigint): string {
+  return (Number(amount / BigInt(10000)) / 100).toFixed(2)
+}
+
 const ProjectCard: React.FC<Props> = ({project}) => {
   const {
     token: {
@@ -58,7 +62,7 @@ const ProjectCard: React.FC<Props> = ({project}) => {
 
         <div>
           <Statistic
-            value={Number(project.total_loan_amount) / 1000000 }
+            value={formatBigInt(project.total_loan_amount as bigint)}
             title="Total loan amount"
             suffix="ckUSDC"
             valueStyle={{
