@@ -311,7 +311,7 @@ const ProjectPage: React.FC = () => {
                                     <Link href="https://ant.design" target="_blank">
                                       {" Pool Aggrement"}
                                     </Link>
-                                    . Please note the protocol deducts a 0.50% fee upon withdrawal for protocol reserves.
+                                    . Please note the protocol deducts 0.01 ckUSDC for ckUSDC transaction fee and a 0.10% fee upon deposit for protocol reserves.
                                   </Paragraph>
                                 </Space>
                               ) : null}
