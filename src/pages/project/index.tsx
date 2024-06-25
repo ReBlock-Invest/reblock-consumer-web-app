@@ -361,6 +361,13 @@ const ProjectPage: React.FC = () => {
 
                                   <Text>Balance: { isLoadingTokenBalance ? "_" : formatBigInt(userPoolTokenbalance as bigint)} {tokenSymbol as string}</Text>
 
+                                  <Paragraph type="secondary">
+                                    By clicking “Withdraw below, I hereby agree to the
+                                    <Link href="https://ant.design" target="_blank">
+                                      {" Pool Aggrement"}
+                                    </Link>
+                                    . Please note the protocol deducts 0.01 ckUSDC for ckUSDC transaction fee and a 0.10% fee upon withdraw for protocol reserves.
+                                  </Paragraph>
                                 </Space>
                               ) : null}
                               <Button
