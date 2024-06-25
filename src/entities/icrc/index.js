@@ -38,6 +38,15 @@ export const createActor = async (canisterId, options = {}) => {
     });
   }
 
+  const connected = await window.ic.plug.isConnected();
+
+  if (!connected) {
+    return Actor.createActor(idlFactory, {
+      agent,
+      canisterId,
+      ...options.actorOptions,
+    });
+  }
   // Creates an actor with using the candid interface and the HttpAgent
   return await window.ic.plug.createActor({
     canisterId: canisterId,
