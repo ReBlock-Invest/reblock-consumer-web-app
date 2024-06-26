@@ -30,7 +30,7 @@ export default class RBFactoryICActorRepository extends ICActor<RBFactoryICActor
     let bstart: bigint = BigInt(start)
     let blimit: bigint = BigInt(limit)
 
-    let factory = await makeFactoryActor(process.env.REACT_APP_RB_POOL_FACTORY_CANISTER_ID)
+    let factory = await makeFactoryActor(process.env.REACT_APP_RB_POOL_FACTORY_CANISTER_ID, 'query')
     let result = await factory.get_pools([], bstart, blimit)
     
     const pools = result as Pool[]
@@ -63,7 +63,7 @@ export default class RBFactoryICActorRepository extends ICActor<RBFactoryICActor
   ) {
 
     let pools = await this.getPools(start, limit)
-    let ckusdc = await makeCKUSDCActor(process.env.REACT_APP_CKUSDC_CANISTER_ID)
+    let ckusdc = await makeCKUSDCActor(process.env.REACT_APP_CKUSDC_CANISTER_ID, 'query')
 
     const itemsWithBalance= await Promise.all(
       pools.map(async (pool) => ({

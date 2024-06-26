@@ -17,7 +17,9 @@ type Props = {
   project: ProjectWithBalance
 }
 
-function formatBigInt(amount: bigint): string {
+function formatBigInt(amount: bigint | undefined): string {
+  if (amount === undefined) return "_"
+  
   return (Number(amount / BigInt(10000)) / 100).toFixed(2)
 }
 

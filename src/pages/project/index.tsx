@@ -17,7 +17,9 @@ import useWeb3 from "hooks/useWeb3"
 
 const { Title, Paragraph, Text, Link } = Typography
 
-function formatBigInt(amount: bigint): string {
+function formatBigInt(amount: bigint | undefined): string {
+  if (amount === undefined) return "_"
+
   return (Number(amount / BigInt(10000)) / 100).toFixed(2)
 }
 
@@ -115,6 +117,7 @@ const ProjectPage: React.FC = () => {
       setInvestmentValue(0)
     },
     onError(err) {
+      console.log(err)
       message.error('Investment failed!')
     }
   })
@@ -132,6 +135,7 @@ const ProjectPage: React.FC = () => {
       setWithdrawValue(0)
     },
     onError(err) {
+      console.log(err)
       message.error('Withdraw failed!')
     }
   })
@@ -260,7 +264,7 @@ const ProjectPage: React.FC = () => {
                     {!authenticationStore.token ? null : (
                       <Statistic
                         title="Your current position"
-                        value={isLoadingPositionBalance ? "_" : formatBigInt(positionbalance as bigint)}
+                        value={isLoadingPositionBalance ? "_" : formatBigInt(positionbalance)}
                         precision={2}
                         decimalSeparator="."
                         suffix="ckUSDC"
@@ -304,7 +308,7 @@ const ProjectPage: React.FC = () => {
                                     </Col>
                                   </Row>
 
-                                  <Text>Balance: { isLoadingBalance ? "_" : formatBigInt(userbalance as bigint)} ckUSDC</Text>
+                                  <Text>Balance: { isLoadingBalance ? "_" : formatBigInt(userbalance)} ckUSDC</Text>
 
                                   <Paragraph type="secondary">
                                     By clicking “Invest” below, I hereby agree to the
@@ -359,7 +363,7 @@ const ProjectPage: React.FC = () => {
                                     </Col>
                                   </Row>
 
-                                  <Text>Balance: { isLoadingTokenBalance ? "_" : formatBigInt(userPoolTokenbalance as bigint)} {tokenSymbol as string}</Text>
+                                  <Text>Balance: { isLoadingTokenBalance ? "_" : formatBigInt(userPoolTokenbalance)} {tokenSymbol as string}</Text>
 
                                 </Space>
                               ) : null}
