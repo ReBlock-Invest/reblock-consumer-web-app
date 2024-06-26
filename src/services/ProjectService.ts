@@ -80,7 +80,7 @@ export default class ProjectService {
       throw new Error("Deposit failed")
     }
 
-    console.log("res", resultObj)
+    return resultObj.Ok
   }
 
   async repayInterest(
@@ -127,6 +127,8 @@ export default class ProjectService {
     if (!!resultObj.Err) {
       throw new Error("Withdraw Failed")
     }
+
+    return resultObj.Ok
   }
 
   async getPoolBalance(

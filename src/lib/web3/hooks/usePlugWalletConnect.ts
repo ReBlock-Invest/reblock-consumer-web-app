@@ -3,7 +3,7 @@ import IWalletConnectHook from '../interfaces/IWalletConnectHook'
 import { Balance } from 'types';
 import { Principal } from '@dfinity/principal';
 
-const host = "https://icp-api.io"
+const host = "https://ic0.app"
 
 const onConnectionUpdate = () => {
   //@ts-ignore

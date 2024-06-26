@@ -106,7 +106,7 @@ const ProjectPage: React.FC = () => {
   const { mutate: investMutation, isLoading: investMutationLoading } = useMutation({
     mutationKey: ['invest', projectId],
     mutationFn: async (value: number) => {
-      await services.projectService.depositToRBPoolPrincipal(
+      return await services.projectService.depositToRBPoolPrincipal(
         projectId as string,
         BigInt(parseInt(`${parseFloat(`${value}`) * 1000000}`))
       )
@@ -125,7 +125,7 @@ const ProjectPage: React.FC = () => {
   const { mutate: withdrawMutation, isLoading: withdrawMutationLoading } = useMutation({
     mutationKey: ['withdraw', projectId],
     mutationFn: async (value: number) => {
-      await services.projectService.withdraw(
+      return await services.projectService.withdraw(
         projectId as string,
         BigInt(parseInt(`${parseFloat(`${value}`) * 1000000}`))
       )
