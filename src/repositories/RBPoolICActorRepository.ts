@@ -98,7 +98,7 @@ export default class RBPoolICActorRepository extends ICActor<RBPoolICActorExtens
     let bstart: bigint = BigInt(start)
     let blimit: bigint = BigInt(limit)
 
-    let pool = await makePoolActor(poolId)
+    let pool = await makePoolActor(poolId, 'query')
     let result = await pool.get_pool_transactions(bstart, blimit)
     
     const transactions = result as PoolTransaction[];
@@ -155,7 +155,7 @@ export default class RBPoolICActorRepository extends ICActor<RBPoolICActorExtens
     poolId: string,
     userPrincipal: Principal
   ) {
-    const actor = await makePoolActor(poolId)
+    const actor = await makePoolActor(poolId, 'query')
     let balance =  await actor.balance_of(userPrincipal)
     return balance as bigint
   }
@@ -164,7 +164,7 @@ export default class RBPoolICActorRepository extends ICActor<RBPoolICActorExtens
     poolId: string,
     userPrincipal: Principal
   ) {
-    const actor = await makePoolActor(poolId)
+    const actor = await makePoolActor(poolId, 'query')
     let balance =  await actor.icrc1_balance_of({ owner: userPrincipal, subaccount: [] })
     return balance as bigint
   }
@@ -172,7 +172,7 @@ export default class RBPoolICActorRepository extends ICActor<RBPoolICActorExtens
   async nextPrincipalRepayment(
     poolId: Principal
   ) {
-    const pool = await makePoolActor(poolId)
+    const pool = await makePoolActor(poolId, 'query')
     let amount =  await pool.next_principal_repayment()
 
     return amount as bigint
@@ -181,7 +181,7 @@ export default class RBPoolICActorRepository extends ICActor<RBPoolICActorExtens
   async nextInterestRepayment(
     poolId: Principal
   ) {
-    const pool = await makePoolActor(poolId)
+    const pool = await makePoolActor(poolId, 'query')
     let amount =  await pool.next_interest_repayment()
 
     return amount as bigint
@@ -190,7 +190,7 @@ export default class RBPoolICActorRepository extends ICActor<RBPoolICActorExtens
   async nextPrincipalRepaymentDeadline(
     poolId: Principal
   ) {
-    const pool = await makePoolActor(poolId)
+    const pool = await makePoolActor(poolId, 'query')
     let timestamp =  await pool.next_principal_repayment_deadline()
 
     return Number(timestamp) / 1000
@@ -199,7 +199,7 @@ export default class RBPoolICActorRepository extends ICActor<RBPoolICActorExtens
   async nextInterestRepaymentDeadline(
     poolId: Principal
   ) {
-    const pool = await makePoolActor(poolId)
+    const pool = await makePoolActor(poolId, 'query')
     let timestamp =  await pool.next_interest_repayment_deadline()
 
     return Number(timestamp) / 1000
@@ -208,7 +208,7 @@ export default class RBPoolICActorRepository extends ICActor<RBPoolICActorExtens
   async getTokenSymbol(
     poolId: string
   ) {
-    const pool = await makePoolActor(poolId)
+    const pool = await makePoolActor(poolId, 'query')
 
     return await pool.icrc1_symbol()
   }

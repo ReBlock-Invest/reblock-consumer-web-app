@@ -10,7 +10,9 @@ type Props = {
   transaction: Transaction
 }
 
-function formatBigInt(amount: bigint): string {
+function formatBigInt(amount: bigint | undefined): string {
+  if (amount === undefined) return "_"
+
   return (Number(amount / BigInt(10000)) / 100).toFixed(2)
 }
 

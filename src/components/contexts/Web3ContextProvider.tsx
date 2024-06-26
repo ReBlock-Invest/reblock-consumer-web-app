@@ -2,7 +2,7 @@ import type { CoinbaseWallet } from '@web3-react/coinbase-wallet'
 import { Web3ReactHooks, Web3ReactProvider, useWeb3React } from '@web3-react/core'
 import type { MetaMask } from '@web3-react/metamask'
 import type { WalletConnect } from '@web3-react/walletconnect-v2'
-import { formatEther } from '@ethersproject/units'
+//import { formatEther } from '@ethersproject/units'
 import useCoinbaseWalletConnect from "lib/web3/hooks/useCoinbaseWalletConnect"
 import useMetamaskWalletConnect from "lib/web3/hooks/useMetamaskWalletConnect"
 import useWalletConnectWalletConnect from "lib/web3/hooks/useWalletConnectWalletConnect"
@@ -58,7 +58,7 @@ const Web3ContextProviderWrapper: React.FC<{
   children: ReactNode
 }> = ({ children }) => {
   const authenticationStore = useAuthenticationStore()
-  
+
   const {
     connect: connectMetaMask,
     error: metamaskError,
@@ -99,7 +99,7 @@ const Web3ContextProviderWrapper: React.FC<{
 
   useEffect(() => {
     if (provider && accounts?.length) {
-      let stale = false
+      //let stale = false
 
       // const contractAddress = "0x0D2d1f55ebb9809466fef811546f1F0252346931";
       // const contract = new Contract(contractAddress, rbVault.abi, provider.getSigner())
@@ -133,7 +133,7 @@ const Web3ContextProviderWrapper: React.FC<{
       //   console.log(redeemResult)
       // })
 
-
+      /*
       void Promise.all(accounts.map((account: string) => provider.getBalance(account)))
         .then((balances) => {
           if (stale) return
@@ -145,9 +145,9 @@ const Web3ContextProviderWrapper: React.FC<{
 
           setBalances(mappedBalances)
         })
-
+      */
       return () => {
-        stale = true
+        //stale = true
         setBalances(undefined)
       }
     }

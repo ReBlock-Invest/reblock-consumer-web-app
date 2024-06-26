@@ -11,7 +11,7 @@ export { idlFactory } from "./pool.did.js";
  */
 export const canisterId = process.env.CANISTER_ID_POOL;
 
-export const createActor = async (canisterId, options = {}) => {
+export const createActor = async (canisterId, callType, options = {}) => {
   const agent = options.agent || new HttpAgent({ ...options.agentOptions });
 
   if (options.agent && options.agentOptions) {
@@ -27,6 +27,14 @@ export const createActor = async (canisterId, options = {}) => {
         "Unable to fetch root key. Check to ensure that your local replica is running"
       );
       console.error(err);
+    });
+  }
+
+  if (callType === "query") {
+    return Actor.createActor(idlFactory, {
+      agent,
+      canisterId,
+      ...options.actorOptions,
     });
   }
 

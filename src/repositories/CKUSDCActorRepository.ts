@@ -34,7 +34,7 @@ export default class CKUSDCActorRepository extends ICActor<CKUSDCActorExtensionI
   async getBalance(
     userPrincipal: Principal
   ) {
-    const actor = await makeAssetActor(process.env.REACT_APP_CKUSDC_CANISTER_ID)
+    const actor = await makeAssetActor(process.env.REACT_APP_CKUSDC_CANISTER_ID, 'query')
     let balance =  await actor.icrc1_balance_of({ owner: userPrincipal, subaccount: [] })
     return balance as bigint
   }
