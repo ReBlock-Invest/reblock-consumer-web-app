@@ -12,7 +12,7 @@ export { idlFactory } from "./factory.did.js";
 export const canisterId = process.env.CANISTER_ID_FACTORY;
 
 export const createActor = async (canisterId, callType, options = {}) => {
-  const agent = options.agent || new HttpAgent({ ...options.agentOptions });
+  const agent = options.agent || new HttpAgent({ host: "https://ic0.app" });
 
   if (options.agent && options.agentOptions) {
     console.warn(

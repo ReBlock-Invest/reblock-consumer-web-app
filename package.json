@@ -4,9 +4,9 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
-    "@dfinity/agent": "^0.20.1",
-    "@dfinity/candid": "^0.20.1",
-    "@dfinity/principal": "^1.2.0",
+    "@dfinity/agent": "^1.4.0",
+    "@dfinity/candid": "^1.4.0",
+    "@dfinity/principal": "^1.4.0",
     "@ethersproject/contracts": "^5.7.0",
     "@ethersproject/units": "^5.7.0",
     "@junobuild/core": "^0.0.33",
