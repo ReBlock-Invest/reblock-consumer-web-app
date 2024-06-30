@@ -3,6 +3,10 @@ import IWalletConnectHook from '../interfaces/IWalletConnectHook'
 import { Balance } from 'types';
 import { Principal } from '@dfinity/principal';
 
+const nnsCanisterId = process.env.REACT_APP_NNS_CANISTER_ID
+const whitelist = [
+  nnsCanisterId,
+];
 const host = "https://ic0.app"
 
 const onConnectionUpdate = () => {
@@ -28,7 +32,7 @@ export default function usePlugWalletConnect(): IWalletConnectHook & {
     //@ts-ignore
     const connected = await window.ic.plug.isConnected();
     //@ts-ignore
-    if (!connected) await window.ic.plug.requestConnect({ whitelist: [], host });
+    if (!connected) await window.ic.plug.requestConnect({ whitelist, host });
     //@ts-ignore
     setAccount(window.ic.plug.sessionManager.sessionData.principalId)
   };
@@ -49,7 +53,7 @@ export default function usePlugWalletConnect(): IWalletConnectHook & {
       setError(undefined)
       //@ts-ignore
       await window.ic.plug.requestConnect({
-        whitelist: [],
+        whitelist,
         host,
         onConnectionUpdate,
         timeout: 50000
