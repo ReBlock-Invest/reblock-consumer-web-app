@@ -5,7 +5,7 @@ import { useMutation, useQuery } from "react-query"
 import Colors from "components/themes/Colors"
 import FontFamilies from "components/themes/FontFamilies"
 import MainLayout from "components/layouts/MainLayout"
-import React, { useCallback, useMemo, useState, useEffect } from "react"
+import React, { useCallback, useMemo, useState } from "react"
 import useAuthenticationStore from "stores/useAuthenticationStore"
 import UserInvestStateEnum from "entities/user/UserInvestStateEnum"
 import useKYCStore from "stores/useKYCStore"
@@ -17,19 +17,13 @@ import useWeb3 from "hooks/useWeb3"
 
 const { Title, Paragraph, Text, Link } = Typography
 
-function formatBigInt(amount: bigint | undefined): string {
-  if (amount === undefined) return "_"
-
+function formatBigInt(amount: bigint): string {
   return (Number(amount / BigInt(10000)) / 100).toFixed(2)
 }
 
 const ProjectPage: React.FC = () => {
   const { message } = App.useApp()
-  const { accounts } = useWeb3()
-
-  const [prevDepositAmount, setPrevDepositAmount] = useState(0);
-  const [depositLoading, setDepositLoading] = useState(false);
-  const [withdrawLoading, setWithdrawLoading] = useState(false);
+  const { accounts } = useWeb3()  
 
   const {
     token: {
@@ -103,16 +97,14 @@ const ProjectPage: React.FC = () => {
     queryFn: () => services.rbPoolService.getPoolTransactions(
       projectId as string,
       0,
-      10
+      100
     )
   })
 
   const { mutate: investMutation, isLoading: investMutationLoading } = useMutation({
     mutationKey: ['invest', projectId],
     mutationFn: async (value: number) => {
-      setDepositLoading(true)
-
-      return await services.projectService.depositToRBPoolPrincipal(
+      await services.projectService.depositToRBPoolPrincipal(
         projectId as string,
         BigInt(parseInt(`${parseFloat(`${value}`) * 1000000}`))
       )
@@ -123,7 +115,6 @@ const ProjectPage: React.FC = () => {
       setInvestmentValue(0)
     },
     onError(err) {
-      console.log(err)
       message.error('Investment failed!')
     }
   })
@@ -131,7 +122,7 @@ const ProjectPage: React.FC = () => {
   const { mutate: withdrawMutation, isLoading: withdrawMutationLoading } = useMutation({
     mutationKey: ['withdraw', projectId],
     mutationFn: async (value: number) => {
-      return await services.projectService.withdraw(
+      await services.projectService.withdraw(
         projectId as string,
         BigInt(parseInt(`${parseFloat(`${value}`) * 1000000}`))
       )
@@ -141,7 +132,6 @@ const ProjectPage: React.FC = () => {
       setWithdrawValue(0)
     },
     onError(err) {
-      console.log(err)
       message.error('Withdraw failed!')
     }
   })
@@ -178,34 +168,8 @@ const ProjectPage: React.FC = () => {
     withdrawMutation(
       withdrawValue
     )
-
-    setWithdrawLoading(true)
-  }, [withdrawMutation, withdrawValue, setWithdrawLoading])
+  }, [withdrawMutation, withdrawValue])
     
-  useEffect(() => {
-    let currDepositAmount = userPoolTokenbalance === undefined ? 0 : userPoolTokenbalance
-
-    if (investMutationLoading) {
-      if (currDepositAmount > prevDepositAmount) {
-        setPrevDepositAmount(currDepositAmount as number)
-        setInvestmentValue(0)
-        setIsOpenInvestmentDrawer(false)
-        setDepositLoading(false)
-        message.success('Investment succeed!')
-      }
-    } else if (withdrawMutationLoading) {
-      if (currDepositAmount < prevDepositAmount) {
-        setPrevDepositAmount(currDepositAmount as number)
-        setWithdrawValue(0)
-        setWithdrawLoading(false)
-        message.success('Withdraw succeed!')
-      }
-    } else {
-      setPrevDepositAmount(currDepositAmount as number)
-    }
-
-  }, [userPoolTokenbalance, prevDepositAmount, setPrevDepositAmount, setIsOpenInvestmentDrawer,
-     setInvestmentValue, setWithdrawValue, message, investMutationLoading, withdrawMutationLoading, setDepositLoading, setWithdrawLoading]);
 
   return (
     <MainLayout>
@@ -216,7 +180,7 @@ const ProjectPage: React.FC = () => {
       ) : (
         <Layout>
           <ConfirmInvestmentDrawer
-            isLoading={depositLoading}
+            isLoading={investMutationLoading}
             open={isOpenConfirmInvestmentDrawer}
             onClose={() => setIsOpenInvestmentDrawer(false)}
             onConfirm={() => investMutation(investmentValue)}
@@ -296,7 +260,7 @@ const ProjectPage: React.FC = () => {
                     {!authenticationStore.token ? null : (
                       <Statistic
                         title="Your current position"
-                        value={isLoadingPositionBalance ? "_" : formatBigInt(positionbalance)}
+                        value={isLoadingPositionBalance ? "_" : formatBigInt(positionbalance as bigint)}
                         precision={2}
                         decimalSeparator="."
                         suffix="ckUSDC"
@@ -340,7 +304,7 @@ const ProjectPage: React.FC = () => {
                                     </Col>
                                   </Row>
 
-                                  <Text>Balance: { isLoadingBalance ? "_" : formatBigInt(userbalance)} ckUSDC</Text>
+                                  <Text>Balance: { isLoadingBalance ? "_" : formatBigInt(userbalance as bigint)} ckUSDC</Text>
 
                                   <Paragraph type="secondary">
                                     By clicking “Invest” below, I hereby agree to the
@@ -395,7 +359,7 @@ const ProjectPage: React.FC = () => {
                                     </Col>
                                   </Row>
 
-                                  <Text>Balance: { isLoadingTokenBalance ? "_" : formatBigInt(userPoolTokenbalance)} {tokenSymbol as string}</Text>
+                                  <Text>Balance: { isLoadingTokenBalance ? "_" : formatBigInt(userPoolTokenbalance as bigint)} {tokenSymbol as string}</Text>
 
                                   <Paragraph type="secondary">
                                     By clicking “Withdraw below, I hereby agree to the
@@ -409,7 +373,7 @@ const ProjectPage: React.FC = () => {
                               <Button
                                 type="primary"
                                 size='large'
-                                loading={withdrawLoading}
+                                loading={withdrawMutationLoading}
                                 onClick={onWithdrawButtonPressed}
                                 style={{
                                   marginTop: '16px'
