@@ -46,11 +46,13 @@ export default class RBPoolService {
   }
 
   async getUserTransactions(
+    poolId: string,
     userPrincipal: string,
     start: number,
     limit: number,
   ) {
     return this.rbPoolICActorRepository.getUserTransactions(
+      poolId,
       userPrincipal,
       start,
       limit
@@ -81,6 +83,18 @@ export default class RBPoolService {
     poolId: string
   ) {
     return await this.rbPoolICActorRepository.getTokenSymbol(poolId)
+  }
+
+  async getOutstandingLoan(
+    poolId: string
+  ) {
+    return await this.rbPoolICActorRepository.getOutstandingLoan(poolId)
+  }
+
+  async getOriginatedLoan(
+    poolId: string
+  ) {
+    return await this.rbPoolICActorRepository.getOriginatedLoan(poolId)
   }
 
   async getNextRepayments(
