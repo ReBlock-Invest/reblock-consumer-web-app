@@ -1,4 +1,5 @@
-import { Avatar, Flex, List, Space, Statistic, Typography } from "antd"
+import { Flex, List, Space, Statistic, Typography } from "antd"
+import Avatar from 'react-avatar';
 import ReblockIcon from "components/common/ReblockIcon"
 import FontFamilies from "components/themes/FontFamilies"
 import Transaction from "entities/transaction/Transaction"
@@ -39,7 +40,7 @@ const TransactionActivityItem: React.FC<Props> = ({
     ]}>
       <List.Item.Meta
         avatar={
-        <Avatar src={`https://xsgames.co/randomusers/avatar.php?g=pixel`} />
+        <Avatar size="30px" round="20px" textSizeRatio={2} name={transaction.from} />
       }
         title={
           <Text ellipsis style={{maxWidth: '200px'}}>{ transaction.from }</Text>

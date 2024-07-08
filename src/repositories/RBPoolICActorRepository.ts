@@ -132,16 +132,31 @@ export default class RBPoolICActorRepository extends ICActor<RBPoolICActorExtens
   }
 
   async getUserTransactions (
+    poolId: string,
     user_principal: string,
     start: number,
     limit: number
   ) {
-    const actor = await this.getActor()
-    return actor.get_user_transactions(
-      user_principal,
-      start,
-      limit
-    )
+
+    let bstart: bigint = BigInt(start)
+    let blimit: bigint = BigInt(limit)
+
+    let pool = await makePoolActor(poolId, 'query')
+    let result = await pool.get_user_transactions(Principal.from(user_principal), bstart, blimit)
+    
+    const transactions = result as PoolTransaction[];
+
+    return transactions.map((transaction) => ({
+      amount: transaction.amount as bigint,
+      op: this.mapTransactionOperation(transaction),
+      status: this.mapTransactionStatus(transaction),
+      from: transaction.from.toString(),
+      to: transaction.to.toString(),
+      caller: '',
+      fee: transaction.fee as bigint,
+      index: Number(transaction.index),
+      timestamp: Number(transaction.timestamp) / 1000000
+    }))
   }
 
   async getUserTotalSupply(
@@ -211,6 +226,22 @@ export default class RBPoolICActorRepository extends ICActor<RBPoolICActorExtens
     const pool = await makePoolActor(poolId, 'query')
 
     return await pool.icrc1_symbol()
+  }
+
+  async getOriginatedLoan(
+    poolId: string
+  ) {
+    const pool = await makePoolActor(poolId, 'query')
+
+    return await pool.get_total_fund()
+  }
+
+  async getOutstandingLoan(
+    poolId: string
+  ) {
+    const pool = await makePoolActor(poolId, 'query')
+
+    return await pool.get_outstanding_loan()
   }
 
   async getTotalSupply() {

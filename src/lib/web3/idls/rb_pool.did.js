@@ -67,6 +67,7 @@ const idlFactory = ({ IDL }) => {
     fee: Fee,
     owner: IDL.Principal,
     loan: Loan,
+    factory: IDL.Principal,
     token_args: TokenInitArgs,
   });
   /* eslint-enable no-unused-vars */
@@ -340,7 +341,7 @@ const idlFactory = ({ IDL }) => {
   });
   const WithdrawReceipt = IDL.Variant({ Ok: IDL.Nat, Err: WithdrawErr });
   const Pool = IDL.Service({
-    balance_of: IDL.Func([IDL.Principal], [IDL.Nat], ["query"]),
+    balance_of: IDL.Func([IDL.Principal], [IDL.Nat], []),
     burn: IDL.Func([BurnArgs], [TransferResult], []),
     convert_to_assets: IDL.Func([IDL.Nat], [IDL.Nat], []),
     convert_to_shares: IDL.Func([IDL.Nat], [IDL.Nat], []),
@@ -351,8 +352,11 @@ const idlFactory = ({ IDL }) => {
     get_borrower: IDL.Func([], [IDL.Vec(IDL.Principal)], []),
     get_decimal_offset: IDL.Func([], [IDL.Nat8], []),
     get_deposit_address: IDL.Func([], [IDL.Text], []),
+    get_factory: IDL.Func([], [IDL.Principal], ["query"]),
     get_fee: IDL.Func([], [Fee__1], ["query"]),
+    get_fee_asset: IDL.Func([], [IDL.Nat], ["query"]),
     get_info: IDL.Func([], [PoolRecord], ["query"]),
+    get_outstanding_loan: IDL.Func([], [IDL.Nat], []),
     get_owner: IDL.Func([], [IDL.Principal], ["query"]),
     get_pool_transaction: IDL.Func([IDL.Nat], [PoolTxRecord], ["query"]),
     get_pool_transactions: IDL.Func(
@@ -372,7 +376,7 @@ const idlFactory = ({ IDL }) => {
       [GetTransactionsResponse],
       ["query"]
     ),
-    get_user_transactons: IDL.Func(
+    get_user_transactions: IDL.Func(
       [IDL.Principal, IDL.Nat, IDL.Nat],
       [IDL.Vec(PoolTxRecord)],
       ["query"]
@@ -402,7 +406,9 @@ const idlFactory = ({ IDL }) => {
     repay_principal: IDL.Func([], [RepayPrincipalReceipt], []),
     set_borrower: IDL.Func([IDL.Principal], [], ["oneway"]),
     set_decimal_offset: IDL.Func([IDL.Nat8], [IDL.Nat8], []),
+    set_factory: IDL.Func([IDL.Principal], [IDL.Principal], []),
     set_fee: IDL.Func([Fee__1], [Fee__1], []),
+    set_fee_asset: IDL.Func([IDL.Nat], [IDL.Nat], []),
     set_fundrise_end_time: IDL.Func([Time], [Time], []),
     set_maturity_date: IDL.Func([Time], [Time], []),
     set_origination_date: IDL.Func([Time], [Time], []),
@@ -481,6 +487,7 @@ export const init = ({ IDL }) => {
     fee: Fee,
     owner: IDL.Principal,
     loan: Loan,
+    factory: IDL.Principal,
     token_args: TokenInitArgs,
   });
   return [InitPool];

@@ -17,7 +17,9 @@ import useWeb3 from "hooks/useWeb3"
 
 const { Title, Paragraph, Text, Link } = Typography
 
-function formatBigInt(amount: bigint): string {
+function formatBigInt(amount: bigint | undefined): string {
+ if (amount === undefined) return "_"
+
   return (Number(amount / BigInt(10000)) / 100).toFixed(2)
 }
 
@@ -70,6 +72,22 @@ const ProjectPage: React.FC = () => {
     enabled: !!projectId,
   })
 
+  const { data: outstandingLoan } = useQuery({
+    queryKey: ["outstandingLoan", projectId],
+    queryFn: () => services.rbPoolService.getOutstandingLoan(
+      projectId as string,
+    ),
+    enabled: !!projectId,
+  })
+
+  const { data: originatedLoan } = useQuery({
+    queryKey: ["originationLoan", projectId],
+    queryFn: () => services.rbPoolService.getOriginatedLoan(
+      projectId as string,
+    ),
+    enabled: !!projectId,
+  })
+
   const { data: positionbalance, isLoading: isLoadingPositionBalance } = useQuery({
     queryKey: ["positionbalance", !!accounts && accounts.length > 0 ? accounts[0] : ""],
     queryFn: () => services.projectService.getPoolBalance(
@@ -93,12 +111,14 @@ const ProjectPage: React.FC = () => {
   })
 
   const { data: transactions, isLoading: isLoadingTransactions } = useQuery({
-    queryKey: ['transactions'],
-    queryFn: () => services.rbPoolService.getPoolTransactions(
+    queryKey: ['transactions', !!accounts && accounts.length > 0 ? accounts[0] : ""],
+    queryFn: () => services.rbPoolService.getUserTransactions(
       projectId as string,
+      !!accounts && accounts.length > 0 ? accounts[0] : "",
       0,
       100
-    )
+    ),
+    enabled: !!accounts && accounts.length > 0,
   })
 
   const { mutate: investMutation, isLoading: investMutationLoading } = useMutation({
@@ -170,6 +190,17 @@ const ProjectPage: React.FC = () => {
     )
   }, [withdrawMutation, withdrawValue])
     
+  const setDepositMaxValue = () => {
+    if (userbalance !== undefined) {
+      setInvestmentValue(Number(userbalance / BigInt(10000)) / 100)
+    }
+  };
+
+  const setWithdrawMaxValue = () => {
+    if (userPoolTokenbalance !== undefined) {
+      setWithdrawValue(Number(userPoolTokenbalance / BigInt(10000)) / 100)
+    }
+  };
 
   return (
     <MainLayout>
@@ -298,7 +329,7 @@ const ProjectPage: React.FC = () => {
                                     </Col>
 
                                     <Col span={6}>
-                                      <Button block>
+                                      <Button block onClick={setDepositMaxValue}>
                                         MAX
                                       </Button>
                                     </Col>
@@ -353,7 +384,7 @@ const ProjectPage: React.FC = () => {
                                     </Col>
 
                                     <Col span={6}>
-                                      <Button block>
+                                      <Button block onClick={setWithdrawMaxValue}>
                                         MAX
                                       </Button>
                                     </Col>
@@ -410,7 +441,7 @@ const ProjectPage: React.FC = () => {
                     <Space direction="vertical" size={0}>
                       <Text type="secondary">Outstanding loan value</Text>
                       <Statistic
-                        value={formatBigInt(project.total_loan_amount as bigint)}
+                        value={formatBigInt(outstandingLoan)}
                         precision={2}
                         suffix={
                           <Text type="secondary" style={{ fontWeight: 400 }}>ckUSDC</Text>
@@ -428,7 +459,7 @@ const ProjectPage: React.FC = () => {
                     <Space direction="vertical" size={0}>
                       <Text type="secondary">Loan originated</Text>
                       <Statistic
-                        value={formatBigInt(project.total_loan_amount as bigint)}
+                        value={formatBigInt(originatedLoan)}
                         precision={2}
                         suffix={
                           <Text type="secondary" style={{ fontWeight: 400 }}>ckUSDC</Text>
